@@ -10,7 +10,14 @@
 #include <map>
 
 #include "IRequestHandler.h"
+#include "requests.h"
 #pragma comment(lib, "Ws2_32.lib")
+
+
+constexpr unsigned short sizeOfHeader = 5;
+constexpr unsigned short sizeOfDataLengthInHeader = 4;
+constexpr unsigned short sizeOfStatusInHeader = 1;
+
 class Communicator
 {
 public:
@@ -35,5 +42,7 @@ private:
 	std::map<SOCKET, IRequestHandler*> _clients;
 	
 	void Handler();
+	Buffer getBuffer(SOCKET)const;
+	std::pair<char*,int>& getByteArrayFromBuffer(const Buffer& buffer)const;
 };
 
