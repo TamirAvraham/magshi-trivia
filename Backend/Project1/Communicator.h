@@ -11,6 +11,10 @@
 
 #include "IRequestHandler.h"
 #pragma comment(lib, "Ws2_32.lib")
+
+constexpr int NEW_SOCKET_CANT_BE_ACCEPTED = 888;
+constexpr int LISTEN_ERROR = 777;
+constexpr int INTERNAL_WINSOCK_ERROR = 420;
 class Communicator
 {
 public:
