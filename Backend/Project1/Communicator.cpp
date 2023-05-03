@@ -1,9 +1,5 @@
 #include "Communicator.h"
-#include "LoginRequestHandler.h"
-#include "JsonRequestPacketDeserializer.h"
 #include <future>
-
-
 Communicator::Communicator(int port, std::string ip) :_ipAddress(ip), _port(port), _socketAddress_len(sizeof(_socketAddress)), _socketAddress()
 {
     if (startServer() != 1)
@@ -11,22 +7,28 @@ Communicator::Communicator(int port, std::string ip) :_ipAddress(ip), _port(port
         std::wcout << "Failed to start server with PORT: " << ntohs(_socketAddress.sin_port);
         
     }
-    startListen();
+    else
+    {
+        startListen();
+    }
 }
 inline int Communicator::startServer()
 {
     PVOID pAddrBuf;
     if (WSAStartup(MAKEWORD(2, 0), &_wsaData) != 0)
     {
-        exit(420);
+        std::cerr << "error in wsa start up";
+        exit(INTERNAL_WINSOCK_ERROR);
     }
 
     _ListenSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (_ListenSocket < 0)
+    if (_ListenSocket == INVALID_SOCKET)
     {
-        exit(420);
+        std::cerr << "error in listen ";
+        std::cerr << "error code is:" << WSAGetLastError();
+        exit(INTERNAL_WINSOCK_ERROR);
     }
-
+    
     _socketAddress.sin_family = AF_INET;
     _socketAddress.sin_port = htons(_port);
 
@@ -35,9 +37,10 @@ inline int Communicator::startServer()
 
     InetPton(_socketAddress.sin_family, widecstr, &_socketAddress.sin_addr.s_addr);
 
-    if (bind(_ListenSocket, (sockaddr*)&_socketAddress, _socketAddress_len) < 0)
+    if (bind(_ListenSocket, (sockaddr*)&_socketAddress, _socketAddress_len) != 0)
     {
-        exit(420);
+        std::cerr << "error in bind";
+        exit(INTERNAL_WINSOCK_ERROR);
     }
 
     return 1;
@@ -45,9 +48,10 @@ inline int Communicator::startServer()
 
 inline void Communicator::startListen()
 {
-    if (listen(_ListenSocket,20)<0)
+    if (listen(_ListenSocket,20)!=0)
     {
-        exit(777);
+        std::cerr << WSAGetLastError();
+        exit(LISTEN_ERROR);
     }
     std::cout << "listen binded"<<'\n';
     
@@ -64,86 +68,22 @@ void Communicator::Handler()
     while (true)
     {
         SOCKET newSocket = accept(_ListenSocket, (sockaddr*)&_socketAddress, &_socketAddress_len);
-        std::async([this, &newSocket]() {
-            if (newSocket < 0)
-            {
+        if (newSocket < 0)
+        {
 
-                PWSTR str = nullptr;
-                InetNtop(_socketAddress.sin_family, &_socketAddress.sin_addr.s_addr, str, 50);
-                exit(888);
-            }
-            /*TODO:
-            * switch this with request factory
-            */
-            auto handler = LoginRequestHandler();
-            _clients.emplace(newSocket, &handler);
-            auto buffer = JsonRequestPacketDeserializer::deserializeLoginRequest(getBuffer(newSocket));
-            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(handler.HandlerRequest(&buffer)->buffer); //THE one liner
-            std::async(&send, newSocket, byteArray.first, byteArray.second, 0);
-        });
+            PWSTR str = nullptr;
+            InetNtop(_socketAddress.sin_family, &_socketAddress.sin_addr.s_addr, str, 50);
+            exit(NEW_SOCKET_CANT_BE_ACCEPTED);
+        }
+        /*TODO:
+        * switch this with request factory
+        */
+        IRequestHandler* handler = nullptr;
+        _clients.emplace(newSocket, handler);
+
+        /*TODO:
+        * delete after 1.0.1
+        */
+        std::async(&send, newSocket, "hello world", sizeof("hello world"), 0);
     }
 }
-
-std::pair<char*, int>& Communicator::getByteArrayFromBuffer(const Buffer& buffer) const {
-   
-    int size = 1 + 4 + buffer.sizeOfData;
-
-    
-    char* formattedData = new char[size];
-
-    
-    formattedData[0] = buffer.status;
-
-    
-    std::memcpy(formattedData + 1, &buffer.sizeOfData, sizeof(unsigned int));
-
-    
-    std::memcpy(formattedData + 1 + sizeof(unsigned int), buffer.data, buffer.sizeOfData);
-
-    
-    std::pair<char*, int> result(formattedData, size);
-
-    
-    return result;
-}
-
-     
-
-Buffer Communicator::getBuffer(SOCKET socket) const
-{
-    // Define buffer struct
-    Buffer buffer;
-
-    // Read status byte from socket
-    int bytesReceived = recv(socket, (char*)&buffer.status, sizeof(buffer.status), 0);
-    if (bytesReceived != sizeof(buffer.status))
-    {
-        // Handle error
-        // ...
-    }
-
-    // Read size of data (4 bytes) from socket
-    bytesReceived = recv(socket, (char*)&buffer.sizeOfData, sizeof(buffer.sizeOfData), 0);
-    if (bytesReceived != sizeof(buffer.sizeOfData))
-    {
-        // Handle error
-        // ...
-    }
-
-    // Allocate memory for data buffer
-    buffer.data = new char[buffer.sizeOfData+1];
-
-    // Read data from socket
-    bytesReceived = recv(socket, buffer.data, buffer.sizeOfData, 0);
-    if (bytesReceived != buffer.sizeOfData)
-    {
-        // Handle error
-        // ...
-    }
-    buffer.data[buffer.sizeOfData] = '\0';
-    // Set time stamp for buffer
-    buffer.time = std::chrono::high_resolution_clock::now();
-    
-    return buffer;
-}
-
