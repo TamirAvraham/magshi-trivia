@@ -17,12 +17,15 @@ inline int Communicator::startServer()
     PVOID pAddrBuf;
     if (WSAStartup(MAKEWORD(2, 0), &_wsaData) != 0)
     {
+        std::cerr << "error in wsa start up";
         exit(INTERNAL_WINSOCK_ERROR);
     }
 
     _ListenSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (_ListenSocket == 0)
+    if (_ListenSocket == INVALID_SOCKET)
     {
+        std::cerr << "error in listen ";
+        std::cerr << "error code is:" << WSAGetLastError();
         exit(INTERNAL_WINSOCK_ERROR);
     }
     
@@ -34,8 +37,9 @@ inline int Communicator::startServer()
 
     InetPton(_socketAddress.sin_family, widecstr, &_socketAddress.sin_addr.s_addr);
 
-    if (bind(_ListenSocket, (sockaddr*)&_socketAddress, _socketAddress_len) == 0)
+    if (bind(_ListenSocket, (sockaddr*)&_socketAddress, _socketAddress_len) != 0)
     {
+        std::cerr << "error in bind";
         exit(INTERNAL_WINSOCK_ERROR);
     }
 
@@ -44,8 +48,9 @@ inline int Communicator::startServer()
 
 inline void Communicator::startListen()
 {
-    if (listen(_ListenSocket,20)==0)
+    if (listen(_ListenSocket,20)!=0)
     {
+        std::cerr << WSAGetLastError();
         exit(LISTEN_ERROR);
     }
     std::cout << "listen binded"<<'\n';
