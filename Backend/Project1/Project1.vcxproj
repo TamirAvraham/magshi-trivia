@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,12 +133,26 @@
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="JsonObject.cpp" />
+    <ClCompile Include="JsonParser.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
+    <ClCompile Include="JsonType.cpp" />
+    <ClCompile Include="JsonValue.cpp" />
+    <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TriviaServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="JsonObject.h" />
+    <ClInclude Include="JsonParser.h" />
+    <ClInclude Include="JsonRequestPacketDeserializer.h" />
+    <ClInclude Include="JsonType.h" />
+    <ClInclude Include="JsonValue.h" />
+    <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="requests.h" />
+    <ClInclude Include="responce.h" />
     <ClInclude Include="TriviaServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
