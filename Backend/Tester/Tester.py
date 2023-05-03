@@ -19,11 +19,11 @@ json_data="""
 status=76
 buffer=Buffer.Buffer(status,len(json_data),json_data)
 s.send(buffer.to_bytes())
-# receive data from the socket
 data = s.recv(1024)
-
+print('got data')
+buff=Buffer.Buffer.from_bytes(data)
 # print the data to the screen
-print(data.decode())
+print(f"status:{buff.status} size of data: {buff.sizeOfData} {buff.data}")
 
 # close the socket connection
 s.close()

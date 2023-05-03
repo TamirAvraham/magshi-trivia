@@ -15,7 +15,7 @@
 
 
 constexpr unsigned short sizeOfHeader = 5;
-constexpr unsigned short sizeOfDataLengthInHeader = 4;
+constexpr unsigned short sizeOfDataLengthInHeader = sizeof(unsigned int);
 constexpr unsigned short sizeOfStatusInHeader = 1;
 
 class Communicator

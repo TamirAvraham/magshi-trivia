@@ -77,28 +77,30 @@ void Communicator::Handler()
             */
             auto handler = LoginRequestHandler();
             _clients.emplace(newSocket, &handler);
-            auto buffer = JsonRequestPacketDeserializer::deserializeLoginRequest(getBuffer(newSocket));
-            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(handler.HandlerRequest(&buffer)->buffer); //THE one liner
-            std::async(&send, newSocket, byteArray.first, byteArray.second, 0);
+            auto request = JsonRequestPacketDeserializer::deserializeLoginRequest(getBuffer(newSocket)); 
+            auto buffer = handler.HandlerRequest(&request)->buffer;
+            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer); //THE one liner
+            send(newSocket, byteArray.first, byteArray.second, 0);
+            
         });
     }
 }
 
 std::pair<char*, int>& Communicator::getByteArrayFromBuffer(const Buffer& buffer) const {
    
-    int size = 1 + 4 + buffer.sizeOfData;
-
+    int size = sizeOfStatusInHeader + sizeOfDataLengthInHeader + buffer.sizeOfData;
+    
     
     char* formattedData = new char[size];
-
+    
     
     formattedData[0] = buffer.status;
 
     
-    std::memcpy(formattedData + 1, &buffer.sizeOfData, sizeof(unsigned int));
+    std::memcpy(formattedData + sizeOfStatusInHeader, &buffer.sizeOfData, sizeOfDataLengthInHeader);
 
     
-    std::memcpy(formattedData + 1 + sizeof(unsigned int), buffer.data, buffer.sizeOfData);
+    std::memcpy(formattedData + sizeOfStatusInHeader + sizeOfDataLengthInHeader, buffer.data, buffer.sizeOfData);
 
     
     std::pair<char*, int> result(formattedData, size);

@@ -65,7 +65,7 @@ void http::json::JsonObject::set(const std::string& keyName, http::json::JsonVal
 
 std::string http::json::JsonObject::ToString() const
 {
-	if (_asString.length()>1 && !_changed)
+	if (_asString.length()<2 && !_changed)
 	{
 		return _asString;
 	}

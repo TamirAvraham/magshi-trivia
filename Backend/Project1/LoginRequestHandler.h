@@ -5,7 +5,7 @@
 class LoginRequestHandler : public IRequestHandler
 {
 public:
-	virtual bool IsValid(unsigned char status);
-	virtual Responce* HandlerRequest(Request* req);
+	virtual bool IsValid(unsigned char status)override;
+	virtual Responce* HandlerRequest(Request* req)override;
 };
 
