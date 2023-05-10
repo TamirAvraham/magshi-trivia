@@ -101,8 +101,8 @@ void Communicator::Handler()
     }
 }
 
-std::pair<char*, int>& Communicator::getByteArrayFromBuffer(const Buffer& buffer) const {
-   
+std::pair<char*, int>& Communicator::getByteArrayFromBuffer(const Buffer& buffer) const
+{
     int size = sizeOfStatusInHeader + sizeOfDataLengthInHeader + buffer.sizeOfData;
     
     
