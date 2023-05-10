@@ -1,5 +1,6 @@
 #include "Communicator.h"
 #include "LoginRequestHandler.h"
+#include "SignupRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include <future>
 
@@ -75,13 +76,27 @@ void Communicator::Handler()
             /*TODO:
             * switch this with request factory
             */
-            auto handler = LoginRequestHandler();
-            _clients.emplace(newSocket, &handler);
-            auto request = JsonRequestPacketDeserializer::deserializeLoginRequest(getBuffer(newSocket)); 
-            auto buffer = handler.HandlerRequest(&request)->buffer;
-            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer); //THE one liner
-            send(newSocket, byteArray.first, byteArray.second, 0);
+           
             
+            Buffer statusCheck = getBuffer(newSocket);
+            if (statusCheck.status == LOGIN)
+            {
+                auto handler = LoginRequestHandler();
+                _clients.emplace(newSocket, &handler);
+                auto request = JsonRequestPacketDeserializer::deserializeLoginRequest(statusCheck);
+                auto buffer = handler.HandlerRequest(&request)->buffer;
+                std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer); //THE one liner
+                send(newSocket, byteArray.first, byteArray.second, 0);
+            }
+            else
+            {
+                SignupRequestHandler handler = SignupRequestHandler();
+                _clients.emplace(newSocket, &handler);
+                SignUpRequest request = JsonRequestPacketDeserializer::deserializeSignUpRequest(statusCheck);
+                Buffer buffer = handler.HandlerRequest(&request)->buffer;
+                std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer);
+                send(newSocket, byteArray.first, byteArray.second, 0);
+            }
         });
     }
 }

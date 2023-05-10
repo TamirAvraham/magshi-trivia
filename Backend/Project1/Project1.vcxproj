@@ -140,6 +140,7 @@
     <ClCompile Include="JsonValue.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SignupRequestHandler.cpp" />
     <ClCompile Include="TriviaServer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +154,7 @@
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="requests.h" />
     <ClInclude Include="responce.h" />
+    <ClInclude Include="SignupRequestHandler.h" />
     <ClInclude Include="TriviaServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
