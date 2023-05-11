@@ -19,11 +19,11 @@ if x == 1:
     signup_json_data="""
     {
         "username": "test user name",
-        "password": 1234,
+        "password": "1234"
         "email" : "testEmail@gmail.com"
     }
     """
-    signup_status=76
+    signup_status=83
     signup_buffer=Buffer.Buffer(signup_status,len(signup_json_data),signup_json_data)
     s.send(signup_buffer.to_bytes())
     data = s.recv(1024)
@@ -35,7 +35,7 @@ else:
     login_json_data="""
     {
         "username": "test user name",
-        "password": 1234
+        "password": "1234"
     }
     """
     login_status=76
