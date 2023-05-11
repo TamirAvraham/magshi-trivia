@@ -79,23 +79,39 @@ void Communicator::Handler()
            
             
             Buffer statusCheck = getBuffer(newSocket);
-            if (statusCheck.status == LOGIN)
+            switch (statusCheck.status)
             {
+            case LOGIN:
+            {
+                std::cout << "Entered Login\n";
+
                 auto handler = LoginRequestHandler();
                 _clients.emplace(newSocket, &handler);
                 auto request = JsonRequestPacketDeserializer::deserializeLoginRequest(statusCheck);
                 auto buffer = handler.HandlerRequest(&request)->buffer;
                 std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer); //THE one liner
                 send(newSocket, byteArray.first, byteArray.second, 0);
+                std::cout << "Finished Login\n";
+                break;
             }
-            else
+            case SIGNUP:
             {
+                std::cout << "Entered Signup\n";
                 SignupRequestHandler handler = SignupRequestHandler();
                 _clients.emplace(newSocket, &handler);
                 SignUpRequest request = JsonRequestPacketDeserializer::deserializeSignUpRequest(statusCheck);
                 Buffer buffer = handler.HandlerRequest(&request)->buffer;
                 std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer);
                 send(newSocket, byteArray.first, byteArray.second, 0);
+                std::cout << "Finished Login\n";
+                break;
+            }
+            default:
+            {
+                //The user shouldn't know that the format is wrong, only the server should
+                std::cout << "Got a message with invalid format!\nMessage Status: " << statusCheck.status << "\nMessage data:\n" << statusCheck.data;
+                break;
+            }
             }
         });
     }
