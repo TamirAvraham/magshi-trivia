@@ -66,7 +66,7 @@ void Communicator::Handler()
     while (true)
     {
         SOCKET newSocket = accept(_ListenSocket, (sockaddr*)&_socketAddress, &_socketAddress_len);
-        auto handleConnectionFunction = [this, &newSocket]() {
+        std::function<void()> handleConnectionFunction = [this, &newSocket]() {
             if (newSocket < 0)
             {
 
@@ -84,10 +84,28 @@ void Communicator::Handler()
             _clients.emplace(newSocket, handler);
             while (handler!=nullptr)
             {
+                //procees request
                 auto request = handler->GetRequestFromBuffer(buffer);
                 auto responce = handler->HandlerRequest(request);
+                Buffer responceBuffer = responce->buffer;
+                std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+
+                //send response
+                send(newSocket, byteArray.first, byteArray.second, 0);
+                
+                //free some memory
+                delete request;
+                delete handler;
+
+                handler = responce->next;
+                buffer = getBuffer(newSocket);
+                
             }
+            _clients.erase(newSocket);
+            closesocket(newSocket);
         };
+        std::thread thread(handleConnectionFunction);
+        thread.detach();
     }
 }
 
