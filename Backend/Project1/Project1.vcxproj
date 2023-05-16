@@ -138,8 +138,11 @@
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonType.cpp" />
     <ClCompile Include="JsonValue.cpp" />
+    <ClCompile Include="loggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RequsetFactory.cpp" />
     <ClCompile Include="SignupRequestHandler.cpp" />
     <ClCompile Include="TriviaServer.cpp" />
   </ItemGroup>
@@ -151,8 +154,11 @@
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonType.h" />
     <ClInclude Include="JsonValue.h" />
+    <ClInclude Include="loggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="requests.h" />
+    <ClInclude Include="RequsetFactory.h" />
     <ClInclude Include="responce.h" />
     <ClInclude Include="SignupRequestHandler.h" />
     <ClInclude Include="TriviaServer.h" />

@@ -2,6 +2,7 @@
 #include "LoginRequestHandler.h"
 #include "SignupRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "RequsetFactory.h"
 #include <future>
 
 
@@ -65,7 +66,7 @@ void Communicator::Handler()
     while (true)
     {
         SOCKET newSocket = accept(_ListenSocket, (sockaddr*)&_socketAddress, &_socketAddress_len);
-        std::async([this, &newSocket]() {
+        auto handleConnectionFunction = [this, &newSocket]() {
             if (newSocket < 0)
             {
 
@@ -76,39 +77,17 @@ void Communicator::Handler()
             /*TODO:
             * switch this with request factory
             */
-           
-            
-            Buffer statusCheck = getBuffer(newSocket);
-            switch (statusCheck.status)
+
+
+            Buffer buffer = getBuffer(newSocket);
+            IRequestHandler* handler = RequsetFactory::getInstence().getFirstRequsetHandler(buffer);
+            _clients.emplace(newSocket, handler);
+            while (handler!=nullptr)
             {
-            case LOGIN:
-            {
-                auto handler = LoginRequestHandler();
-                _clients.emplace(newSocket, &handler);
-                auto request = JsonRequestPacketDeserializer::deserializeLoginRequest(statusCheck);
-                auto buffer = handler.HandlerRequest(&request)->buffer;
-                std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer); //THE one liner
-                send(newSocket, byteArray.first, byteArray.second, 0);
-                break;
+                auto request = handler->GetRequestFromBuffer(buffer);
+                auto responce = handler->HandlerRequest(request);
             }
-            case SIGNUP:
-            {
-                SignupRequestHandler handler = SignupRequestHandler();
-                _clients.emplace(newSocket, &handler);
-                SignUpRequest request = JsonRequestPacketDeserializer::deserializeSignUpRequest(statusCheck);
-                Buffer buffer = handler.HandlerRequest(&request)->buffer;
-                std::pair<char*, int>& byteArray = getByteArrayFromBuffer(buffer);
-                send(newSocket, byteArray.first, byteArray.second, 0);
-                break;
-            }
-            default:
-            {
-                //The user shouldn't know that the format is wrong, only the server should
-                std::cout << "Got a message with invalid format!\nMessage Status: " << statusCheck.status << "\nMessage data:\n" << statusCheck.data;
-                break;
-            }
-            }
-        });
+        };
     }
 }
 

@@ -1,5 +1,6 @@
 #include "SignupRequestHandler.h"
-
+#include "JsonRequestPacketDeserializer.h"
+#include "RequsetFactory.h"
 bool SignupRequestHandler::IsValid(unsigned char status)
 {
     return status == SIGNUP;
@@ -14,7 +15,7 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
 	{
 		SignUpRequest* signupRequest = (SignUpRequest*)req;
 		retBuffer.status = OK;
-
+		RequsetFactory::getInstence().getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
 	}
 	catch (...)
 	{
@@ -29,4 +30,9 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
 	ret.buffer = retBuffer;
 	ret.next = nullptr;
 	return &ret;
+}
+
+Request* SignupRequestHandler::GetRequestFromBuffer(const Buffer& buffer)
+{
+	return new Request(JsonRequestPacketDeserializer::deserializeSignUpRequest(buffer));
 }

@@ -1,5 +1,7 @@
 #include "LoginRequestHandler.h"
 #include "JsonObject.h"
+#include "SignupRequestHandler.h"
+#include "JsonRequestPacketDeserializer.h"
 bool LoginRequestHandler::IsValid(unsigned char status)
 {
     return status==LOGIN;
@@ -7,13 +9,16 @@ bool LoginRequestHandler::IsValid(unsigned char status)
 
 Responce* LoginRequestHandler::HandlerRequest(Request* req)
 {
-    LoginResponce ret;
+    auto ret=new LoginResponce();
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
+	ret->next = nullptr;
 	try
 	{
 		LoginRequest* loginRequest = (LoginRequest*)req;
 		retBuffer.status = OK;
+		auto instence = RequsetFactory::getInstence();
+		instence.getLoginManager().Login(loginRequest->_username, loginRequest->_password);
 		
 	}
 	catch (...)
@@ -26,7 +31,12 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 	std::string retData = retJsonMessage.ToString();
 	retBuffer.sizeOfData = retData.length();
 	retBuffer.data = const_cast<char*>(retData.c_str());
-	ret.buffer = retBuffer;
-	ret.next = nullptr; 
-    return &ret;
+	ret->buffer = retBuffer;
+	
+    return ret;
+}
+
+Request* LoginRequestHandler::GetRequestFromBuffer(const Buffer& buffer)
+{
+	return new Request(JsonRequestPacketDeserializer::deserializeLoginRequest(buffer));
 }
