@@ -13,7 +13,7 @@ http::json::JsonObject::JsonObject(const std::string jsonString):_asString("/\\"
 	catch (int errorCode) {
 		if (errorCode==PARSE_ERROR)
 		{
-			throw std::invalid_argument("invalid argument");
+			//throw std::invalid_argument("invalid argument");		// Tamir, this line is the one causing the application to break, please resolve the issue
 		}
 	}
 	catch (const std::exception&)

@@ -13,9 +13,13 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
 	http::json::JsonObject retJsonMessage;
 	try
 	{
-		SignUpRequest* signupRequest = (SignUpRequest*)req;
+		SignUpRequest* signupRequest = (SignUpRequest*)req;		// the req has id 0 before this line (no content)
 		retBuffer.status = OK;
-		RequsetFactory::getInstence().getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
+		//RequsetFactory::getInstence().getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
+
+		//For now I temporarily created values, once the issue will be fixed the values would be actual ones
+		// I believe there is the same issue with login option, please check it
+		RequsetFactory::getInstence().getLoginManager().Signup("Tamir", "Fix", "Me");
 	}
 	catch (...)
 	{

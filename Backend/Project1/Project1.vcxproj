@@ -144,10 +144,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequsetFactory.cpp" />
     <ClCompile Include="SignupRequestHandler.cpp" />
+    <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="SqliteDataBase.cpp" />
     <ClCompile Include="TriviaServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="JsonObject.h" />
     <ClInclude Include="JsonParser.h" />
@@ -161,6 +164,8 @@
     <ClInclude Include="RequsetFactory.h" />
     <ClInclude Include="responce.h" />
     <ClInclude Include="SignupRequestHandler.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SqliteDataBase.h" />
     <ClInclude Include="TriviaServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

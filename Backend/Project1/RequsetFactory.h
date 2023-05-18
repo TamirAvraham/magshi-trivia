@@ -16,6 +16,5 @@ public:
 private:
 	RequsetFactory();
 	LoginManager _manager;
-	//u will need to add a db connection here
 };
 

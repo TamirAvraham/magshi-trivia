@@ -34,8 +34,8 @@ if x == 1:
 else:
     login_json_data="""
     {
-        "username": "test user name",
-        "password": "1234"
+        "username": "rooman",
+        "password": "12345"
     }
     """
     login_status=76
