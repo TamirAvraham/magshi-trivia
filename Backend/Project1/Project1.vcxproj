@@ -136,6 +136,7 @@
     <ClCompile Include="JsonObject.cpp" />
     <ClCompile Include="JsonParser.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
+    <ClCompile Include="JsonSirealizer.cpp" />
     <ClCompile Include="JsonType.cpp" />
     <ClCompile Include="JsonValue.cpp" />
     <ClCompile Include="loggedUser.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="JsonObject.h" />
     <ClInclude Include="JsonParser.h" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
+    <ClInclude Include="JsonSirealizer.h" />
     <ClInclude Include="JsonType.h" />
     <ClInclude Include="JsonValue.h" />
     <ClInclude Include="loggedUser.h" />
