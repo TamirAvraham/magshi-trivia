@@ -38,5 +38,5 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 
 Request* LoginRequestHandler::GetRequestFromBuffer(const Buffer& buffer)
 {
-	return new Request(JsonRequestPacketDeserializer::deserializeLoginRequest(buffer));
+	return new LoginRequest(JsonRequestPacketDeserializer::deserializeLoginRequest(buffer));
 }

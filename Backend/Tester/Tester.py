@@ -5,7 +5,7 @@ import Buffer
 HOST = 'localhost'
 PORT = 12
 
-print("Enter 1 for signup, anything else for login")
+print("Enter 0 for error, 1 for signup, anything else for login")
 x = int(input())
 
 # create a socket object
@@ -14,11 +14,25 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # connect to the host and port
 s.connect((HOST, PORT))
 
-
-if x == 1:
+#"username": "test user name",
+if x == 0:
+    error_json_data="""
+    {
+        "password": "1234"
+    }
+    """
+    error_status=83
+    error_buffer=Buffer.Buffer(error_status,len(error_json_data),error_json_data)
+    s.send(error_buffer.to_bytes())
+    data = s.recv(1024)
+    print('got data')
+    buff=Buffer.Buffer.from_bytes(data)
+    # print the data to the screen
+    print(f"status:{buff.status} size of data: {buff.sizeOfData} {buff.data}")
+elif x == 1:
     signup_json_data="""
     {
-        "username": "test user name",
+        "username": "adolf hitler"
         "password": "1234"
         "email" : "testEmail@gmail.com"
     }

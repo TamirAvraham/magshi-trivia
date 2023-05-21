@@ -82,24 +82,39 @@ void Communicator::Handler()
             Buffer buffer = getBuffer(newSocket);
             IRequestHandler* handler = RequsetFactory::getInstence().getFirstRequsetHandler(buffer);
             _clients.emplace(newSocket, handler);
+            Buffer responceBuffer;
             while (handler!=nullptr)
             {
                 //procees request
-                auto request = handler->GetRequestFromBuffer(buffer);
-                auto responce = handler->HandlerRequest(request);
-                Buffer responceBuffer = responce->buffer;
-                std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+                Responce* responce;
+                try
+                {
+                   auto request = handler->GetRequestFromBuffer(buffer);
+                    responce = handler->HandlerRequest(request);
+                    delete handler;
+                    handler = responce->next;
+                    
+                    //free memory
+                    //delete request;
 
-                //send response
-                send(newSocket, byteArray.first, byteArray.second, 0);
-                
-                //free some memory
-                delete request;
-                delete handler;
+                    responceBuffer = responce->buffer;
+                    std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+                    send(newSocket, byteArray.first, byteArray.second, 0);
+                }
+                catch (const std::exception& e)
+                {
+                    std::string errorData = R"(
+{
+	"error": "signup failed"
+})";
+                    responceBuffer.status = Error;
+                    responceBuffer.sizeOfData = errorData.length();
+                    responceBuffer.data = (char*)errorData.c_str();
+                    std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+                    send(newSocket, byteArray.first, byteArray.second, 0);
+                }
 
-                handler = responce->next;
                 buffer = getBuffer(newSocket);
-                
             }
             _clients.erase(newSocket);
             closesocket(newSocket);

@@ -16,11 +16,12 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
 SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(Buffer buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-    auto ret = SignUpRequest{
+        auto ret = SignUpRequest{
         ._username = reqAsJson["username"].string_value(),
         ._password = reqAsJson["password"].string_value(),
         ._email = reqAsJson["email"].string_value()
-    };
+        };
+
     delete[] buffer.data; //clean the buffer data since it is in the heap
     return ret;
 }
