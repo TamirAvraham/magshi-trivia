@@ -1,17 +1,14 @@
 #pragma once
 #include "requests.h"
 
-#define ResponceStruct(responce_name) struct responce_name :Responce{ responce_name()=default; }
+#define ResponceStruct(responce_name) struct responce_name :Responce{ }
 class IRequestHandler;
 struct Responce
 {
 	Buffer buffer;
 	IRequestHandler* next;
 
-	Responce(const Buffer& buffer, IRequestHandler* next)
-		: buffer(buffer), next(next)
-	{
-	}
+	
 };
 struct LoginResponce :Responce
 {
@@ -35,3 +32,4 @@ struct GetHighScoreResponce :Responce {
 ResponceStruct(CreateRoomResponce);
 ResponceStruct(GetPersonalStatsResponce);
 ResponceStruct(JoinRoomResponce);
+

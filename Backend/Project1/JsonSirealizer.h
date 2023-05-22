@@ -12,7 +12,6 @@ concept canBeToStringed = requires(T v) {
 class JsonSirealizer
 {
 public:
-private:
 	template<class T> 
 	static std::string getVectorAsString(std::vector<T> vector) requires stringfy<T>;
 	template<class T> 

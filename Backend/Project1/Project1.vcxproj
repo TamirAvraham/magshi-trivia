@@ -144,6 +144,8 @@
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequsetFactory.cpp" />
+    <ClCompile Include="RoomsHandlers.cpp" />
+    <ClCompile Include="RoomsManger.cpp" />
     <ClCompile Include="SignupRequestHandler.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
@@ -165,6 +167,8 @@
     <ClInclude Include="requests.h" />
     <ClInclude Include="RequsetFactory.h" />
     <ClInclude Include="responce.h" />
+    <ClInclude Include="RoomsHandlers.h" />
+    <ClInclude Include="RoomsManger.h" />
     <ClInclude Include="SignupRequestHandler.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
