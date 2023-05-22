@@ -15,12 +15,14 @@ class Room {
 private:
 	RoomData data;
 	std::vector<LoggedUser> users;
-	static RoomData DatafromJson(const http::json::JsonObject& json);
+	/*static RoomData DatafromJson(const http::json::JsonObject& json);*/
 public:
-	static Room fromJson(const http::json::JsonObject& json);
-	std::vector<std::string> getAllUsers();
+	
+	RoomData getData()const;
+	std::vector<std::string> getAllUsers()const;
 	void AddUser(const LoggedUser& user);
 	void removeUser(const LoggedUser& user);
+	Room(const RoomData& data, const LoggedUser& user);
 };
 
 class RoomManger {
