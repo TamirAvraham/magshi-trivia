@@ -10,7 +10,14 @@ bool RoomsHandler::IsValid(unsigned char status)
 
 Responce* RoomsHandler::HandlerRequest(Request* req)
 {
-    return nullptr;
+	switch (req->id)
+	{
+	case getRoomCode:
+
+	default:
+		break;
+	}
+	return nullptr;
 }
 
 Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
@@ -22,9 +29,9 @@ Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
 	case deleteRoomCode:
 		return new RemoveRoomRequest(JsonRequestPacketDeserializer::deserializeRemoveRoomRequest(buffer));
 	case getRoomsCode:
-		return new RoomsRequest(JsonRequestPacketDeserializer::deserializeRoomsRequest(buffer));
+		return new GetRoomsRequest(JsonRequestPacketDeserializer::deserializeRoomsRequest(buffer));
 	case createRoomCode:
-		return new CreateRoomsRequset(JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(buffer));
+		return new CreateRoomRequest(JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(buffer));
 	case getRoomStatus:
 		return new GetRoomStatusRequest(JsonRequestPacketDeserializer::deserializeGetRoomStatusRequest(buffer));
 	default:

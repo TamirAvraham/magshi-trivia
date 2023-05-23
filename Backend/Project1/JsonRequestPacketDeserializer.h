@@ -9,8 +9,8 @@ public:
 	static SignUpRequest deserializeSignUpRequest(Buffer buffer);
 	static GetRoomRequest deserializeGetRoomRequest(const Buffer& buffer);
 	static RemoveRoomRequest deserializeRemoveRoomRequest(const Buffer& buffer);
-	static RoomsRequest deserializeRoomsRequest(const Buffer& buffer);
-	static CreateRoomsRequset deserializeCreateRoomsRequset(const Buffer& buffer);
+	static GetRoomsRequest deserializeRoomsRequest(const Buffer& buffer);
+	static CreateRoomRequest deserializeCreateRoomsRequset(const Buffer& buffer);
 	static GetRoomStatusRequest deserializeGetRoomStatusRequest(const Buffer& buffer);
 private:
 	static RoomData RoomDatafromJson(const http::json::JsonObject& json);

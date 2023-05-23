@@ -26,10 +26,11 @@ struct GetRoomsResponce:Responce
 {
 	GetRoomsResponce() = default;
 };
+struct GetRoomResponce :Responce { };
 struct GetHighScoreResponce :Responce {
 	GetHighScoreResponce() = default;
 };
-ResponceStruct(CreateRoomResponce);
-ResponceStruct(GetPersonalStatsResponce);
-ResponceStruct(JoinRoomResponce);
-
+struct CreateRoomResponce :Responce { };
+struct GetPersonalStatsResponce :Responce { };
+struct JoinRoomResponce :Responce { };
+struct RemoveRoomResponce :Responce { };

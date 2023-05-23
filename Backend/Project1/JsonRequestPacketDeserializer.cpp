@@ -30,35 +30,47 @@ SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(Buffer buf
 GetRoomRequest JsonRequestPacketDeserializer::deserializeGetRoomRequest(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-    return GetRoomRequest{ .roomId = (unsigned int)reqAsJson["roomId"].integer_value() };
+    unsigned int roomId = static_cast<unsigned int>(reqAsJson["roomId"].integer_value());
+    auto ret = GetRoomRequest{ .roomId = roomId };
+    ret.id = getRoomCode;
+    return ret;
 }
 
 RemoveRoomRequest JsonRequestPacketDeserializer::deserializeRemoveRoomRequest(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-    return RemoveRoomRequest{ .roomId = (unsigned int)reqAsJson["roomId"].integer_value() };
+    unsigned int roomId = static_cast<unsigned int>(reqAsJson["roomId"].integer_value());
+    auto ret = RemoveRoomRequest{ .roomId = roomId };
+    ret.id = deleteRoomCode;
+    return ret;
 }
 
-RoomsRequest JsonRequestPacketDeserializer::deserializeRoomsRequest(const Buffer& buffer)
+GetRoomsRequest JsonRequestPacketDeserializer::deserializeRoomsRequest(const Buffer& buffer)
 {
-    return RoomsRequest();
+    auto ret = GetRoomsRequest{};
+    ret.id = getRoomsCode;
+    return ret;
 }
 
-CreateRoomsRequset JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(const Buffer& buffer)
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-    auto roomData = RoomDatafromJson(reqAsJson);
-    return CreateRoomsRequset{ 
-        .userId = reqAsJson["userId"].integer_value(),
-        .roomData=roomData 
-    };
+    int userId = reqAsJson["userId"].integer_value();
+    RoomData roomData = RoomDatafromJson(reqAsJson);
+    auto ret = CreateRoomRequest{ .userId = userId, .roomData = roomData };
+    ret.id = createRoomCode;
+    return ret;
 }
 
 GetRoomStatusRequest JsonRequestPacketDeserializer::deserializeGetRoomStatusRequest(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-    return GetRoomStatusRequest{ .roomId = (unsigned int)reqAsJson["roomId"].integer_value() };
+    unsigned int roomId = static_cast<unsigned int>(reqAsJson["roomId"].integer_value());
+    auto ret = GetRoomStatusRequest{ .roomId = roomId };
+    ret.id = getRoomStatus;
+    return ret;
 }
+
 
 RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonObject& json)
 {
