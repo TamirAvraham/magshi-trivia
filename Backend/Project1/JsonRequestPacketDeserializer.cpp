@@ -27,11 +27,11 @@ SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(Buffer buf
     return ret;
 }
 
-GetRoomRequest JsonRequestPacketDeserializer::deserializeGetRoomRequest(const Buffer& buffer)
+GetRoomPlayersRequest JsonRequestPacketDeserializer::deserializeGetRoomRequest(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
     unsigned int roomId = static_cast<unsigned int>(reqAsJson["roomId"].integer_value());
-    auto ret = GetRoomRequest{ .roomId = roomId };
+    auto ret = GetRoomPlayersRequest{ .roomId = roomId };
     ret.id = getRoomCode;
     return ret;
 }
@@ -57,7 +57,7 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(c
     http::json::JsonObject reqAsJson(buffer.data);
     int userId = reqAsJson["userId"].integer_value();
     RoomData roomData = RoomDatafromJson(reqAsJson);
-    auto ret = CreateRoomRequest{ .userId = userId, .roomData = roomData };
+    auto ret = CreateRoomRequest{ .username = userId, .roomData = roomData };
     ret.id = createRoomCode;
     return ret;
 }

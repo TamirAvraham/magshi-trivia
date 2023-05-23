@@ -11,9 +11,10 @@ public:
 	virtual Responce* HandlerRequest(Request* req) override;
 	virtual Request* GetRequestFromBuffer(const Buffer& buffer) override;
 private:
-	inline GetRoomResponce handleGetRoomRequest(const GetRoomRequest requset) const;
+	inline GetRoomPlayersResponce handleGetRoomPlayersRequest(const GetRoomPlayersRequest requset) const;
 	inline GetRoomsResponce handleGetRoomsRequest(const GetRoomsRequest request) const;
 	inline CreateRoomResponce handleCreateRoomRequest(const CreateRoomRequest request) const;
 	inline RemoveRoomResponce handleRemoveRoomRequest(const RemoveRoomRequest request) const;
+	inline GetRoomStatusResponce handleGetRoomStatusRequest(const GetRoomStatusRequest request) const;
 };
 

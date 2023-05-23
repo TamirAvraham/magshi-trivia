@@ -3,7 +3,7 @@
 #include "sqlite3.h"
 #include <list>
 
-#define DB_FILE_NAME "GameDataBase.sqlite"
+constexpr auto DB_FILE_NAME = "GameDataBase.sqlite";
 
 class SqliteDataBase : public IDatabase
 {

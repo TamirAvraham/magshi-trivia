@@ -2,6 +2,8 @@
 #include "loggedUser.h"
 #include "JsonObject.h"
 #include <vector>
+#include <format>
+
 struct RoomData
 {
 	unsigned int id;
@@ -10,6 +12,16 @@ struct RoomData
 	unsigned int numOfQustions;
 	unsigned int TimePerQuestion;
 	bool isActive;
+	http::json::JsonObject toJson() {
+		http::json::JsonObject object;
+		object.insert({ "id",{std::to_string(id)} });
+		object.insert({ "name",{name} });
+		object.insert({ "maxPlayers",{std::to_string(maxPlayers)} });
+		object.insert({ "numOfQustions",{ std::to_string(numOfQustions) } });
+		object.insert({ "TimePerQuestion",{ std::to_string(TimePerQuestion) } });
+		object.insert({ "isActive",{isActive ? "true" : "false"} });
+		return object;
+	}
 };
 class Room {
 private:

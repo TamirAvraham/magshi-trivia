@@ -26,7 +26,7 @@ struct GetRoomsResponce:Responce
 {
 	GetRoomsResponce() = default;
 };
-struct GetRoomResponce :Responce { };
+struct GetRoomPlayersResponce :Responce { };
 struct GetHighScoreResponce :Responce {
 	GetHighScoreResponce() = default;
 };
@@ -34,3 +34,4 @@ struct CreateRoomResponce :Responce { };
 struct GetPersonalStatsResponce :Responce { };
 struct JoinRoomResponce :Responce { };
 struct RemoveRoomResponce :Responce { };
+struct GetRoomStatusResponce :Responce { };

@@ -37,7 +37,7 @@ struct SignUpRequest:Request
 	std::string _password;
 	std::string _email;
 };
-struct GetRoomRequest:Request
+struct GetRoomPlayersRequest:Request
 {
 	unsigned int roomId;
 };
@@ -55,6 +55,6 @@ struct GetRoomsRequest :Request
 
 struct CreateRoomRequest:Request
 {
-	int userId;
+	std::string username;
 	RoomData roomData;
 };

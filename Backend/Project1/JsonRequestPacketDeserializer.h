@@ -7,7 +7,7 @@ class JsonRequestPacketDeserializer
 public:
 	static LoginRequest deserializeLoginRequest(Buffer buffer);
 	static SignUpRequest deserializeSignUpRequest(Buffer buffer);
-	static GetRoomRequest deserializeGetRoomRequest(const Buffer& buffer);
+	static GetRoomPlayersRequest deserializeGetRoomRequest(const Buffer& buffer);
 	static RemoveRoomRequest deserializeRemoveRoomRequest(const Buffer& buffer);
 	static GetRoomsRequest deserializeRoomsRequest(const Buffer& buffer);
 	static CreateRoomRequest deserializeCreateRoomsRequset(const Buffer& buffer);
