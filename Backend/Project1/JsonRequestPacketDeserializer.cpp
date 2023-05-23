@@ -55,9 +55,9 @@ GetRoomsRequest JsonRequestPacketDeserializer::deserializeRoomsRequest(const Buf
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-    int userId = reqAsJson["userId"].integer_value();
+    std::string username = reqAsJson["username"].string_value();
     RoomData roomData = RoomDatafromJson(reqAsJson);
-    auto ret = CreateRoomRequest{ .username = userId, .roomData = roomData };
+    auto ret = CreateRoomRequest{ .username =username , .roomData = roomData };
     ret.id = createRoomCode;
     return ret;
 }

@@ -12,7 +12,7 @@ struct RoomData
 	unsigned int numOfQustions;
 	unsigned int TimePerQuestion;
 	bool isActive;
-	http::json::JsonObject toJson() {
+	http::json::JsonObject toJson()const {
 		http::json::JsonObject object;
 		object.insert({ "id",{std::to_string(id)} });
 		object.insert({ "name",{name} });
@@ -21,6 +21,9 @@ struct RoomData
 		object.insert({ "TimePerQuestion",{ std::to_string(TimePerQuestion) } });
 		object.insert({ "isActive",{isActive ? "true" : "false"} });
 		return object;
+	}
+	std::string toString()const {
+		return toJson().ToString();
 	}
 };
 class Room {

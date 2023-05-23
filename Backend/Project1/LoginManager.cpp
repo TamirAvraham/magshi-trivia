@@ -26,7 +26,7 @@ void LoginManager::Logout(const std::string& username)
 
 LoggedUser& LoginManager::getUser(const std::string& username)
 {
-	auto user=std::find(_loggedUsers.begin(), _loggedUsers.end(),username);
+	auto user = std::find_if(_loggedUsers.begin(), _loggedUsers.end(), [username](const LoggedUser& user) { return user.username == username; });
 	if (user==_loggedUsers.end())
 	{
 		throw std::exception("user was not logged in");
