@@ -101,3 +101,18 @@ inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(const RemoveRoom
 
 	return ret;
 }
+
+inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetRoomStatusRequest request) const
+{
+	RemoveRoomResponce ret;
+	auto status=RequsetFactory::getInstence().getRoomsManager().getRoomStatus(request.roomId);
+	auto data = http::json::JsonObject();
+	data.insert({ "status",{status ? "true" : "false"} });
+	auto buffer = Buffer{
+		.status = OK,
+		.sizeOfData = (unsigned int)data.ToString().size(),
+		.data = const_cast<char*>(data.ToString().c_str())
+	};
+	ret.buffer = buffer;
+	ret.next = new RoomsHandler();
+}
