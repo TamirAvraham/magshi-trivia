@@ -2,6 +2,9 @@
 #include <vector>
 #include "loggedUser.h"
 #include "SqliteDataBase.h"
+
+#define USER_EXISTS_ERROR 418
+#define WRONG_PASSWORD_ERROR 419
 class IDatabase;
 class LoginManager
 {

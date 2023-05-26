@@ -7,6 +7,10 @@ void LoginManager::Signup(const std::string& username, const std::string& passwo
 		_db.addNewUser(username, password, email);
 		_loggedUsers.emplace_back(username);
 	}
+	else
+	{
+		throw USER_EXISTS_ERROR;
+	}
 }
 
 void LoginManager::Login(const std::string& username, const std::string& password)
@@ -15,6 +19,11 @@ void LoginManager::Login(const std::string& username, const std::string& passwor
 	{
 		_loggedUsers.emplace_back(username);
 	}
+	else
+	{
+		throw WRONG_PASSWORD_ERROR;
+	}
+	
 }
 
 void LoginManager::Logout(const std::string& username)

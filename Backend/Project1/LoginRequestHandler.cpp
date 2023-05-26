@@ -13,6 +13,8 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
 	ret.next = nullptr;
+	bool noError = true;
+	std::string retData;
 	try
 	{
 		LoginRequest* loginRequest = (LoginRequest*)req;
@@ -21,14 +23,32 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 		instence.getLoginManager().Login(loginRequest->_username, loginRequest->_password);
 		
 	}
+	catch (int errNum)
+	{
+		if (WRONG_PASSWORD_ERROR == errNum)
+		{
+			std::cout << "Wrong password inside\n";
+			retData = R"""(
+{
+	"error": "login failed, incorrect password")""";
+			retBuffer.status = Error;
+			noError = false;
+		}
+		else
+			throw std::exception();
+	}
 	catch (...)
 	{
-		retJsonMessage = R"(
+		retData = R"(
 {
-	"error": "login failed")";
+	"error": "login failed due to an unexpected error")";
 		retBuffer.status = Error;
+		noError = false;
 	}
-	std::string retData = retJsonMessage.ToString();
+	if (noError)
+	{
+		retData = retJsonMessage.ToString();
+	}
 	retBuffer.sizeOfData = retData.length();
 	retBuffer.data = const_cast<char*>(retData.c_str());
 	ret.buffer = retBuffer;

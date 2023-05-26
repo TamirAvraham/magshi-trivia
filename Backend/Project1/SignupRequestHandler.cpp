@@ -12,6 +12,8 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
 	ret.next = nullptr;
+	bool noError = true;
+	std::string retData;
 	try
 	{
 		SignUpRequest* signupRequest = (SignUpRequest*)req;
@@ -19,14 +21,32 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
 		auto instence = RequsetFactory::getInstence();
 		instence.getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
 	}
+	catch (int errNum)
+	{
+		if (USER_EXISTS_ERROR == errNum)
+		{
+			std::cout << "User exists inside\n";
+			retData = R"(
+{
+	"error": "signup failed, user already exists")";
+			retBuffer.status = Error;
+			noError = false;
+		}
+		else
+			throw std::exception();
+	}
 	catch (...)
 	{
-		retJsonMessage = R"(
+		retData = R"(
 {
-	"error": "signup failed")";
+	"error": "signup failed due to unexpected error")";
 		retBuffer.status = Error;
+		noError = false;
 	}
-	std::string retData = retJsonMessage.ToString();
+	if (noError)
+	{
+		retData = retJsonMessage.ToString();
+	}
 	retBuffer.sizeOfData = retData.length();
 	retBuffer.data = const_cast<char*>(retData.c_str());
 	ret.buffer = retBuffer;

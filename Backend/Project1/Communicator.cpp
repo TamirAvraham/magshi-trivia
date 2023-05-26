@@ -105,7 +105,7 @@ void Communicator::Handler()
                 {
                     std::string errorData = R"(
 {
-	"error": "signup failed"
+	"error": "operation failed"
 })";
                     responceBuffer.status = Error;
                     responceBuffer.sizeOfData = errorData.length();

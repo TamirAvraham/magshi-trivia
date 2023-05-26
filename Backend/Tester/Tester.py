@@ -30,13 +30,15 @@ if x == 0:
     # print the data to the screen
     print(f"status:{buff.status} size of data: {buff.sizeOfData} {buff.data}")
 elif x == 1:
-    signup_json_data="""
-    {
-        "username": "adolf hitler"
-        "password": "1234"
-        "email" : "testEmail@gmail.com"
-    }
-    """
+    print("Enter username:")
+    username = input()
+    print("Enter password:")
+    password = input()
+    print("Enter email:")
+    email = input()
+    
+    signup_json_data = '\n{\n\t"username": "' + username + '"\n\t"password": "' + password + '"\n\t"email": "' + email + '"\n}\n'
+
     signup_status=83
     signup_buffer=Buffer.Buffer(signup_status,len(signup_json_data),signup_json_data)
     s.send(signup_buffer.to_bytes())
@@ -46,12 +48,14 @@ elif x == 1:
     # print the data to the screen
     print(f"status:{buff.status} size of data: {buff.sizeOfData} {buff.data}")
 else:
-    login_json_data="""
-    {
-        "username": "test user name",
-        "password": "1234"
-    }
-    """
+    print("Enter username:")
+    username = input()
+    print("Enter password:")
+    password = input()
+
+    login_json_data = '\n{\n\t"username": "' + username + '"\n\t"password": "' + password + '"\n}\n'
+    print(login_json_data)
+
     login_status=76
     login_buffer=Buffer.Buffer(login_status,len(login_json_data),login_json_data)
     s.send(login_buffer.to_bytes())
