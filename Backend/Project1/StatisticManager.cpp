@@ -1,8 +1,8 @@
 #include "StatisticManager.h"
 
-std::vector<int> StatisticManager::getUserGameStatistic(std::string username, SqliteDataBase db)
+Statistic StatisticManager::getUserGameStatistic(std::string username, SqliteDataBase db)
 {
-    return db.getUserGameStatistic(username);
+    return db.getUserGameStatistic(username)[0];
 }
 
 std::vector<Game_Statistic> StatisticManager::getTopFive(SqliteDataBase db)

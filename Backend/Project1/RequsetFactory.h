@@ -1,6 +1,7 @@
 #pragma once
 #include "LoginManager.h"
 #include "RoomsManger.h"
+#include "StatisticManager.h"
 #include "IRequestHandler.h"
 class RequsetFactory
 {
@@ -16,11 +17,15 @@ public:
 	RoomManger& getRoomsManager() {
 		return _roomsManager;
 	}
+	StatisticManager& getStatManager() {
+		return _statManager;
+	}
 	IRequestHandler* getFirstRequsetHandler(const Buffer& buffer)const;
 private:
 	RequsetFactory();
 	LoginManager _manager;
 	RoomManger _roomsManager;
+	StatisticManager _statManager;
 	//u will need to add a db connection here
 };
 

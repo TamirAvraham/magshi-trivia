@@ -1,6 +1,7 @@
 #pragma once
 #include "IDatabase.h"
 #include "sqlite3.h"
+#include "JsonObject.h"
 #include <list>
 #include <vector>
 #include <string>
@@ -22,11 +23,16 @@ constexpr auto ADD_QUESTION_8 = "INSERT OR IGNORE  INTO questions VALUES('What i
 constexpr auto ADD_QUESTION_9 = "INSERT OR IGNORE  INTO questions VALUES('What is the fastest thing?', 'Diarrhea', 'Light', 'Sound', 'Your friend when you gave him 3 seconds to eat your food'); ";
 constexpr auto ADD_QUESTION_10 = "INSERT OR IGNORE  INTO questions VALUES('What is the chemistry formula for simple alcohol?','C2H5OH','ROH','H2O','SiH6O9');";
 
+struct Game_Statistic;
+struct Statistic;
 class SqliteDataBase : public IDatabase
 {
 public:
+	static SqliteDataBase& GetInstance() {
+		SqliteDataBase instance;
+		return instance;
+	}
 	// User related Functions
-	SqliteDataBase();
 	bool open();
 	virtual bool doesUserExist(std::string username) override;
 	virtual bool doesPasswordMatch(std::string username, std::string password) override;
@@ -44,9 +50,10 @@ public:
 	int getNumOfPlayerGames(std::string username);
 
 	// Game_Statistic related functions
-	std::vector<int> getUserGameStatistic(std::string username);
+	std::vector<Statistic> getUserGameStatistic(std::string username);
 	std::vector <Game_Statistic> getTopFive();
 private:
+	SqliteDataBase();
 	bool sendSQL(const char* sqlCommand, int (*callback)(void*, int, char**, char**), void* data);
 	sqlite3* _database;
 };
@@ -72,12 +79,27 @@ struct Statistic
 	int correct_answers;
 	int total_seconds;
 	int total_games;
+	std::string toString() {
+		http::json::JsonObject ret;
+		ret.insert({ "user",{user} });
+		ret.insert({ "total_games",{std::to_string(total_games)} });
+		ret.insert({ "total_answers",{std::to_string(total_answers)} });
+		ret.insert({ "total_seconds",{std::to_string(total_seconds)} });
+		ret.insert({ "correct_answers",{std::to_string(correct_answers)} });
+		return ret.ToString();
+	}
 };
 
 struct Game_Statistic
 {
 	std::string user;
 	int points;
+	std::string toString() {
+		http::json::JsonObject ret;
+		ret.insert({ "user", { user } });
+		ret.insert({ "points",{std::to_string(points)} });
+		return ret.ToString();
+	}
 };
 
 int callbackUser(void* data, int argc, char** argv, char** azColName);

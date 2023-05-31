@@ -149,14 +149,11 @@ int SqliteDataBase::getNumOfPlayerGames(std::string username)
 	return stats.front().total_games;
 }
 
-std::vector<int> SqliteDataBase::getUserGameStatistic(std::string username)
+std::vector<Statistic> SqliteDataBase::getUserGameStatistic(std::string username)
 {
-	std::vector<Game_Statistic> gameStats;
+	std::vector<Statistic> gameStats;
 	sendSQL(("SELECT * FROM game_records WHERE name_of_user = '" + username + "';").c_str(), callbackStatistic, &gameStats);
-	std::vector<int> ret;
-	for (int i = 0; i < gameStats.size(); i++)
-		ret.push_back(gameStats[i].points);
-	return ret;
+	return gameStats;
 }
 
 std::vector<Game_Statistic> SqliteDataBase::getTopFive()

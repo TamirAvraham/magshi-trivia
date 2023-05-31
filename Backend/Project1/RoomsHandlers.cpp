@@ -3,11 +3,19 @@
 #include "JsonSirealizer.h"
 #include "RequsetFactory.h"
 #define getIntFromJson(param_name) (unsigned int)json[#param_name].integer_value()
+#define retrunHandler(name) return new name##Responce(handle##name##Request((name##Request)(*req)));
 
 bool RoomsHandler::IsValid(unsigned char status)
 {
-	char secondDigit = std::to_string(((int)status))[0];
-    return secondDigit==ROOM_CHAR;
+	try
+	{
+		char secondDigit = std::to_string(((int)status))[0];
+		return secondDigit == ROOM_CHAR;
+	}
+	catch (...)
+	{
+		return false;
+	}
 }
 
 Responce* RoomsHandler::HandlerRequest(Request* req)
@@ -15,9 +23,17 @@ Responce* RoomsHandler::HandlerRequest(Request* req)
 	switch (req->id)
 	{
 	case getRoomCode:
-
+		return new GetRoomPlayersResponce(handleGetRoomPlayersRequest((GetRoomPlayersRequest)(*req)));
+	case deleteRoomCode:
+		retrunHandler(RemoveRoom)
+	case getRoomsCode:
+		retrunHandler(GetRooms)
+	case createRoomCode:
+		retrunHandler(CreateRoom)
+	case getRoomStatus:
+		retrunHandler(GetRoomStatus)
 	default:
-		break;
+		return nullptr;
 	}
 	return nullptr;
 }
@@ -71,6 +87,7 @@ inline GetRoomsResponce RoomsHandler::handleGetRoomsRequest(const GetRoomsReques
 	};
 	ret.buffer = buffer;
 	ret.next = new RoomsHandler();
+	return ret;
 }
 
 inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(const CreateRoomRequest request) const
@@ -104,7 +121,7 @@ inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(const RemoveRoom
 
 inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetRoomStatusRequest request) const
 {
-	RemoveRoomResponce ret;
+	GetRoomStatusResponce ret;
 	auto status=RequsetFactory::getInstence().getRoomsManager().getRoomStatus(request.roomId);
 	auto data = http::json::JsonObject();
 	data.insert({ "status",{status ? "true" : "false"} });
@@ -115,4 +132,5 @@ inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetR
 	};
 	ret.buffer = buffer;
 	ret.next = new RoomsHandler();
+	return ret;
 }
