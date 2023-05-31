@@ -90,7 +90,15 @@ void Communicator::Handler()
                 try
                 {
                    auto request = handler->GetRequestFromBuffer(buffer);
-                    responce = handler->HandlerRequest(request);
+                   if (request==nullptr)
+                   {
+                       throw std::invalid_argument("invalid request");
+                   }
+                   responce = handler->HandlerRequest(request);
+                   if (responce==nullptr)
+                   {
+                       throw std::invalid_argument("can processes request");
+                   }
                     delete handler;
                     handler = responce->next;
                     
@@ -103,13 +111,11 @@ void Communicator::Handler()
                 }
                 catch (const std::exception& e)
                 {
-                    std::string errorData = R"(
-{
-	"error": "operation failed"
-})";
+                    http::json::JsonObject errorjson;
+                    errorjson.insert({ "error",{e.what()} });
                     responceBuffer.status = Error;
-                    responceBuffer.sizeOfData = errorData.length();
-                    responceBuffer.data = (char*)errorData.c_str();
+                    responceBuffer.sizeOfData = errorjson.ToString().length();
+                    responceBuffer.data = const_cast<char*>(errorjson.ToString().c_str());
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
                     send(newSocket, byteArray.first, byteArray.second, 0);
                 }
