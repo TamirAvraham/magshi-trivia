@@ -12,6 +12,7 @@ struct RoomData
 	unsigned int numOfQustions;
 	unsigned int TimePerQuestion;
 	bool isActive;
+
 	http::json::JsonObject toJson()const {
 		http::json::JsonObject object;
 		object.insert({ "id",{std::to_string(id)} });

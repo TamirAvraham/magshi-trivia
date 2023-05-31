@@ -1,6 +1,7 @@
 #include "SignupRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
-#include "RequsetFactory.h"
+#include "RequsetFactory.h"]
+#include "MenuHandler.h"
 bool SignupRequestHandler::IsValid(unsigned char status)
 {
     return status == SIGNUP;
@@ -11,7 +12,7 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
     auto ret = SignUpResponce();
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
-	ret.next = nullptr;
+	ret.next = new MenuHandler();
 	bool noError = true;
 	std::string retData;
 	try

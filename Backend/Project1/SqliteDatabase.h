@@ -79,6 +79,7 @@ struct Statistic
 	int correct_answers;
 	int total_seconds;
 	int total_games;
+
 	std::string toString() {
 		http::json::JsonObject ret;
 		ret.insert({ "user",{user} });

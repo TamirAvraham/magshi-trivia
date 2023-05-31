@@ -18,12 +18,12 @@ bool MenuHandler::IsValid(unsigned char status)
 Responce* MenuHandler::HandlerRequest(Request* req)
 {
 	char secondDigit = std::to_string(((int)req->id))[0];
-	MenuHandler menuHandler;
+	RoomsHandler roomHandler;
 	StatisticsHandler statHandler;
 	switch (secondDigit)
 	{
 	case ROOM_CHAR:
-			return menuHandler.HandlerRequest(req);
+			return roomHandler.HandlerRequest(req);
 	case STATISTICS_CHAR:
 			return statHandler.HandlerRequest(req);
 	default:
@@ -34,14 +34,14 @@ Responce* MenuHandler::HandlerRequest(Request* req)
 Request* MenuHandler::GetRequestFromBuffer(const Buffer& buffer)
 {
 	char secondDigit = std::to_string(((int)buffer.status))[0];
-	MenuHandler menuHandler;
+	RoomsHandler roomHandler;
 	StatisticsHandler statHandler;
 	switch (secondDigit)
 	{
 	case ROOM_CHAR:
-		return menuHandler.GetRequestFromBuffer(buffer);
+		return roomHandler.GetRequestFromBuffer(buffer);
 	case STATISTICS_CHAR:
-		return menuHandler.GetRequestFromBuffer(buffer);
+		return roomHandler.GetRequestFromBuffer(buffer);
 	default:
 		return nullptr;
 	}
