@@ -55,7 +55,7 @@ inline GetTopPlayersResponce StatisticsHandler::handleGetTopPlayersRequest(const
 		.data = const_cast<char*>(bufferData.c_str())
 	};
 	ret.buffer = buffer;
-	ret.next = nullptr;
+	ret.next = new MenuHandler();
 	return ret;
 }
 
@@ -70,6 +70,6 @@ inline GetPlayerStatisticsResponce StatisticsHandler::handleGetPlayerStatisticsR
 		.data = const_cast<char*>(bufferData.c_str())
 	};
 	ret.buffer = buffer;
-	ret.next = nullptr;
+	ret.next = new MenuHandler();
 	return ret;
 }

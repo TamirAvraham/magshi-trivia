@@ -1,6 +1,7 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "JsonObject.h"
+#include "MenuHandler.h"
 
 class SignupRequestHandler :    public IRequestHandler
 {
