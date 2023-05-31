@@ -20,6 +20,9 @@ bool SqliteDataBase::open()
 	}
 	sendSQL(CREATE_USERS_TABLE, nullptr, nullptr);
 	sendSQL(CREATE_QUESTIONS_TABLE, nullptr, nullptr);
+	sendSQL(CREATE_STATISTICS_TABLE, nullptr, nullptr);
+	sendSQL(CREATE_GAME_RECORDS_TABLE, nullptr, nullptr);
+
 	sendSQL(ADD_QUESTION_1, nullptr, nullptr);
 	sendSQL(ADD_QUESTION_2, nullptr, nullptr);
 	sendSQL(ADD_QUESTION_3, nullptr, nullptr);
@@ -34,14 +37,14 @@ bool SqliteDataBase::open()
 }
 bool SqliteDataBase::doesUserExist(std::string username)
 {
-	std::list<User> users;
+	std::vector<User> users;
 	sendSQL(("SELECT * FROM users WHERE username  = '" + username + "';").c_str(), callbackUser, &users);
 	return users.size() > 0;
 }
 
 bool SqliteDataBase::doesPasswordMatch(std::string username, std::string password)
 {
-	std::list<User> users;
+	std::vector<User> users;
 	sendSQL(("SELECT * FROM users WHERE username  = '" + username + "' AND password = '" + password + "';").c_str(), callbackUser, &users);
 	return users.size() > 0;
 }
@@ -61,11 +64,11 @@ std::string SqliteDataBase::getQuestion()
 
 std::string SqliteDataBase::getCorrectAnswer(std::string question)
 {
-	std::list<Question> questions;
+	std::vector<Question> questions;
 	sendSQL(("SELECT * FROM questions WHERE question = '" + question + "';").c_str(), callbackQuestion, &questions);
 	
 	// If no questions or multiple questions with same text (Even though question has the 'UNIQUE' tag in database so second option is impossible the code can never be too safe)
-	if (question.size() != 1)
+	if (questions.size() != 1)
 	{
 		throw std::invalid_argument("invalid argument");
 	}
@@ -118,6 +121,48 @@ std::vector<std::string> SqliteDataBase::getAllAnswers(std::string question)
 	return ret;
 }
 
+float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
+{
+	std::vector<Statistic> stats;
+	sendSQL(("SELECT * FROM statistics WHERE user = '" + username + "';").c_str(), callbackStatistic, &stats);
+	return (float)((float)stats.front().total_seconds / (float)stats.front().total_answers);
+}
+
+int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
+{
+	std::vector<Statistic> stats;
+	sendSQL(("SELECT * FROM statistics WHERE user = '" + username + "';").c_str(), callbackStatistic, &stats);
+	return stats.front().correct_answers;
+}
+
+int SqliteDataBase::getNumOfTotalAnswers(std::string username)
+{
+	std::vector<Statistic> stats;
+	sendSQL(("SELECT * FROM statistics WHERE user = '" + username + "';").c_str(), callbackStatistic, &stats);
+	return stats.front().total_answers;
+}
+
+int SqliteDataBase::getNumOfPlayerGames(std::string username)
+{
+	std::vector<Statistic> stats;
+	sendSQL(("SELECT * FROM statistics WHERE user = '" + username + "';").c_str(), callbackStatistic, &stats);
+	return stats.front().total_games;
+}
+
+std::vector<Statistic> SqliteDataBase::getUserGameStatistic(std::string username)
+{
+	std::vector<Statistic> gameStats;
+	sendSQL(("SELECT * FROM game_records WHERE name_of_user = '" + username + "';").c_str(), callbackStatistic, &gameStats);
+	return gameStats;
+}
+
+std::vector<Game_Statistic> SqliteDataBase::getTopFive()
+{
+	std::vector<Game_Statistic> gameStats;
+	sendSQL("SELECT * FROM game_records ORDER BY points DESC LIMIT 5;", callbackStatistic, &gameStats);
+	return gameStats;
+}
+
 bool SqliteDataBase::sendSQL(const char* sqlCommand, int (*callback)(void*, int, char**, char**), void* data)
 {
 	if (sqlite3_exec(_database, sqlCommand, callback, data, nullptr) != SQLITE_OK) //Send SQL command
@@ -160,6 +205,42 @@ int callbackQuestion(void* data, int argc, char** argv, char** azColName)
 	newQuestion.wrong_answers[1] = wrong_answer_2;
 	newQuestion.wrong_answers[2] = wrong_answer_3;
 
-	((std::vector<Question>*)data)->push_back(newQuestion);	// Adding User to the list
+	((std::vector<Question>*)data)->push_back(newQuestion);	// Adding Question to the list
+	return 0;
+}
+
+int callbackStatistic(void* data, int argc, char** argv, char** azColName)
+{
+	if (argc == 0)	// No argument
+		return 0;
+	std::string username(argv[0]);
+	std::string total_answers(argv[1]);
+	std::string correct_asnwers(argv[2]);
+	std::string total_seconds(argv[3]);
+	std::string total_games_played(argv[4]);
+
+	Statistic newStatistic;
+	newStatistic.user = username;
+	newStatistic.total_answers =  std::stoi(total_answers);
+	newStatistic.correct_answers =  std::stoi(correct_asnwers);
+	newStatistic.total_seconds =  std::stoi(total_seconds);
+	newStatistic.total_games =  std::stoi(total_games_played);
+	
+	((std::vector<Statistic>*)data)->push_back(newStatistic);	// Adding Statistic to the list
+	return 0;
+}
+
+int callbackGameStatistic(void* data, int argc, char** argv, char** azColName)
+{
+	if (argc == 0)	// No argument
+		return 0;
+	std::string username(argv[0]);
+	std::string points(argv[1]);
+	
+	Game_Statistic newGameStatistic;
+	newGameStatistic.user = username;
+	newGameStatistic.points = std::stoi(points);
+
+	((std::vector<Game_Statistic>*)data)->push_back(newGameStatistic);	// Adding GameStatistic to the list
 	return 0;
 }

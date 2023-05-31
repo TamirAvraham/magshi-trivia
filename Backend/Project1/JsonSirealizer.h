@@ -9,6 +9,7 @@ template<class T>
 concept canBeToStringed = requires(T v) {
 	{v.toString()}->std::convertible_to<std::string>;
 };
+
 class JsonSirealizer
 {
 public:

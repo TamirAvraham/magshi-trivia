@@ -71,6 +71,22 @@ GetRoomStatusRequest JsonRequestPacketDeserializer::deserializeGetRoomStatusRequ
     return ret;
 }
 
+GetTopPlayersRequest JsonRequestPacketDeserializer::deserializeGetTopPlayersRequest(const Buffer& buffer)
+{
+    GetTopPlayersRequest ret;
+    ret.id = buffer.status;
+    return ret;
+}
+
+GetPlayerStatisticsRequest JsonRequestPacketDeserializer::deserializeGetPlayerStatisticsRequest(const Buffer& buffer)
+{
+    auto json = http::json::JsonObject(buffer.data);
+    GetPlayerStatisticsRequest ret;
+    ret.id = buffer.status;
+    ret.playerUsername = json["username"].string_value();
+    return ret;
+}
+
 
 RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonObject& json)
 {

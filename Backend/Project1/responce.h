@@ -1,7 +1,7 @@
 #pragma once
 #include "requests.h"
 
-#define ResponceStruct(responce_name) struct responce_name :Responce{ }
+#define ResponceStruct(responce_name) struct responce_name##Responce :Responce{ }
 class IRequestHandler;
 struct Responce
 {
@@ -22,16 +22,15 @@ struct LogoutResponce:Responce
 {
 	LogoutResponce() = default;
 };
-struct GetRoomsResponce:Responce
-{
-	GetRoomsResponce() = default;
-};
+
+//rooms related
+struct GetRoomsResponce:Responce{};
 struct GetRoomPlayersResponce :Responce { };
-struct GetHighScoreResponce :Responce {
-	GetHighScoreResponce() = default;
-};
 struct CreateRoomResponce :Responce { };
-struct GetPersonalStatsResponce :Responce { };
 struct JoinRoomResponce :Responce { };
 struct RemoveRoomResponce :Responce { };
 struct GetRoomStatusResponce :Responce { };
+
+//statistics related
+struct GetTopPlayersResponce :Responce { };
+struct GetPlayerStatisticsResponce :Responce { };
