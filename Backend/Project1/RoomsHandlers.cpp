@@ -70,7 +70,7 @@ inline GetRoomPlayersResponce RoomsHandler::handleGetRoomPlayersRequest(const Ge
 		.data = const_cast<char*>(data.ToString().c_str())
 	};
 	ret.buffer = buffer;
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 	return ret;
 }
 
@@ -86,7 +86,7 @@ inline GetRoomsResponce RoomsHandler::handleGetRoomsRequest(const GetRoomsReques
 		.data = const_cast<char*>(data.ToString().c_str())
 	};
 	ret.buffer = buffer;
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 	return ret;
 }
 
@@ -96,7 +96,7 @@ inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(const CreateRoom
 	CreateRoomResponce ret;
 	auto& factory=RequsetFactory::getInstence(); 
 	factory.getRoomsManager().createRoom(factory.getLoginManager().getUser(request.username),request.roomData);
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
@@ -114,7 +114,7 @@ inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(const RemoveRoom
 		.sizeOfData = 0,
 		.data = const_cast<char*>("")
 	};
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 
 	return ret;
 }
@@ -131,6 +131,6 @@ inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetR
 		.data = const_cast<char*>(data.ToString().c_str())
 	};
 	ret.buffer = buffer;
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 	return ret;
 }

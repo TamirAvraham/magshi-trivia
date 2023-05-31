@@ -26,6 +26,5 @@ private:
 	LoginManager _manager;
 	RoomManger _roomsManager;
 	StatisticManager _statManager;
-	//u will need to add a db connection here
 };
 

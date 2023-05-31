@@ -12,7 +12,7 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
     auto ret= LoginResponce();
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
-	ret.next = nullptr;
+	ret.next = new MenuHandler();
 	bool noError = true;
 	std::string retData;
 	try

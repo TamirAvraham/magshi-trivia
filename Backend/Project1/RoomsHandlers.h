@@ -1,5 +1,6 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "MenuHandler.h"
 #define RoomsHandlerMethod(param)  inline param##Responce handle##param##Request(const param##Request request) const
 
 

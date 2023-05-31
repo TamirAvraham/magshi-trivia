@@ -1,4 +1,5 @@
 #include "IRequestHandler.h"
+#include "MenuHandler.h"
 #define StatHandlerMethod(param)  inline param##Responce handle##param##Request(const param##Request request) const
 class StatisticsHandler: public IRequestHandler
 {
