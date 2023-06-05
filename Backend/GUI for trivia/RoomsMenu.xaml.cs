@@ -16,7 +16,7 @@ namespace GUI_for_trivia
         private void Click_handler(object sender, RoutedEventArgs e)
         {
             var room = (RoomData)sender;
-            var window = new Menu(user, room);
+            var window = new RoomView(user, room);
             window.Show();
             this.Close();
         }
@@ -37,9 +37,14 @@ namespace GUI_for_trivia
             InitializeComponent();
             this.user = user;
             rooms = RoomComunicator.GetRooms();
-
+            
         }
 
-
+        private void create_room_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new CreateRoomWindow(user);
+            win.Show();
+            this.Close();
+        }
     }
 }

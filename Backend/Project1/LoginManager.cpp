@@ -42,3 +42,7 @@ LoggedUser& LoginManager::getUser(const std::string& username)
 	}
 	return *user;
 }
+
+LoginManager::LoginManager():_db(SqliteDataBase::GetInstance())
+{
+}

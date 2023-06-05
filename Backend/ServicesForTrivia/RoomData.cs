@@ -6,20 +6,19 @@
         public bool isActive;
         public readonly string name;
         public readonly int id;
-        public readonly int timeForQuestion;
         public readonly int numOfQuestions;
         public readonly int TimePerQuestion;
         public readonly int maxNumOfPlayers;
 
-        public RoomData(List<User>? users, bool isActive, string name, int id, int timeForQuestion, int numOfQuestions, int timePerQuestion, int maxNumOfPlayers) : this()
+        public RoomData(List<User>? users, bool isActive, string name, int id, int timeForQuestion, int numOfQuestions ,int maxNumOfPlayers) : this()
         {
-            Users = users;
+            Users = users!;
             this.isActive = isActive;
             this.name = name;
             this.id = id;
-            this.timeForQuestion = timeForQuestion;
+            
             this.numOfQuestions = numOfQuestions;
-            TimePerQuestion = timePerQuestion;
+            TimePerQuestion = timeForQuestion;
             this.maxNumOfPlayers = maxNumOfPlayers;
             
         }

@@ -80,7 +80,7 @@ struct Statistic
 	int total_seconds;
 	int total_games;
 
-	std::string toString() {
+	std::string toString() const {
 		http::json::JsonObject ret;
 		ret.insert({ "user",{user} });
 		ret.insert({ "total_games",{std::to_string(total_games)} });
@@ -95,7 +95,7 @@ struct Game_Statistic
 {
 	std::string user;
 	int points;
-	std::string toString() {
+	std::string toString() const {
 		http::json::JsonObject ret;
 		ret.insert({ "user", { user } });
 		ret.insert({ "points",{std::to_string(points)} });

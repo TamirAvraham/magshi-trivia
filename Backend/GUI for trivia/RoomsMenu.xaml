@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         Title="RoomsMenu" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="rooms_list" Margin="0,30,0,0">
+        <ListBox x:Name="rooms_list" Margin="0,30,0,81">
         </ListBox>
-        <TextBlock HorizontalAlignment="Left" Margin="337,0,0,0" TextWrapping="Wrap" Text="Rooms:" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.487,-0.124" Height="30" Width="86" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Rooms:" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.487,-0.124" Height="30" Width="86" TextAlignment="Center" FontWeight="Bold"/>
+        <Button x:Name="create_room" Content="Create Room" HorizontalAlignment="Center" Margin="0,358,0,0" VerticalAlignment="Top" Height="66" Width="184" Background="#FF76E40C" FontSize="18" FontWeight="Bold" Click="create_room_Click"/>
 
     </Grid>
 </Window>

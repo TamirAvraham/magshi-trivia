@@ -10,11 +10,12 @@ class LoginManager
 {
 private:
 	std::vector<LoggedUser> _loggedUsers;
-	SqliteDataBase _db;
+	SqliteDataBase& _db;
 public:
 	void Signup(const std::string& username, const std::string& password, const std::string& email);
 	void Login(const std::string& username, const std::string& password);
 	void Logout(const std::string& username);
 	LoggedUser& getUser(const std::string& username);
+	LoginManager();
 };
 

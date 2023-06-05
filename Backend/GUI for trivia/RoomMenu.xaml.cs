@@ -7,11 +7,11 @@ namespace GUI_for_trivia
     /// <summary>
     /// Interaction logic for Menu.xaml
     /// </summary>
-    public partial class Menu : Window
+    public partial class RoomView : Window
     {
         User user;
         RoomData roomData;
-        public Menu(User user, RoomData roomData)
+        public RoomView(User user, RoomData roomData)
         {
             InitializeComponent();
             this.user = user;

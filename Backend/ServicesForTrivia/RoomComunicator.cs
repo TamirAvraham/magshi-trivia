@@ -19,7 +19,7 @@ namespace ServicesForTrivia
         public static void RefreshRoomStatus(ref RoomData data)
         {
             Buffer buffer=new Buffer(data:new byte[0],0,25);
-            Communicator.Instance.SendBuffer(buffer);
+            Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
             JsonDocument document = JsonDocument.Parse(Encoding.ASCII.GetString(buffer.Data));
             data.isActive = document.RootElement.GetProperty("status").GetBoolean();
