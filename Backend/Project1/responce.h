@@ -30,6 +30,7 @@ struct CreateRoomResponce :Responce { };
 struct JoinRoomResponce :Responce { };
 struct RemoveRoomResponce :Responce { };
 struct GetRoomStatusResponce :Responce { };
+struct JoinRoomResponce : Responce { };
 
 //statistics related
 struct GetTopPlayersResponce :Responce { };

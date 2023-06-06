@@ -13,6 +13,7 @@ constexpr unsigned char getRoomsCode = 22;
 constexpr unsigned char deleteRoomCode = 23;
 constexpr unsigned char createRoomCode = 24;
 constexpr unsigned char getRoomStatus = 25;
+constexpr unsigned char joinRoomCode = 26;
 constexpr char STATISTICS_CHAR = '3';
 constexpr unsigned char getPlayerStatistics = 31;
 constexpr unsigned char getTopPlayers = 32;
@@ -60,6 +61,11 @@ struct CreateRoomRequest:Request
 {
 	std::string username;
 	RoomData roomData;
+};
+struct JoinRoomRequest : Request
+{
+	unsigned int roomId;
+	std::string username;
 };
 
 struct GetTopPlayersRequest:Request

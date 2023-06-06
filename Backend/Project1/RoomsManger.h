@@ -50,4 +50,5 @@ public:
 	void removeRoom(int id);
 	Room& getRoom(int id);
 	std::vector<RoomData> getRooms();
+	void joinRoom(int id, const LoggedUser& user);
 };

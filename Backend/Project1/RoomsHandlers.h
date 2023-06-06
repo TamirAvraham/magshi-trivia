@@ -17,5 +17,6 @@ private:
 	inline CreateRoomResponce handleCreateRoomRequest(const CreateRoomRequest request) const;
 	inline RemoveRoomResponce handleRemoveRoomRequest(const RemoveRoomRequest request) const;
 	inline GetRoomStatusResponce handleGetRoomStatusRequest(const GetRoomStatusRequest request) const;
+	inline JoinRoomResponce handleJoinRoomRequest(const JoinRoomRequest request) const;
 };
 

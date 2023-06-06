@@ -78,6 +78,16 @@ std::vector<RoomData> RoomManger::getRooms()
 	return ret;
 }
 
+void RoomManger::joinRoom(int id, const LoggedUser& user)
+{
+	auto room = rooms.find(id);
+	if (room == rooms.end())
+	{
+		throw std::exception("room did not exist");
+	}
+	room->second.AddUser(user);
+}
+
 
 Room::Room(const RoomData& data, const LoggedUser& user): data(data)
 {

@@ -32,6 +32,8 @@ Responce* RoomsHandler::HandlerRequest(Request* req)
 		retrunHandler(CreateRoom)
 	case getRoomStatus:
 		retrunHandler(GetRoomStatus)
+	case joinRoomCode:
+		retrunHandler(JoinRoom);
 	default:
 		return nullptr;
 	}
@@ -52,9 +54,10 @@ Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
 		return new CreateRoomRequest(JsonRequestPacketDeserializer::deserializeCreateRoomsRequset(buffer));
 	case getRoomStatus:
 		return new GetRoomStatusRequest(JsonRequestPacketDeserializer::deserializeGetRoomStatusRequest(buffer));
+	case joinRoomCode:
+		return new JoinRoomRequest(JsonRequestPacketDeserializer::deserializeJoinRoomRequest(buffer));
 	default:
 		return nullptr;
-		
 	}
 }
 
@@ -131,6 +134,21 @@ inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetR
 		.data = const_cast<char*>(data.ToString().c_str())
 	};
 	ret.buffer = buffer;
+	ret.next = new MenuHandler();
+	return ret;
+}
+
+inline JoinRoomResponce RoomsHandler::handleJoinRoomRequest(const JoinRoomRequest request) const
+{
+	JoinRoomResponce ret;
+	LoggedUser us;
+	us.username = request.username;
+	RequsetFactory::getInstence().getRoomsManager().joinRoom(request.roomId, us);
+	ret.buffer = Buffer{
+		.status = OK,
+		.sizeOfData = 0,
+		.data = const_cast<char*>("")
+	};
 	ret.next = new MenuHandler();
 	return ret;
 }

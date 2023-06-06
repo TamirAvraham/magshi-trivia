@@ -71,6 +71,16 @@ GetRoomStatusRequest JsonRequestPacketDeserializer::deserializeGetRoomStatusRequ
     return ret;
 }
 
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const Buffer& buffer)
+{
+    http::json::JsonObject reqAsJson(buffer.data);
+    unsigned int roomId = static_cast<unsigned int>(reqAsJson["roomId"].integer_value());
+    std::string username = reqAsJson["username"].string_value();
+    auto ret = JoinRoomRequest{ .roomId = roomId, .username = username };
+    ret.id = joinRoomCode;
+    return ret;
+}
+
 GetTopPlayersRequest JsonRequestPacketDeserializer::deserializeGetTopPlayersRequest(const Buffer& buffer)
 {
     GetTopPlayersRequest ret;

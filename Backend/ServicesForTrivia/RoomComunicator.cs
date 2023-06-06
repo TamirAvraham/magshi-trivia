@@ -12,10 +12,20 @@ namespace ServicesForTrivia
         const byte getRoomStatus = 25;
         const byte getRoom = 21;
         const byte getRooms = 22;
-        //public static RoomData GetRoom(int roomId)
-        //{
-
-        //}
+        
+        public static RoomData GetRoom(int roomId)
+        {
+            List<RoomData> temp = GetRooms();
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (roomId == temp[i].id)
+                {
+                    return temp[i];
+                }
+            }
+            return null;    // If no room with such id exists
+        }
+        
         public static void RefreshRoomStatus(ref RoomData data)
         {
             Buffer buffer=new Buffer(data:new byte[0],0,25);
@@ -25,6 +35,7 @@ namespace ServicesForTrivia
             data.isActive = document.RootElement.GetProperty("status").GetBoolean();
 
         }
+        
         public static List<RoomData> GetRooms()
         {
             Buffer buffer = Communicator.Instance.ReadBuffer();
