@@ -2,9 +2,10 @@
 
 void LoginManager::Signup(const std::string& username, const std::string& password, const std::string& email)
 {
-	if (!_db.doesUserExist(username))
+	auto& db = SqliteDataBase::GetInstance();
+	if (!db.doesUserExist(username))
 	{
-		_db.addNewUser(username, password, email);
+		db.addNewUser(username, password, email);
 		_loggedUsers.emplace_back(username);
 	}
 	else
@@ -15,7 +16,7 @@ void LoginManager::Signup(const std::string& username, const std::string& passwo
 
 void LoginManager::Login(const std::string& username, const std::string& password)
 {
-	if (_db.doesPasswordMatch(username, password))
+	if (SqliteDataBase::GetInstance().doesPasswordMatch(username, password))
 	{
 		_loggedUsers.emplace_back(username);
 	}
@@ -43,6 +44,6 @@ LoggedUser& LoginManager::getUser(const std::string& username)
 	return *user;
 }
 
-LoginManager::LoginManager():_db(SqliteDataBase::GetInstance())
+LoginManager::LoginManager()
 {
 }

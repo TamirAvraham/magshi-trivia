@@ -12,8 +12,9 @@ namespace ServicesForTrivia
         const byte getRoomStatus = 25;
         const byte getRoom = 21;
         const byte getRooms = 22;
-        
-        public static RoomData GetRoom(int roomId)
+        static JsonSerializerOptions options=new JsonSerializerOptions { PropertyNameCaseInsensitive=true };
+
+        public static RoomData? GetRoom(int roomId)
         {
             List<RoomData> temp = GetRooms();
             for (int i = 0; i < temp.Count; i++)
@@ -28,7 +29,7 @@ namespace ServicesForTrivia
         
         public static void RefreshRoomStatus(ref RoomData data)
         {
-            Buffer buffer=new Buffer(data:new byte[0],0,25);
+            Buffer buffer=new Buffer(data:new byte[0],0,getRoomStatus);
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
             JsonDocument document = JsonDocument.Parse(Encoding.ASCII.GetString(buffer.Data));
@@ -38,10 +39,14 @@ namespace ServicesForTrivia
         
         public static List<RoomData> GetRooms()
         {
-            Buffer buffer = Communicator.Instance.ReadBuffer();
-            return JsonSerializer.Deserialize<List<RoomData>>(Encoding.ASCII.GetString(buffer.Data))!;
+            Buffer buffer = new Buffer(data: new byte[0], 0, getRooms);
+            Communicator.Instance.SendBuffer(ref buffer);
+            buffer = Communicator.Instance.ReadBuffer();
+            var data = Encoding.ASCII.GetString(buffer.Data);
+            JsonDocument document = JsonDocument.Parse(data);
+            return document.RootElement.GetProperty("rooms").Deserialize<List<RoomData>>(options)??new List<RoomData>();
         }
-        
+
         private static RoomData GetRoomFromBuffer(ref Buffer roomBuffer)
         {
             return JsonSerializer.Deserialize<RoomData>(Encoding.ASCII.GetString(roomBuffer.Data));

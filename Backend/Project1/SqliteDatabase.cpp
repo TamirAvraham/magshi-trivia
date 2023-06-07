@@ -184,7 +184,7 @@ int callbackUser(void* data, int argc, char** argv, char** azColName)
 	newUser.username = name;
 	newUser.password = password;
 	newUser.email = email;
-	((std::list<User>*)data)->push_back(newUser);	// Adding User to the list
+	((std::vector<User>*)data)->push_back(newUser);	// Adding User to the list
 	return 0;
 }
 

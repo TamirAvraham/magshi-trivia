@@ -17,7 +17,11 @@ namespace GUI_for_trivia
             this.user = user;
             this.roomData = roomData;
             DataContext = this;
-
+            room_name_label.Content = roomData.name;
+            number_of_time_for_question_label_Copy.Content = $"Time Per Question: {roomData.TimePerQuestion} sec";
+            questions_count.Content = $"Question Count:{roomData.numOfQuestions}";
+            players_label.Content = $"players(max :{roomData.maxNumOfPlayers} ):";
+            
         }
 
         /*
@@ -79,5 +83,7 @@ namespace GUI_for_trivia
         {
 
         }
+
+        
     }
 }

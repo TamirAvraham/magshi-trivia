@@ -25,15 +25,15 @@ Responce* RoomsHandler::HandlerRequest(Request* req)
 	case getRoomCode:
 		return new GetRoomPlayersResponce(handleGetRoomPlayersRequest((GetRoomPlayersRequest)(*req)));
 	case deleteRoomCode:
-		retrunHandler(RemoveRoom)
+		return new RemoveRoomResponce(handleRemoveRoomRequest((RemoveRoomRequest)(*req)));
 	case getRoomsCode:
-		retrunHandler(GetRooms)
+		return new GetRoomsResponce(handleGetRoomsRequest((GetRoomsRequest)(*req)));
 	case createRoomCode:
-		retrunHandler(CreateRoom)
+		return new CreateRoomResponce(handleCreateRoomRequest((CreateRoomRequest)(*req)));
 	case getRoomStatus:
-		retrunHandler(GetRoomStatus)
+		return new GetRoomStatusResponce(handleGetRoomStatusRequest((GetRoomStatusRequest)(*req)));
 	case joinRoomCode:
-		retrunHandler(JoinRoom);
+		return new JoinRoomResponce(handleJoinRoomRequest((JoinRoomRequest)(*req)));;
 	default:
 		return nullptr;
 	}
@@ -67,11 +67,14 @@ inline GetRoomPlayersResponce RoomsHandler::handleGetRoomPlayersRequest(const Ge
 	auto players = RequsetFactory::getInstence().getRoomsManager().getRoom(requset.roomId).getAllUsers();
 	auto data = http::json::JsonObject();
 	data.insert({ "players",{JsonSirealizer::getVectorAsString(players)} });
-	auto buffer = Buffer{ 
+	std::string dataAsString = data.ToString();
+	auto buffer = Buffer{
 		.status = OK,
-		.sizeOfData = (unsigned int)data.ToString().size(),
-		.data = const_cast<char*>(data.ToString().c_str())
+		.sizeOfData = static_cast<unsigned int>(dataAsString.size()),
+		.data = new char[dataAsString.size() + 1]
 	};
+	std::copy(dataAsString.begin(), dataAsString.end(), buffer.data);
+	buffer.data[dataAsString.size()] = '\0';
 	ret.buffer = buffer;
 	ret.next = new MenuHandler();
 	return ret;
@@ -82,12 +85,15 @@ inline GetRoomsResponce RoomsHandler::handleGetRoomsRequest(const GetRoomsReques
 	GetRoomsResponce ret;
 	auto rooms = RequsetFactory::getInstence().getRoomsManager().getRooms();
 	auto data = http::json::JsonObject();
-	data.insert({ "rooms",{JsonSirealizer::getVectorAsString(rooms)} });
+	data.insert({ "rooms", { JsonSirealizer::getVectorAsString(rooms) } });
+	std::string dataAsString = data.ToString();  
 	auto buffer = Buffer{
 		.status = OK,
-		.sizeOfData = (unsigned int)data.ToString().size(),
-		.data = const_cast<char*>(data.ToString().c_str())
+		.sizeOfData = static_cast<unsigned int>(dataAsString.size()),
+		.data = new char[dataAsString.size() + 1]  
 	};
+	std::copy(dataAsString.begin(), dataAsString.end(), buffer.data);
+	buffer.data[dataAsString.size()] = '\0';  
 	ret.buffer = buffer;
 	ret.next = new MenuHandler();
 	return ret;
@@ -128,11 +134,14 @@ inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetR
 	auto status=RequsetFactory::getInstence().getRoomsManager().getRoomStatus(request.roomId);
 	auto data = http::json::JsonObject();
 	data.insert({ "status",{status ? "true" : "false"} });
+	std::string dataAsString = data.ToString();
 	auto buffer = Buffer{
 		.status = OK,
-		.sizeOfData = (unsigned int)data.ToString().size(),
-		.data = const_cast<char*>(data.ToString().c_str())
+		.sizeOfData = static_cast<unsigned int>(dataAsString.size()),
+		.data = new char[dataAsString.size() + 1]
 	};
+	std::copy(dataAsString.begin(), dataAsString.end(), buffer.data);
+	buffer.data[dataAsString.size()] = '\0';
 	ret.buffer = buffer;
 	ret.next = new MenuHandler();
 	return ret;

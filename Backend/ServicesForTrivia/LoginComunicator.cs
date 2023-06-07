@@ -55,7 +55,7 @@ namespace ServicesForTrivia
 
             if (buffer.Status==((byte)ResponceStatus.Error))
             {
-                throw new Exception("login error");
+                throw new Exception($"login error:{buffer.Data}");
             }
 
 

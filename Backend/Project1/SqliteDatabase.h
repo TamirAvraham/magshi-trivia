@@ -29,7 +29,7 @@ class SqliteDataBase : public IDatabase
 {
 public:
 	static SqliteDataBase& GetInstance() {
-		SqliteDataBase instance;
+		static SqliteDataBase instance;
 		return instance;
 	}
 	// User related Functions

@@ -38,5 +38,9 @@ inline std::string JsonSirealizer::getVectorAsString(std::vector<T> vector) requ
 		ret += item.toString();
 		ret += (++i == vector.size() ? ']' : ',');
 	}
+	if (ret.length()==1)
+	{
+		ret += ']';
+	}
 	return ret;
 }

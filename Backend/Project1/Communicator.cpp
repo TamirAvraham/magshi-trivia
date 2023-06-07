@@ -85,6 +85,7 @@ void Communicator::Handler()
             Buffer responceBuffer;
             while (handler!=nullptr)
             {
+                
                 //procees request
                 Responce* responce;
                 try
@@ -120,7 +121,10 @@ void Communicator::Handler()
                     send(newSocket, byteArray.first, byteArray.second, 0);
                 }
 
-                buffer = getBuffer(newSocket);
+                if (handler!=nullptr)
+                {
+                    buffer = getBuffer(newSocket);
+                }
             }
             _clients.erase(newSocket);
             closesocket(newSocket);
@@ -177,17 +181,20 @@ Buffer Communicator::getBuffer(SOCKET socket) const
     }
 
     // Allocate memory for data buffer
-    buffer.data = new char[buffer.sizeOfData+1];
+   
 
-    // Read data from socket
-    bytesReceived = recv(socket, buffer.data, buffer.sizeOfData, 0);
-    if (bytesReceived != buffer.sizeOfData)
+    if(buffer.sizeOfData>0)
     {
-        // Handle error
-        // ...
+        buffer.data = new char[buffer.sizeOfData + 1];
+        bytesReceived = recv(socket, buffer.data, buffer.sizeOfData, 0);
+        if (bytesReceived != buffer.sizeOfData)
+        {
+            // Handle error
+            // ...
+        }
+        buffer.data[buffer.sizeOfData] = '\0';
+        // Set time stamp for buffer
     }
-    buffer.data[buffer.sizeOfData] = '\0';
-    // Set time stamp for buffer
     buffer.time = std::chrono::high_resolution_clock::now();
     
     return buffer;

@@ -14,6 +14,7 @@ namespace GUI_for_trivia
         {
             error_text.Text = errorMsg;
             error_text.Visibility = Visibility.Visible;
+            Console.WriteLine(errorMsg);
         }
         string username = string.Empty;
         string password = string.Empty;

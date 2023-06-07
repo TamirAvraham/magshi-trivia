@@ -9,10 +9,10 @@ bool LoginRequestHandler::IsValid(unsigned char status)
 
 Responce* LoginRequestHandler::HandlerRequest(Request* req)
 {
-    auto ret= LoginResponce();
+    auto ret= new LoginResponce();
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
-	ret.next = new MenuHandler();
+	ret->next = new MenuHandler();
 	bool noError = true;
 	std::string retData;
 	try
@@ -51,9 +51,9 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 	}
 	retBuffer.sizeOfData = retData.length();
 	retBuffer.data = const_cast<char*>(retData.c_str());
-	ret.buffer = retBuffer;
+	ret->buffer = retBuffer;
 	
-    return &ret;
+    return ret;
 }
 
 Request* LoginRequestHandler::GetRequestFromBuffer(const Buffer& buffer)

@@ -9,7 +9,6 @@
     <Grid>
         <Label x:Name="room_name_label" Content="{}{room name}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="211" Height="38" FontSize="18" FontWeight="Bold"/>
         <Button Content="Join Room" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.479,0.671" Height="33" Width="91" FontSize="18" Background="#FF7ECA42"/>
-        <Label x:Name="number_of_time_for_question_label" Content="Time To Answer Question: 50 sec" HorizontalAlignment="Left" Margin="10,128,0,0" VerticalAlignment="Top" Width="270" Height="35" FontSize="18"/>
         <Label x:Name="number_of_time_for_question_label_Copy" Content="Time Per Question: {answer_time} sec" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top" Width="270" Height="35" FontSize="18"/>
         <Label x:Name="players_label" Content="players(max :{10} ):" HorizontalAlignment="Left" Margin="509,10,0,0" VerticalAlignment="Top" Width="281" Height="38" FontSize="18"/>
         <ListBox x:Name="players_list" Margin="509,48,10,0" IsSynchronizedWithCurrentItem="True">
