@@ -1,6 +1,7 @@
 ﻿using ServicesForTrivia;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GUI_for_trivia
 {
@@ -9,7 +10,7 @@ namespace GUI_for_trivia
     /// </summary>
     public partial class RoomView : Window
     {
-        User user;
+        readonly User user;
         RoomData roomData;
         public RoomView(User user, RoomData roomData)
         {
@@ -21,7 +22,10 @@ namespace GUI_for_trivia
             number_of_time_for_question_label_Copy.Content = $"Time Per Question: {roomData.TimePerQuestion} sec";
             questions_count.Content = $"Question Count:{roomData.numOfQuestions}";
             players_label.Content = $"players(max :{roomData.maxNumOfPlayers} ):";
-            
+            foreach (var userInRoom in roomData.Users)
+            {
+                GeneratePlayerComponent(userInRoom);
+            }
         }
 
         /*
@@ -81,7 +85,24 @@ namespace GUI_for_trivia
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                if (RoomComunicator.JoinRoom(user.username,roomData.id))
+                {
+                    join_room_button.IsEnabled = false;
+                    join_room_button.Background = Brushes.Red;
+                    GeneratePlayerComponent(user);
+                }
+                else
+                {
+                    System.Console.WriteLine("error cant join room");
+                }
+            }
+            catch (System.Exception error)
+            {
+                string data = error.Message;
+                System.Console.WriteLine(error.Message);
+            }
         }
 
         

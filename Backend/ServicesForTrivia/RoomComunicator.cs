@@ -12,6 +12,8 @@ namespace ServicesForTrivia
         const byte getRoomStatus = 25;
         const byte getRoom = 21;
         const byte getRooms = 22;
+        const byte joinRoom = 26;
+        const byte createRoom = 24;
         static JsonSerializerOptions options=new JsonSerializerOptions { PropertyNameCaseInsensitive=true };
 
         public static RoomData? GetRoom(int roomId)
@@ -46,7 +48,24 @@ namespace ServicesForTrivia
             JsonDocument document = JsonDocument.Parse(data);
             return document.RootElement.GetProperty("rooms").Deserialize<List<RoomData>>(options)??new List<RoomData>();
         }
+        public static bool JoinRoom(string Username, int RoomId)
+        {
+            var request = new { username = Username, roomId = RoomId };
+            var requestAsBytes = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(request));
+            Buffer buffer = new Buffer(data: requestAsBytes, ((ushort)requestAsBytes.Length), joinRoom);
+            Communicator.Instance.SendBuffer(ref buffer);
+            buffer = Communicator.Instance.ReadBuffer();
+            return (buffer.Status == ((byte)ResponceStatus.Ok));
 
+        }
+        public static bool CreateRoom(RoomData roomData)
+        {
+            var store = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(roomData));
+            var buffer = new Buffer(store, ((ushort)store.Length), createRoom);
+            Communicator.Instance.SendBuffer(ref buffer);
+            buffer = Communicator.Instance.ReadBuffer();
+            return buffer.Status== ((byte)ResponceStatus.Ok);
+        }
         private static RoomData GetRoomFromBuffer(ref Buffer roomBuffer)
         {
             return JsonSerializer.Deserialize<RoomData>(Encoding.ASCII.GetString(roomBuffer.Data));
