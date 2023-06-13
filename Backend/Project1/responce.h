@@ -41,4 +41,4 @@ struct GetPlayerStatisticsResponce :Responce { };
 ResponceStruct(StartGame);
 ResponceStruct(LeaveRoom);
 //room state
-ResponceStruct(RoomState);
+ResponceStruct(GetRoomState);

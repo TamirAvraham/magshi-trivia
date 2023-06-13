@@ -1,5 +1,6 @@
 #pragma once
 #include "IRequestHandler.h"
+#define ARHM(name) inline name##Responce handle##name##Request(const Request* req);
 class AdminRoomHandler: public IRequestHandler
 {
 public:
@@ -9,6 +10,9 @@ public:
 	virtual Request* GetRequestFromBuffer(const Buffer& buffer) override;
 
 private:
-	
+	inline StartGameResponce handleStartGameRequest(const Request* req);
+	inline LeaveRoomResponce handleLeaveRoomRequest(const Request* req);
+	inline CloseRoomResponce handleCloseRoomRequest(const Request* req);
+	inline GetRoomStateResponce handleGetRoomStateRequest(const Request* req);
 };
 

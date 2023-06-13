@@ -1,6 +1,6 @@
 #include "SignupRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
-#include "RequsetFactory.h"]
+#include "RequsetFactory.h"
 #include "MenuHandler.h"
 bool SignupRequestHandler::IsValid(unsigned char status)
 {

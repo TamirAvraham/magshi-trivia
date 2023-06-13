@@ -1,4 +1,5 @@
 #include "RoomsManger.h"
+#include "JsonSirealizer.h"
 #define getIntFromJson(param_name) (unsigned int)json[#param_name].integer_value()
 //RoomData Room::DatafromJson(const http::json::JsonObject& json)
 //{
@@ -101,6 +102,11 @@ bool RoomManger::isAdmin(int id, const std::string& username) const
 	}
 }
 
+void RoomManger::removeUser(int roomId, const LoggedUser& user)
+{
+	rooms.at(roomId).removeUser(user);
+}
+
 
 Room::Room(const RoomData& data, const LoggedUser& user): data(data),admin(user)
 {
@@ -110,4 +116,14 @@ Room::Room(const RoomData& data, const LoggedUser& user): data(data),admin(user)
 inline bool Room::isAdmin(const LoggedUser& user) const
 {
 	return user==admin;
+}
+
+std::string Room::toString() const
+{
+	http::json::JsonObject json;
+	json.insert({ "status",{data.isActive ? "true" : "false"} });
+	json.insert({ {"players"}, { JsonSirealizer::getVectorAsString(users)} });
+	json.insert({ "AnswerCount",{"0"} });//change this when i figure out wtf this is
+	json.insert({ {"answerTimeOut"},{"idfk"} });
+	return json.ToString();
 }

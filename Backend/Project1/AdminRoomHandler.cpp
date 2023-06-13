@@ -1,5 +1,6 @@
 #include "AdminRoomHandler.h"
-
+#include "JsonRequestPacketDeserializer.h"
+#include "RequsetFactory.h"
 bool AdminRoomHandler::IsValid(unsigned char status)
 {
 	try
@@ -20,5 +21,29 @@ Responce* AdminRoomHandler::HandlerRequest(Request* req)
 
 Request* AdminRoomHandler::GetRequestFromBuffer(const Buffer& buffer)
 {
-    return nullptr;
+	switch (buffer.status)
+	{
+	case StartRoomCode:
+		return new StartRoomRequest(JsonRequestPacketDeserializer::deserializeStartRoomRequest(buffer));
+	case getRoomStateCode:
+		return new GetRoomStateRequest(JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(buffer));
+	case CloseRoomCode:
+		return new CloseRoomRequest(JsonRequestPacketDeserializer::deserializeCloseRoomRequest(buffer));
+	case LeaveRoomCode:
+		return new LeaveRoomRequest(JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(buffer));
+	default:
+		return nullptr;
+	}
+}
+
+inline CloseRoomResponce AdminRoomHandler::handleCloseRoomRequest(const Request* req)
+{
+	CloseRoomResponce ret;
+	auto request = static_cast<const CloseRoomRequest*>(req);
+	auto& roomManger = RequsetFactory::getInstence().getRoomsManager();
+	if (roomManger.isAdmin(request->roomId,request->username))
+	{
+		roomManger.removeRoom(request->roomId);
+		
+	}
 }

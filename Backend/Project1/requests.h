@@ -19,10 +19,10 @@ constexpr unsigned char getPlayerStatistics = 31;
 constexpr unsigned char getTopPlayers = 32;
 
 constexpr char ADMIN_CHAR = '4';
-constexpr unsigned char getRoomStateCode = 41;
-constexpr unsigned char LeaveRoomCode = 42;
-constexpr unsigned char CloseRoomCode = 43;
-constexpr unsigned char StartRoomCode = 44;
+constexpr unsigned char getRoomStateCode = 27;
+constexpr unsigned char LeaveRoomCode = 28;
+constexpr unsigned char CloseRoomCode = 41;
+constexpr unsigned char StartRoomCode = 42;
 
 struct Buffer
 {

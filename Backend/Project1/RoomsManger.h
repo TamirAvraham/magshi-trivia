@@ -40,6 +40,7 @@ public:
 	void removeUser(const LoggedUser& user);
 	Room(const RoomData& data, const LoggedUser& user);
 	inline bool isAdmin(const LoggedUser& user)const;
+	std::string toString()const;
 };
 
 class RoomManger {
@@ -53,4 +54,5 @@ public:
 	std::vector<RoomData> getRooms();
 	void joinRoom(int id, const LoggedUser& user);
 	bool isAdmin(int id, const std::string& username)const;
+	void removeUser(int roomId, const LoggedUser& user);
 };
