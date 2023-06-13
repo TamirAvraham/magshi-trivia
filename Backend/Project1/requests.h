@@ -2,7 +2,7 @@
 #include <string>
 #include <chrono>
 #include "RoomsManger.h"
-
+#define request(name) struct name##Request:Request{};
 constexpr unsigned char LOGIN = 'L';
 constexpr unsigned char SIGNUP = 'S';
 constexpr unsigned char OK = 'O';
@@ -18,6 +18,11 @@ constexpr char STATISTICS_CHAR = '3';
 constexpr unsigned char getPlayerStatistics = 31;
 constexpr unsigned char getTopPlayers = 32;
 
+constexpr char ADMIN_CHAR = '4';
+constexpr unsigned char getRoomStateCode = 41;
+constexpr unsigned char LeaveRoomCode = 42;
+constexpr unsigned char CloseRoomCode = 43;
+constexpr unsigned char StartRoomCode = 44;
 
 struct Buffer
 {
@@ -75,4 +80,20 @@ struct GetTopPlayersRequest:Request
 struct GetPlayerStatisticsRequest:Request
 {
 	std::string playerUsername;
+};
+struct CloseRoomRequest :Request {
+	int roomId;
+	std::string username;
+};
+struct StartRoomRequest :Request {
+	int roomId;
+	std::string username;
+};
+struct LeaveRoomRequest :Request {
+	int roomId;
+	std::string username;
+};
+//get room state
+struct GetRoomStateRequest :Request {
+	int roomId;
 };

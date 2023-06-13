@@ -131,6 +131,7 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdminRoomHandler.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonObject.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="TriviaServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AdminRoomHandler.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />

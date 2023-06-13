@@ -1,6 +1,6 @@
 #pragma once
 #include "requests.h"
-#define JsonRequestPacketDeserializerMethod(struct_name) static struct_name deserialize ##struct_name (const Buffer& buffer)
+#define JsonRequestPacketDeserializerMethod(struct_name) static struct_name##Request deserialize ##struct_name##Request (const Buffer& buffer);
 class JsonRequestPacketDeserializer
 {
 	
@@ -16,6 +16,11 @@ public:
 
 	static GetTopPlayersRequest deserializeGetTopPlayersRequest(const Buffer& buffer);
 	static GetPlayerStatisticsRequest deserializeGetPlayerStatisticsRequest(const Buffer& buffer);
+
+	static CloseRoomRequest deserializeCloseRoomRequest(const Buffer& buffer);
+	static LeaveRoomRequest deserializeLeaveRoomRequest(const Buffer& buffer);
+	static StartRoomRequest deserializeStartRoomRequest(const Buffer& buffer);
+	static GetRoomStateRequest deserializeGetRoomStateRequest(const Buffer& buffer);
 private:
 	static RoomData RoomDatafromJson(const http::json::JsonObject& json);
 };

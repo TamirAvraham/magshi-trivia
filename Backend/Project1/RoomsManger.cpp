@@ -47,7 +47,7 @@ bool RoomManger::getRoomStatus(int id) const
 	return room->second.getData().isActive;
 }
 
-void RoomManger::createRoom(const LoggedUser& user, const RoomData& roomData)
+void RoomManger::createRoom(LoggedUser user, const RoomData& roomData)
 {
 	
 	rooms.insert({ roomData.id,Room(roomData, user) });
@@ -88,8 +88,26 @@ void RoomManger::joinRoom(int id, const LoggedUser& user)
 	room->second.AddUser(user);
 }
 
+bool RoomManger::isAdmin(int id, const std::string& username) const
+{
+	try
+	{
+		auto user = LoggedUser{ .username = username };
+		return rooms.at(id).isAdmin(user);
+	}
+	catch (...)
+	{
+		return false;
+	}
+}
 
-Room::Room(const RoomData& data, const LoggedUser& user): data(data)
+
+Room::Room(const RoomData& data, const LoggedUser& user): data(data),admin(user)
 {
 	users.push_back(user);
+}
+
+inline bool Room::isAdmin(const LoggedUser& user) const
+{
+	return user==admin;
 }

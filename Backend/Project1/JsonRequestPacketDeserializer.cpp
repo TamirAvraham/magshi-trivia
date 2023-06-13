@@ -97,6 +97,45 @@ GetPlayerStatisticsRequest JsonRequestPacketDeserializer::deserializeGetPlayerSt
     return ret;
 }
 
+CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const Buffer& buffer)
+{
+    auto json = http::json::JsonObject(buffer.data);
+    CloseRoomRequest ret;
+    ret.id = buffer.status;
+    ret.roomId = json["roomId"].integer_value();
+    ret.username = json["username"].string_value();
+    return ret;
+}
+
+LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(const Buffer& buffer)
+{
+    LeaveRoomRequest ret;
+    auto json = http::json::JsonObject(buffer.data);
+    ret.id = buffer.status;
+    ret.roomId = json["roomId"].integer_value();
+    ret.username = json["username"].string_value();
+    return ret;
+}
+
+StartRoomRequest JsonRequestPacketDeserializer::deserializeStartRoomRequest(const Buffer& buffer)
+{
+   StartRoomRequest ret;
+   auto json = http::json::JsonObject(buffer.data);
+   ret.id = buffer.status;
+   ret.roomId = json["roomId"].integer_value();
+   ret.username = json["username"].string_value();
+   return ret;
+}
+
+GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(const Buffer& buffer)
+{
+   GetRoomStateRequest ret;
+   auto json = http::json::JsonObject(buffer.data);
+   ret.id = buffer.status;
+   ret.roomId = json["roomId"].integer_value();
+   return ret;
+}
+
 
 RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonObject& json)
 {
