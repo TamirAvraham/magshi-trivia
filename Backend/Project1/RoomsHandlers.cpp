@@ -179,7 +179,7 @@ inline LeaveRoomResponce RoomsHandler::handleLeaveRoomRequest(const LeaveRoomReq
 		.data=const_cast<char*>(""),
 	};
 	ret.buffer = buffer;
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 	return ret;
 }
 
@@ -196,6 +196,6 @@ inline GetRoomStateResponce RoomsHandler::handleGetRoomStateRequest(const GetRoo
 	};
 	std::copy(data.begin(), data.end(), ret.buffer.data);
 	ret.buffer.data[data.size()] = '\0';
-	ret.next = new RoomsHandler();
+	ret.next = new MenuHandler();
 	return ret;
 }

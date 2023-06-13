@@ -1,6 +1,8 @@
 #include "AdminRoomHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "RequsetFactory.h"
+#include "MenuHandler.h"
+#define retrunHandler(name) return new name##Responce(handle##name##Request(req));
 bool AdminRoomHandler::IsValid(unsigned char status)
 {
 	try
@@ -16,7 +18,15 @@ bool AdminRoomHandler::IsValid(unsigned char status)
 
 Responce* AdminRoomHandler::HandlerRequest(Request* req)
 {
-    return nullptr;
+	switch (req->id)
+	{
+	case StartRoomCode:
+		return new StartRoomResponce(handleStartRoomRequest(req));
+	case CloseRoomCode:
+		return new CloseRoomResponce(handleCloseRoomRequest(req));
+	default:
+		return nullptr;
+	}
 }
 
 Request* AdminRoomHandler::GetRequestFromBuffer(const Buffer& buffer)
@@ -25,15 +35,30 @@ Request* AdminRoomHandler::GetRequestFromBuffer(const Buffer& buffer)
 	{
 	case StartRoomCode:
 		return new StartRoomRequest(JsonRequestPacketDeserializer::deserializeStartRoomRequest(buffer));
-	case getRoomStateCode:
-		return new GetRoomStateRequest(JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(buffer));
 	case CloseRoomCode:
 		return new CloseRoomRequest(JsonRequestPacketDeserializer::deserializeCloseRoomRequest(buffer));
-	case LeaveRoomCode:
-		return new LeaveRoomRequest(JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(buffer));
 	default:
 		return nullptr;
 	}
+}
+
+inline StartRoomResponce AdminRoomHandler::handleStartRoomRequest(const Request* req)
+{
+	StartRoomResponce ret;
+	auto request = static_cast<const StartRoomRequest*>(req);
+	auto& roomManger = RequsetFactory::getInstence().getRoomsManager();
+
+	if (!roomManger.isAdmin(request->roomId, request->username))
+		throw std::invalid_argument("user is not room admin");
+
+	roomManger.getRoom(request->roomId).start();
+	ret.buffer = Buffer{
+		.status = OK,
+		.sizeOfData = 0,
+		.data = const_cast<char*>("")
+	};
+	ret.next = new MenuHandler();
+	return ret;
 }
 
 inline CloseRoomResponce AdminRoomHandler::handleCloseRoomRequest(const Request* req)
@@ -41,9 +66,16 @@ inline CloseRoomResponce AdminRoomHandler::handleCloseRoomRequest(const Request*
 	CloseRoomResponce ret;
 	auto request = static_cast<const CloseRoomRequest*>(req);
 	auto& roomManger = RequsetFactory::getInstence().getRoomsManager();
-	if (roomManger.isAdmin(request->roomId,request->username))
-	{
-		roomManger.removeRoom(request->roomId);
-		
-	}
+
+	if (!roomManger.isAdmin(request->roomId,request->username))
+		throw std::invalid_argument("user is not room admin");
+
+	roomManger.removeRoom(request->roomId);
+	ret.buffer = Buffer{
+		.status = OK,
+		.sizeOfData = 0,
+		.data = const_cast<char*>("")
+	};
+	ret.next = new MenuHandler();
+	return ret;
 }

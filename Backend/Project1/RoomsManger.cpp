@@ -127,3 +127,9 @@ std::string Room::toString() const
 	json.insert({ {"answerTimeOut"},{"idfk"} });
 	return json.ToString();
 }
+
+void Room::start()
+{
+	data.isActive = true;
+	//add rest of start logic here
+}

@@ -41,6 +41,7 @@ public:
 	Room(const RoomData& data, const LoggedUser& user);
 	inline bool isAdmin(const LoggedUser& user)const;
 	std::string toString()const;
+	void start();
 };
 
 class RoomManger {

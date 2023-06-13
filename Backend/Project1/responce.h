@@ -38,7 +38,7 @@ struct GetPlayerStatisticsResponce :Responce { };
 
 
 //game related
-ResponceStruct(StartGame);
+ResponceStruct(StartRoom);
 ResponceStruct(LeaveRoom);
 //room state
 ResponceStruct(GetRoomState);

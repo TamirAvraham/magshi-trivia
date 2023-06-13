@@ -10,9 +10,7 @@ public:
 	virtual Request* GetRequestFromBuffer(const Buffer& buffer) override;
 
 private:
-	inline StartGameResponce handleStartGameRequest(const Request* req);
-	inline LeaveRoomResponce handleLeaveRoomRequest(const Request* req);
+	inline StartRoomResponce handleStartRoomRequest(const Request* req);
 	inline CloseRoomResponce handleCloseRoomRequest(const Request* req);
-	inline GetRoomStateResponce handleGetRoomStateRequest(const Request* req);
 };
 
