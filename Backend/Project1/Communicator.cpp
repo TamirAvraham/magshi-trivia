@@ -116,7 +116,7 @@ void Communicator::Handler()
                     errorjson.insert({ "error",{e.what()} });
                     responceBuffer.status = Error;
                     responceBuffer.sizeOfData = errorjson.ToString().length();
-                    responceBuffer.data = (char*)(errorjson.ToString().c_str());
+                    responceBuffer.data = const_cast<char*>(errorjson.ToString().c_str());
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
                     send(newSocket, byteArray.first, byteArray.second, 0);
                 }
