@@ -18,7 +18,6 @@ private:
 	inline RemoveRoomResponce handleRemoveRoomRequest(const RemoveRoomRequest request) const;
 	inline GetRoomStatusResponce handleGetRoomStatusRequest(const GetRoomStatusRequest request) const;
 	inline JoinRoomResponce handleJoinRoomRequest(const JoinRoomRequest request) const;
-	inline LeaveRoomResponce handleLeaveRoomRequest(const LeaveRoomRequest request) const;
-	inline GetRoomStateResponce handleGetRoomStateRequest(const GetRoomStateRequest request) const;
+	
 };
 

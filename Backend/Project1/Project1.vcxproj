@@ -146,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuHandler.cpp" />
     <ClCompile Include="RequsetFactory.cpp" />
+    <ClCompile Include="RoomMemberHandler.cpp" />
     <ClCompile Include="RoomsHandlers.cpp" />
     <ClCompile Include="RoomsManger.cpp" />
     <ClCompile Include="SignupRequestHandler.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="requests.h" />
     <ClInclude Include="RequsetFactory.h" />
     <ClInclude Include="responce.h" />
+    <ClInclude Include="RoomMemberHandler.h" />
     <ClInclude Include="RoomsHandlers.h" />
     <ClInclude Include="RoomsManger.h" />
     <ClInclude Include="SignupRequestHandler.h" />

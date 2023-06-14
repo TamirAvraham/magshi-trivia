@@ -21,15 +21,14 @@ Responce* MenuHandler::HandlerRequest(Request* req)
 	char secondDigit = std::to_string(((int)req->id))[0];
 	RoomsHandler roomHandler;
 	StatisticsHandler statHandler;
-	AdminRoomHandler adminHandler;
+	
 	switch (secondDigit)
 	{
 	case ROOM_CHAR:
 			return roomHandler.HandlerRequest(req);
 	case STATISTICS_CHAR:
 			return statHandler.HandlerRequest(req);
-	case ADMIN_CHAR:
-		return adminHandler.HandlerRequest(req);
+	
 	default:
 			return nullptr;
 	}
@@ -40,15 +39,14 @@ Request* MenuHandler::GetRequestFromBuffer(const Buffer& buffer)
 	char secondDigit = std::to_string(((int)buffer.status))[0];
 	RoomsHandler roomHandler;
 	StatisticsHandler statHandler;
-	AdminRoomHandler adminHandler;
+	
 	switch (secondDigit)
 	{
 	case ROOM_CHAR:
 		return roomHandler.GetRequestFromBuffer(buffer);
 	case STATISTICS_CHAR:
 		return roomHandler.GetRequestFromBuffer(buffer);
-	case ADMIN_CHAR:
-		return adminHandler.GetRequestFromBuffer(buffer);
+	
 	default:
 		return nullptr;
 	}

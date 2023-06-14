@@ -5,8 +5,10 @@
 #define request(name) struct name##Request:Request{};
 constexpr unsigned char LOGIN = 'L';
 constexpr unsigned char SIGNUP = 'S';
+
 constexpr unsigned char OK = 'O';
 constexpr unsigned char Error = 'E';
+
 constexpr char ROOM_CHAR = '2';
 constexpr unsigned char getRoomCode = 21;
 constexpr unsigned char getRoomsCode = 22;
@@ -14,15 +16,18 @@ constexpr unsigned char deleteRoomCode = 23;
 constexpr unsigned char createRoomCode = 24;
 constexpr unsigned char getRoomStatus = 25;
 constexpr unsigned char joinRoomCode = 26;
+
 constexpr char STATISTICS_CHAR = '3';
 constexpr unsigned char getPlayerStatistics = 31;
 constexpr unsigned char getTopPlayers = 32;
 
 constexpr char ADMIN_CHAR = '4';
-constexpr unsigned char getRoomStateCode = 27;
-constexpr unsigned char LeaveRoomCode = 28;
 constexpr unsigned char CloseRoomCode = 41;
 constexpr unsigned char StartRoomCode = 42;
+
+constexpr char MEMBER_CHAR = '5';
+constexpr unsigned char getRoomStateCode = 51;
+constexpr unsigned char LeaveRoomCode = 52;
 
 struct Buffer
 {

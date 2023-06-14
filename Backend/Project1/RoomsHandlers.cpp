@@ -2,6 +2,8 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonSirealizer.h"
 #include "RequsetFactory.h"
+#include "RoomMemberHandler.h"
+#include "AdminRoomHandler.h"
 #define getIntFromJson(param_name) (unsigned int)json[#param_name].integer_value()
 #define retrunHandler(name) return new name##Responce(handle##name##Request((name##Request)(*req)));
 
@@ -34,8 +36,6 @@ Responce* RoomsHandler::HandlerRequest(Request* req)
 		return new GetRoomStatusResponce(handleGetRoomStatusRequest((GetRoomStatusRequest)(*req)));
 	case joinRoomCode:
 		return new JoinRoomResponce(handleJoinRoomRequest((JoinRoomRequest)(*req)));
-	case getRoomStateCode:
-		return new LeaveRoomResponce(handleLeaveRoomRequest((LeaveRoomRequest)(*req)));
 	default:
 		return nullptr;
 	}
@@ -58,10 +58,7 @@ Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
 		return new GetRoomStatusRequest(JsonRequestPacketDeserializer::deserializeGetRoomStatusRequest(buffer));
 	case joinRoomCode:
 		return new JoinRoomRequest(JsonRequestPacketDeserializer::deserializeJoinRoomRequest(buffer));
-	case getRoomStateCode:
-		return new GetRoomStateRequest(JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(buffer));
-	case LeaveRoomCode:
-		return new LeaveRoomRequest(JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(buffer));
+	
 	default:
 		return nullptr;
 	}
@@ -111,7 +108,7 @@ inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(const CreateRoom
 	CreateRoomResponce ret;
 	auto& factory=RequsetFactory::getInstence(); 
 	factory.getRoomsManager().createRoom(factory.getLoginManager().getUser(request.username),request.roomData);
-	ret.next = new MenuHandler();
+	ret.next = new AdminRoomHandler();
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
@@ -164,38 +161,8 @@ inline JoinRoomResponce RoomsHandler::handleJoinRoomRequest(const JoinRoomReques
 		.sizeOfData = 0,
 		.data = const_cast<char*>("")
 	};
-	ret.next = new MenuHandler();
+	ret.next = new RoomMemberHandler();
 	return ret;
 }
 
-inline LeaveRoomResponce RoomsHandler::handleLeaveRoomRequest(const LeaveRoomRequest request) const
-{
-	LeaveRoomResponce ret;
-	auto user = LoggedUser{ .username = request.username };
-	RequsetFactory::getInstence().getRoomsManager().removeUser(request.roomId, user);
-	auto buffer = Buffer{
-		.status=OK,
-		.sizeOfData=0,
-		.data=const_cast<char*>(""),
-	};
-	ret.buffer = buffer;
-	ret.next = new MenuHandler();
-	return ret;
-}
 
-inline GetRoomStateResponce RoomsHandler::handleGetRoomStateRequest(const GetRoomStateRequest request) const
-{
-	GetRoomStateResponce ret;
-	auto& roomData = RequsetFactory::getInstence().getRoomsManager().getRoom(request.roomId);
-	auto data = roomData.toString();
-	ret.buffer = Buffer{
-		.status = OK,
-		.sizeOfData = static_cast<unsigned int>(data.size()),
-		.data = new char[data.size() + 1]
-
-	};
-	std::copy(data.begin(), data.end(), ret.buffer.data);
-	ret.buffer.data[data.size()] = '\0';
-	ret.next = new MenuHandler();
-	return ret;
-}
