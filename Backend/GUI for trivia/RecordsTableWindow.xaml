@@ -1,0 +1,30 @@
+﻿<Window x:Class="GUI_for_trivia.RecordsTableWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI_for_trivia"
+        mc:Ignorable="d"
+        Title="RecordsTableWindow" Height="450" Width="800">
+    <Grid>
+        <Label x:Name="number_one_place" Content="1" HorizontalAlignment="Left" Margin="130,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Gold"/>
+        <Label x:Name="number_one_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Gold"/>
+        <Label x:Name="number_one_score" Content="Score" HorizontalAlignment="Left" Margin="600,25,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Gold"/>
+
+        <Label x:Name="number_two_place" Content="2" HorizontalAlignment="Left" Margin="130,75,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Silver"/>
+        <Label x:Name="number_two_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,75,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Silver"/>
+        <Label x:Name="number_two_score" Content="Score" HorizontalAlignment="Left" Margin="600,75,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Silver"/>
+
+        <Label x:Name="number_three_place" Content="3" HorizontalAlignment="Left" Margin="130,125,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Brown"/>
+        <Label x:Name="number_three_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,125,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Brown"/>
+        <Label x:Name="number_three_score" Content="Score" HorizontalAlignment="Left" Margin="600,125,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Brown"/>
+
+        <Label x:Name="number_four_place" Content="4" HorizontalAlignment="Left" Margin="130,175,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
+        <Label x:Name="number_four_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,175,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
+        <Label x:Name="number_four_score" Content="Score" HorizontalAlignment="Left" Margin="600,175,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+
+        <Label x:Name="number_five_place" Content="5" HorizontalAlignment="Left" Margin="130,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
+        <Label x:Name="number_five_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
+        <Label x:Name="number_five_score" Content="Score" HorizontalAlignment="Left" Margin="600,225,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+    </Grid>
+</Window>

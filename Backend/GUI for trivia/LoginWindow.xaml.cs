@@ -48,7 +48,7 @@ namespace GUI_for_trivia
             {
                 HandlerError($"error: {error.Message}");
             }
-
+            
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
@@ -56,6 +56,11 @@ namespace GUI_for_trivia
             var SignUp = new SignUpWindow();
             SignUp.Show();
             this.Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

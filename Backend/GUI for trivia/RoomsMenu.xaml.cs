@@ -37,7 +37,8 @@ namespace GUI_for_trivia
             InitializeComponent();
             this.user = user;
             rooms = RoomComunicator.GetRooms();
-            
+
+            initRoomsList();    // Added this line because someone forgot to
         }
 
         private void create_room_Click(object sender, RoutedEventArgs e)

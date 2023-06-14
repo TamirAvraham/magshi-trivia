@@ -1,0 +1,29 @@
+﻿<Window x:Class="GUI_for_trivia.PersonalStatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI_for_trivia"
+        mc:Ignorable="d"
+        Title="PersonalStatisticsWindow" Height="450" Width="800">
+    <Grid Background="White">
+
+        <Label x:Name="username_label" Content="Username:" HorizontalAlignment="Left" Margin="30,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
+        <Label x:Name="username_value_label" Content="Insert Name Here" HorizontalAlignment="Left" Margin="250,25,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+
+        <Label x:Name="total_answers_label" Content="Total Questions Answered:" HorizontalAlignment="Left" Margin="30,75,0,0" VerticalAlignment="Top" Width="200" Height="34" FontSize="16"/>
+        <Label x:Name="total_answers_value_label" Content="Insert Total Answers Here" HorizontalAlignment="Left" Margin="250,75,0,0" VerticalAlignment="Top" Width="200" Height="34" FontSize="16"/>
+
+        <Label x:Name="correct_asnwers_label" Content="Correct Answers:" HorizontalAlignment="Left" Margin="30,125,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+        <Label x:Name="correct_asnwers_value_label" Content="Insert Correct Answers Here" HorizontalAlignment="Left" Margin="250,125,0,0" VerticalAlignment="Top" Width="250" Height="34" FontSize="16"/>
+
+        <Label x:Name="total_seconds_label" Content="Total Seconds:" HorizontalAlignment="Left" Margin="30,175,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+        <Label x:Name="total_seconds_value_label" Content="Insert Total Seconds Here" HorizontalAlignment="Left" Margin="250,175,0,0" VerticalAlignment="Top" Width="200" Height="34" FontSize="16"/>
+
+        <Label x:Name="total_games_label" Content="Total Games:" HorizontalAlignment="Left" Margin="30,225,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+        <Label x:Name="total_games_value_label" Content="Insert Total Games Here" HorizontalAlignment="Left" Margin="250,225,0,0" VerticalAlignment="Top" Width="200" Height="34" FontSize="16"/>
+
+
+        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="172,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B" Click="return_back_button_Click"/>
+    </Grid>
+</Window>
