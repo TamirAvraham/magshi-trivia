@@ -26,5 +26,7 @@
         <Label x:Name="number_five_place" Content="5" HorizontalAlignment="Left" Margin="130,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
         <Label x:Name="number_five_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
         <Label x:Name="number_five_score" Content="Score" HorizontalAlignment="Left" Margin="600,225,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+
+        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="172,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B"/>
     </Grid>
 </Window>

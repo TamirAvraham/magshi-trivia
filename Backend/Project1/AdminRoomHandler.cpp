@@ -8,7 +8,7 @@ bool AdminRoomHandler::IsValid(unsigned char status)
 	try
 	{
 		char secondDigit = std::to_string(((int)status))[0];
-		return secondDigit == ADMIN_CHAR;
+		return secondDigit == ADMIN_CHAR || RoomMemberHandler::IsValid(status);
 	}
 	catch (...)
 	{
@@ -18,6 +18,10 @@ bool AdminRoomHandler::IsValid(unsigned char status)
 
 Responce* AdminRoomHandler::HandlerRequest(Request* req)
 {
+	if (RoomMemberHandler::IsValid(req->id))
+	{
+		return RoomMemberHandler::HandlerRequest(req);
+	}
 	switch (req->id)
 	{
 	case StartRoomCode:
@@ -31,6 +35,10 @@ Responce* AdminRoomHandler::HandlerRequest(Request* req)
 
 Request* AdminRoomHandler::GetRequestFromBuffer(const Buffer& buffer)
 {
+	if (RoomMemberHandler::IsValid(buffer.status))
+	{
+		return RoomMemberHandler::GetRequestFromBuffer(buffer);
+	}
 	switch (buffer.status)
 	{
 	case StartRoomCode:

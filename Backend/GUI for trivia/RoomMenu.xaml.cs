@@ -1,4 +1,7 @@
 ﻿using ServicesForTrivia;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,20 +15,32 @@ namespace GUI_for_trivia
     {
         readonly User user;
         RoomData roomData;
+        List<User> users = new List<User>();
+        Timer timer;
         public RoomView(User user, RoomData roomData)
         {
             InitializeComponent();
             this.user = user;
             this.roomData = roomData;
             DataContext = this;
+
             room_name_label.Content = roomData.name;
             number_of_time_for_question_label_Copy.Content = $"Time Per Question: {roomData.TimePerQuestion} sec";
             questions_count.Content = $"Question Count:{roomData.numOfQuestions}";
             players_label.Content = $"players(max :{roomData.maxNumOfPlayers} ):";
-            foreach (var userInRoom in roomData.Users)
+
+            var roomState = RoomMemberComunicator.GetRoomState(roomData.id);
+            foreach (var playerName in roomState.players)
             {
-                GeneratePlayerComponent(userInRoom);
+                User newUser = new User(playerName);
+                users.Add(newUser);
+                players_list.Items.Add(GeneratePlayerComponent(newUser));
             }
+            
+            //timer = new Timer(state =>
+            //{
+            //    this.Refresh();
+            //}, null, TimeSpan.Zero, TimeSpan.FromSeconds(3));
         }
 
         /*
@@ -91,7 +106,7 @@ namespace GUI_for_trivia
                 {
                     join_room_button.IsEnabled = false;
                     join_room_button.Background = Brushes.Red;
-                    GeneratePlayerComponent(user);
+                    players_list.Items.Add(GeneratePlayerComponent(user));
                 }
                 else
                 {
@@ -105,6 +120,18 @@ namespace GUI_for_trivia
             }
         }
 
-        
+        private void Refresh()
+        {
+            var roomState = RoomMemberComunicator.GetRoomState(roomData.id);
+            users.Clear();
+            players_list.Items.Clear();
+            foreach (var playerName in roomState.players)
+            {
+                User newUser = new User(playerName);
+                users.Add(newUser);
+                players_list.Items.Add(GeneratePlayerComponent(newUser));
+            }
+
+        }
     }
 }

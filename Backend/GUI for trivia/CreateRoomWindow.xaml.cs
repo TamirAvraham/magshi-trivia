@@ -35,14 +35,14 @@ namespace GUI_for_trivia
             var users = new List<User>();
             users.Add(user);
             var name = room_name_text_box.Text;
-            return new RoomData(users, false, name, id++, q_t, q_c, p_c);
+            return new RoomData(false, name, id++, q_t, q_c, p_c);
 
         }
 
         private void create_room_button_Click(object sender, RoutedEventArgs e)
         {
             var data = proceesData();
-            if (RoomComunicator.CreateRoom(data))
+            if (RoomComunicator.CreateRoom(data,user))
             {
                 var win = new RoomView(user, data);
 

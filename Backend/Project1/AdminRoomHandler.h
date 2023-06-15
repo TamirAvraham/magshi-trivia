@@ -1,7 +1,8 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "RoomMemberHandler.h"
 #define ARHM(name) inline name##Responce handle##name##Request(const Request* req);
-class AdminRoomHandler: public IRequestHandler
+class AdminRoomHandler: public RoomMemberHandler
 {
 public:
 	// Inherited via IRequestHandler

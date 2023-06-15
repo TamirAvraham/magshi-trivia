@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ServicesForTrivia
 {
@@ -14,7 +15,7 @@ namespace ServicesForTrivia
         const byte getRooms = 22;
         const byte joinRoom = 26;
         const byte createRoom = 24;
-        static JsonSerializerOptions options=new JsonSerializerOptions { PropertyNameCaseInsensitive=true };
+        static JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         public static RoomData? GetRoom(int roomId)
         {
@@ -58,9 +59,21 @@ namespace ServicesForTrivia
             return (buffer.Status == ((byte)ResponceStatus.Ok));
 
         }
-        public static bool CreateRoom(RoomData roomData)
+        public static bool CreateRoom(RoomData roomData,User user)
         {
-            var store = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(roomData));
+            var combinedObject = new
+            {
+                user.username,
+                roomData.isActive,
+                roomData.name,
+                roomData.id,
+                roomData.numOfQuestions,
+                roomData.TimePerQuestion,
+                roomData.maxNumOfPlayers
+            };
+
+            string s = JsonSerializer.Serialize(combinedObject);
+            byte[] store= Encoding.ASCII.GetBytes(s);
             var buffer = new Buffer(store, ((ushort)store.Length), createRoom);
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();

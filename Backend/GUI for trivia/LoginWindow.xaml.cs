@@ -58,9 +58,6 @@ namespace GUI_for_trivia
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

@@ -123,7 +123,7 @@ std::string Room::toString() const
 	http::json::JsonObject json;
 	json.insert({ "status",{data.isActive ? "true" : "false"} });
 	json.insert({ {"players"}, { JsonSirealizer::getVectorAsString(users)} });
-	json.insert({ "AnswerCount",{"0"} });//change this when i figure out wtf this is
+	json.insert({ "answerCount",{"0"} });//change this when i figure out wtf this is
 	json.insert({ {"answerTimeOut"},{"idfk"} });
 	return json.ToString();
 }

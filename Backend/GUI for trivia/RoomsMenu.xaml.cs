@@ -1,5 +1,7 @@
 ﻿using ServicesForTrivia;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,6 +15,7 @@ namespace GUI_for_trivia
     {
         List<RoomData> rooms;
         User user;
+        Timer timer;
         private void Click_handler(object sender, RoutedEventArgs e)
         {
             var room = (RoomData)sender;
@@ -39,6 +42,10 @@ namespace GUI_for_trivia
             rooms = RoomComunicator.GetRooms();
 
             initRoomsList();    // Added this line because someone forgot to
+            //timer = new Timer(state =>
+            //{
+            //    this.Refresh();
+            //}, null, TimeSpan.Zero, TimeSpan.FromSeconds(3));
         }
 
         private void create_room_Click(object sender, RoutedEventArgs e)
@@ -46,6 +53,11 @@ namespace GUI_for_trivia
             var win = new CreateRoomWindow(user);
             win.Show();
             this.Close();
+        }
+        void Refresh()
+        {
+            rooms = RoomComunicator.GetRooms();
+            initRoomsList();
         }
     }
 }

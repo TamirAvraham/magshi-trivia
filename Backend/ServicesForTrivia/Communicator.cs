@@ -40,7 +40,6 @@ namespace ServicesForTrivia
             socket.Write(bytes);
         }
 
-
         public Buffer ReadBuffer()
         {
             return Desirealizer.GetBufferFromSocket(socket);
