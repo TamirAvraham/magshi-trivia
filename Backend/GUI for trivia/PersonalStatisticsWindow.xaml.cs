@@ -20,13 +20,26 @@ namespace GUI_for_trivia
     /// </summary>
     public partial class PersonalStatisticsWindow : Window
     {
+        StatisticsData data;
         User user;
-        public PersonalStatisticsWindow(User user)
+        public PersonalStatisticsWindow(StatisticsData data,User user)
         {
             InitializeComponent();
-            this.user = user;
+            this.data = data;
 
-            username_value_label.Content = user.username;
+            username_value_label.Content = data.Username;
+            total_answers_value_label.Content = data.TotalAnswers;
+            correct_asnwers_value_label.Content = data.CorrectAnswers;
+            total_games_value_label.Content = data.TotalGames;
+            total_seconds_value_label.Content = data.TotalSeconds;
+
+        }
+
+        private void return_back_button_Click(object sender, RoutedEventArgs e)
+        {
+            var roomsMenu = new RoomsMenu(user);
+            roomsMenu.Show();
+            this.Close();
         }
     }
 }

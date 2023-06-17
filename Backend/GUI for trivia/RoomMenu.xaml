@@ -8,7 +8,6 @@
         Title="RoomMenu" Height="450" Width="800">
     <Grid>
         <Label x:Name="room_name_label" Content="{}{room name}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="211" Height="38" FontSize="18" FontWeight="Bold"/>
-        <Button x:Name="join_room_button" Content="Join Room" HorizontalAlignment="Left" Margin="24,378,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="33" Width="92" FontSize="18" Background="#FF7ECA42" Click="Button_Click"/>
         <Label x:Name="number_of_time_for_question_label_Copy" Content="Time Per Question: {answer_time} sec" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top" Width="270" Height="35" FontSize="18"/>
         <Label x:Name="players_label" Content="players(max :{10} ):" HorizontalAlignment="Left" Margin="509,10,0,0" VerticalAlignment="Top" Width="281" Height="38" FontSize="18"/>
         <ListBox x:Name="players_list" Margin="509,48,10,0" IsSynchronizedWithCurrentItem="True">

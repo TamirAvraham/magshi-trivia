@@ -24,19 +24,19 @@ namespace GUI_for_trivia
             this.roomData = roomData;
             DataContext = this;
 
-            room_name_label.Content = roomData.name;
+            room_name_label.Content = roomData.Name;
             number_of_time_for_question_label_Copy.Content = $"Time Per Question: {roomData.TimePerQuestion} sec";
-            questions_count.Content = $"Question Count:{roomData.numOfQuestions}";
-            players_label.Content = $"players(max :{roomData.maxNumOfPlayers} ):";
+            questions_count.Content = $"Question Count:{roomData.NumOfQuestions}";
+            players_label.Content = $"players(max :{roomData.MaxPlayers} ):";
 
             var roomState = RoomMemberComunicator.GetRoomState(roomData.id);
-            foreach (var playerName in roomState.players)
+            foreach (var playerName in roomState.Players)
             {
                 User newUser = new User(playerName);
                 users.Add(newUser);
                 players_list.Items.Add(GeneratePlayerComponent(newUser));
             }
-            
+
             //timer = new Timer(state =>
             //{
             //    this.Refresh();
@@ -77,60 +77,63 @@ namespace GUI_for_trivia
             var column1 = new ColumnDefinition();
             column1.Width = GridLength.Auto;
 
-            var column2 = new ColumnDefinition();
-            column2.Width = new GridLength(1, GridUnitType.Star);
+            //var column2 = new ColumnDefinition();
+            //column2.Width = new GridLength(1, GridUnitType.Star);
 
             ret.ColumnDefinitions.Add(column1);
-            ret.ColumnDefinitions.Add(column2);
+            //ret.ColumnDefinitions.Add(column2);
 
             var label = new Label();
             label.Content = user.username;
 
-            var button = new Button();
-            button.Width = 20;
-            button.Height = 20;
-            button.Click += (object sender, RoutedEventArgs e) => { }; //this is the part for statistics
+            //var button = new Button();
+            //button.Width = 20;
+            //button.Height = 20;
+            //button.Click += (object sender, RoutedEventArgs e) => { StatisticsCommunicator.GetPlayerStatistic(user.username); }; //this is the part for statistics
 
             Grid.SetColumn(label, 1);
-            ret.Children.Add(button);
+            //ret.Children.Add(button);
             ret.Children.Add(label);
 
             return ret;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (RoomComunicator.JoinRoom(user.username,roomData.id))
-                {
-                    join_room_button.IsEnabled = false;
-                    join_room_button.Background = Brushes.Red;
-                    players_list.Items.Add(GeneratePlayerComponent(user));
-                }
-                else
-                {
-                    System.Console.WriteLine("error cant join room");
-                }
-            }
-            catch (System.Exception error)
-            {
-                string data = error.Message;
-                System.Console.WriteLine(error.Message);
-            }
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (RoomComunicator.JoinRoom(user.username,roomData.id))
+        //        {
+        //            join_room_button.IsEnabled = false;
+        //            join_room_button.Background = Brushes.Red;
+        //            players_list.Items.Add(GeneratePlayerComponent(user));
+        //        }
+        //        else
+        //        {
+        //            System.Console.WriteLine("error cant join room");
+        //        }
+        //    }
+        //    catch (System.Exception error)
+        //    {
+        //        string data = error.Message;
+        //        System.Console.WriteLine(error.Message);
+        //    }
+        //}
 
         private void Refresh()
         {
             var roomState = RoomMemberComunicator.GetRoomState(roomData.id);
             users.Clear();
-            players_list.Items.Clear();
-            foreach (var playerName in roomState.players)
+            Dispatcher.Invoke(() =>
             {
-                User newUser = new User(playerName);
-                users.Add(newUser);
-                players_list.Items.Add(GeneratePlayerComponent(newUser));
-            }
+                players_list.Items.Clear();
+                foreach (var playerName in roomState.Players)
+                {
+                    User newUser = new User(playerName);
+                    users.Add(newUser);
+                    players_list.Items.Add(GeneratePlayerComponent(newUser));
+                }
+            });
 
         }
     }

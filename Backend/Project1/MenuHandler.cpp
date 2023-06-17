@@ -45,7 +45,7 @@ Request* MenuHandler::GetRequestFromBuffer(const Buffer& buffer)
 	case ROOM_CHAR:
 		return roomHandler.GetRequestFromBuffer(buffer);
 	case STATISTICS_CHAR:
-		return roomHandler.GetRequestFromBuffer(buffer);
+		return statHandler.GetRequestFromBuffer(buffer);
 	
 	default:
 		return nullptr;

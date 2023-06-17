@@ -18,7 +18,8 @@ namespace GUI_for_trivia
         Timer timer;
         private void Click_handler(object sender, RoutedEventArgs e)
         {
-            var room = (RoomData)sender;
+            var room = (RoomData)((Button)sender).Tag;
+            RoomComunicator.JoinRoom(user.username, room.Id);
             var window = new RoomView(user, room);
             window.Show();
             this.Close();
@@ -28,10 +29,12 @@ namespace GUI_for_trivia
             foreach (var room in rooms)
             {
                 var roomButton = new Button();
+                
                 roomButton.Click += Click_handler;
-                roomButton.Content = room.name;
+                roomButton.Content = room.Name;
                 roomButton.Tag = room;
-                roomButton.Background = room.isActive ? Brushes.Red : Brushes.Green;
+                roomButton.Background = room.IsActive ? Brushes.Red : Brushes.Green;
+                roomButton.Tag=room;
                 rooms_list.Items.Add(roomButton);
             }
         }
@@ -39,7 +42,7 @@ namespace GUI_for_trivia
         {
             InitializeComponent();
             this.user = user;
-            rooms = RoomComunicator.GetRooms();
+            rooms = RoomComunicator.GetRooms(Communicator.Instance);
 
             initRoomsList();    // Added this line because someone forgot to
             //timer = new Timer(state =>
@@ -56,8 +59,25 @@ namespace GUI_for_trivia
         }
         void Refresh()
         {
-            rooms = RoomComunicator.GetRooms();
+            rooms = RoomComunicator.GetRooms(Communicator.Instance);
             initRoomsList();
+        }
+
+        private void my_stats_button_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            var stats = StatisticsCommunicator.GetPlayerStatistic(user.username);
+            var personalStatisticsWindow = new PersonalStatisticsWindow(stats,user);
+            personalStatisticsWindow.Show();
+            this.Close();
+
+        }
+
+        private void top_5_button_Click(object sender, RoutedEventArgs e)
+        {
+            var topFIveList = StatisticsCommunicator.getTopFive();
+            var win = new RecordsTableWindow(topFIveList, user);
+            win.Show();
+            this.Close();
         }
     }
 }

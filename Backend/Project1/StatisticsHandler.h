@@ -9,6 +9,6 @@ public:
 	virtual Responce* HandlerRequest(Request* req) override;
 	virtual Request* GetRequestFromBuffer(const Buffer& buffer) override;
 private:
-	inline GetTopPlayersResponce handleGetTopPlayersRequest(const GetTopPlayersRequest request) const;
-	inline GetPlayerStatisticsResponce handleGetPlayerStatisticsRequest(const GetPlayerStatisticsRequest request) const;
+	inline GetTopPlayersResponce handleGetTopPlayersRequest(GetTopPlayersRequest* request) const;
+	inline GetPlayerStatisticsResponce handleGetPlayerStatisticsRequest(GetPlayerStatisticsRequest* request) const;
 };

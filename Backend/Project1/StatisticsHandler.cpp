@@ -23,9 +23,9 @@ Responce* StatisticsHandler::HandlerRequest(Request* req)
 	switch (req->id)
 	{
 	case getPlayerStatistics:
-		return new GetPlayerStatisticsResponce(handleGetPlayerStatisticsRequest((GetPlayerStatisticsRequest)(*req)));
+		return new GetPlayerStatisticsResponce(handleGetPlayerStatisticsRequest((GetPlayerStatisticsRequest*)(req)));
 	case getTopPlayers:
-		return new GetTopPlayersResponce(handleGetTopPlayersRequest((GetTopPlayersRequest)(*req)));
+		return new GetTopPlayersResponce(handleGetTopPlayersRequest((GetTopPlayersRequest*)(req)));
 	default:
 		return nullptr;
 	}
@@ -44,7 +44,7 @@ Request* StatisticsHandler::GetRequestFromBuffer(const Buffer& buffer)
 	}
 }
 
-inline GetTopPlayersResponce StatisticsHandler::handleGetTopPlayersRequest(const GetTopPlayersRequest request) const
+inline GetTopPlayersResponce StatisticsHandler::handleGetTopPlayersRequest(GetTopPlayersRequest* request) const
 {
 	GetTopPlayersResponce ret;
 	auto topPlayers = RequsetFactory::getInstence().getStatManager().getTopFive(SqliteDataBase::GetInstance());
@@ -52,23 +52,27 @@ inline GetTopPlayersResponce StatisticsHandler::handleGetTopPlayersRequest(const
 	auto buffer = Buffer{ 
 		.status = OK,
 		.sizeOfData = (unsigned int)bufferData.size(),
-		.data = const_cast<char*>(bufferData.c_str())
+		.data = new char[bufferData.size() + 1]
 	};
+	std::copy(bufferData.begin(), bufferData.end(), buffer.data);
+	buffer.data[bufferData.size()] = '\0';
 	ret.buffer = buffer;
 	ret.next = new MenuHandler();
 	return ret;
 }
 
-inline GetPlayerStatisticsResponce StatisticsHandler::handleGetPlayerStatisticsRequest(const GetPlayerStatisticsRequest request) const
+inline GetPlayerStatisticsResponce StatisticsHandler::handleGetPlayerStatisticsRequest(GetPlayerStatisticsRequest* request) const
 {
 	GetPlayerStatisticsResponce ret;
-	auto statistic = RequsetFactory::getInstence().getStatManager().getUserGameStatistic(request.playerUsername, SqliteDataBase::GetInstance());
+	auto statistic = RequsetFactory::getInstence().getStatManager().getUserGameStatistic(request->playerUsername, SqliteDataBase::GetInstance());
 	auto bufferData = statistic.toString();
 	auto buffer = Buffer{
 		.status = OK,
 		.sizeOfData = (unsigned int)bufferData.size(),
-		.data = const_cast<char*>(bufferData.c_str())
+		.data = new char[bufferData.size() + 1]
 	};
+	std::copy(bufferData.begin(), bufferData.end(), buffer.data);
+	buffer.data[bufferData.size()] = '\0';
 	ret.buffer = buffer;
 	ret.next = new MenuHandler();
 	return ret;

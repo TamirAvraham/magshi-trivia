@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ServicesForTrivia
 {
     public struct RoomState
     {
-        public bool status;
-        public List<String> players;
-        public int answerCount;
-        public string /*this is temp*/ answerTimeOut;
+        [JsonPropertyName("status")]
+        public bool Status { get; set; }
+
+        [JsonPropertyName("players")]
+        public List<string> Players { get; set; }
+
+        [JsonPropertyName("answerCount")]
+        public int AnswerCount { get; set; }
+
+        [JsonPropertyName("answerTimeOut")]
+        public string AnswerTimeOut { get; set; }
     }
+
     public static class RoomMemberComunicator
     {
         /*
@@ -50,7 +59,8 @@ namespace ServicesForTrivia
                 throw new Exception(res);
             }
 
-            return JsonSerializer.Deserialize<RoomState>(res);
+            var ret = JsonSerializer.Deserialize<RoomState>(res);
+            return ret;
         }
     }
     public static class AdminRoomComunicator

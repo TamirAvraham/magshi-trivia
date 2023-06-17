@@ -9,7 +9,7 @@ struct LoggedUser
 		return username == other.username;
 	}
 	std::string toString()const {
-		return username;
+		return "\"" + username+ "\"";
 	}
 };
 

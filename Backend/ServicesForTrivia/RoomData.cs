@@ -1,15 +1,46 @@
-﻿namespace ServicesForTrivia
+﻿using System.Text.Json.Serialization;
+
+namespace ServicesForTrivia
 {
     public struct RoomData
     {
+        /*
+        http::json::JsonObject toJson()const {
+		http::json::JsonObject object;
+		object.insert({ "id",{std::to_string(id)} });
+		object.insert({ "name",{name} });
+		object.insert({ "maxPlayers",{std::to_string(maxPlayers)} });
+		object.insert({ "numOfQustions",{ std::to_string(numOfQustions) } });
+		object.insert({ "TimePerQuestion",{ std::to_string(TimePerQuestion) } });
+		object.insert({ "isActive",{isActive ? "true" : "false"} });
+		return object;
+	}
+         */
+        private bool isActive;
+        private  string name;
+        public  int id;
+        private  int numOfQuestions;
+        private  int timePerQuestion;
+        private int maxNumOfPlayers;
         
-        public bool isActive;
-        public readonly string name;
-        public readonly int id;
-        public readonly int numOfQuestions;
-        public readonly int TimePerQuestion;
-        public readonly int maxNumOfPlayers;
+         [JsonPropertyName("TimePerQuestion")]
+         public int TimePerQuestion => this.numOfQuestions;
 
+        [JsonPropertyName("id")]
+        public int Id => this.id;
+
+        [JsonPropertyName("isActive")]
+        public bool IsActive { get => isActive; set => isActive=value; }
+
+        [JsonPropertyName("maxPlayers")]
+        public int MaxPlayers => this.maxNumOfPlayers;
+
+        [JsonPropertyName("name")]
+        public string Name => this.name;
+
+        [JsonPropertyName("numOfQustions")]
+        public int NumOfQuestions => this.numOfQuestions;
+        
         public RoomData( bool isActive, string name, int id, int timeForQuestion, int numOfQuestions ,int maxNumOfPlayers) : this()
         {
             
@@ -18,7 +49,7 @@
             this.id = id;
             
             this.numOfQuestions = numOfQuestions;
-            TimePerQuestion = timeForQuestion;
+            timePerQuestion = timeForQuestion;
             this.maxNumOfPlayers = maxNumOfPlayers;
             
         }

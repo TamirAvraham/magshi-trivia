@@ -19,7 +19,7 @@ namespace ServicesForTrivia
 
         public static RoomData? GetRoom(int roomId)
         {
-            List<RoomData> temp = GetRooms();
+            List<RoomData> temp = GetRooms(Communicator.Instance);
             for (int i = 0; i < temp.Count; i++)
             {
                 if (roomId == temp[i].id)
@@ -36,18 +36,39 @@ namespace ServicesForTrivia
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
             JsonDocument document = JsonDocument.Parse(Encoding.ASCII.GetString(buffer.Data));
-            data.isActive = document.RootElement.GetProperty("status").GetBoolean();
+            data.IsActive = document.RootElement.GetProperty("status").GetBoolean();
 
         }
         
-        public static List<RoomData> GetRooms()
+        public static List<RoomData> GetRooms(Communicator communicator)
         {
             Buffer buffer = new Buffer(data: new byte[0], 0, getRooms);
-            Communicator.Instance.SendBuffer(ref buffer);
-            buffer = Communicator.Instance.ReadBuffer();
+            communicator.SendBuffer(ref buffer);
+            buffer = communicator.ReadBuffer();
+            if (buffer.Status==((byte)ResponceStatus.Error)||buffer.Status==123)
+            {
+                return new List<RoomData>();
+            }
             var data = Encoding.ASCII.GetString(buffer.Data);
-            JsonDocument document = JsonDocument.Parse(data);
-            return document.RootElement.GetProperty("rooms").Deserialize<List<RoomData>>(options)??new List<RoomData>();
+            var document = JsonDocument.Parse(data);
+            var roomsProperty = document.RootElement.GetProperty("rooms");
+            var rooms = new List<RoomData>();
+
+            foreach (var roomElement in roomsProperty.EnumerateArray())
+            {
+                var id = roomElement.GetProperty("id").GetInt32();
+                var name = roomElement.GetProperty("name").GetString();
+                var maxPlayers = roomElement.GetProperty("maxPlayers").GetInt32();
+                var numOfQuestions = roomElement.GetProperty("numOfQustions").GetInt32();
+                var timePerQuestion = roomElement.GetProperty("TimePerQuestion").GetInt32();
+                var isActive = roomElement.GetProperty("isActive").GetBoolean();
+
+                var roomData = new RoomData(isActive, name, id, timePerQuestion, numOfQuestions, maxPlayers);
+                rooms.Add(roomData);
+            }
+
+            return rooms;
+
         }
         public static bool JoinRoom(string Username, int RoomId)
         {
@@ -64,12 +85,12 @@ namespace ServicesForTrivia
             var combinedObject = new
             {
                 user.username,
-                roomData.isActive,
-                roomData.name,
+                roomData.IsActive,
+                roomData.Name,
                 roomData.id,
-                roomData.numOfQuestions,
+                roomData.NumOfQuestions,
                 roomData.TimePerQuestion,
-                roomData.maxNumOfPlayers
+                roomData.MaxPlayers
             };
 
             string s = JsonSerializer.Serialize(combinedObject);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServicesForTrivia
 {
-    internal class Buffer
+    public class Buffer
     {
         private byte[] data;
         private uint sizeOfData;

@@ -19,7 +19,7 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 	{
 		LoginRequest* loginRequest = (LoginRequest*)req;
 		retBuffer.status = OK;
-		auto instence = RequsetFactory::getInstence();
+		auto& instence = RequsetFactory::getInstence();
 		instence.getLoginManager().Login(loginRequest->_username, loginRequest->_password);
 		
 	}

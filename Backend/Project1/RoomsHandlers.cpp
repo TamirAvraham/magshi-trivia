@@ -25,17 +25,17 @@ Responce* RoomsHandler::HandlerRequest(Request* req)
 	switch (req->id)
 	{
 	case getRoomCode:
-		return new GetRoomPlayersResponce(handleGetRoomPlayersRequest((GetRoomPlayersRequest)(*req)));
+		return new GetRoomPlayersResponce(handleGetRoomPlayersRequest((GetRoomPlayersRequest*)(req)));
 	case deleteRoomCode:
-		return new RemoveRoomResponce(handleRemoveRoomRequest((RemoveRoomRequest)(*req)));
+		return new RemoveRoomResponce(handleRemoveRoomRequest((RemoveRoomRequest*)(req)));
 	case getRoomsCode:
-		return new GetRoomsResponce(handleGetRoomsRequest((GetRoomsRequest)(*req)));
+		return new GetRoomsResponce(handleGetRoomsRequest((GetRoomsRequest*)(req)));
 	case createRoomCode:
-		return new CreateRoomResponce(handleCreateRoomRequest((CreateRoomRequest)(*req)));
+		return new CreateRoomResponce(handleCreateRoomRequest((CreateRoomRequest*)(req)));
 	case getRoomStatus:
-		return new GetRoomStatusResponce(handleGetRoomStatusRequest((GetRoomStatusRequest)(*req)));
+		return new GetRoomStatusResponce(handleGetRoomStatusRequest((GetRoomStatusRequest*)(req)));
 	case joinRoomCode:
-		return new JoinRoomResponce(handleJoinRoomRequest((JoinRoomRequest)(*req)));
+		return new JoinRoomResponce(handleJoinRoomRequest((JoinRoomRequest*)(req)));
 	default:
 		return nullptr;
 	}
@@ -64,10 +64,10 @@ Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
 	}
 }
 
-inline GetRoomPlayersResponce RoomsHandler::handleGetRoomPlayersRequest(const GetRoomPlayersRequest requset) const
+inline GetRoomPlayersResponce RoomsHandler::handleGetRoomPlayersRequest(GetRoomPlayersRequest* requset) const
 {
 	GetRoomPlayersResponce ret;
-	auto players = RequsetFactory::getInstence().getRoomsManager().getRoom(requset.roomId).getAllUsers();
+	auto players = RequsetFactory::getInstence().getRoomsManager().getRoom(requset->roomId).getAllUsers();
 	auto data = http::json::JsonObject();
 	data.insert({ "players",{JsonSirealizer::getVectorAsString(players)} });
 	std::string dataAsString = data.ToString();
@@ -83,7 +83,7 @@ inline GetRoomPlayersResponce RoomsHandler::handleGetRoomPlayersRequest(const Ge
 	return ret;
 }
 
-inline GetRoomsResponce RoomsHandler::handleGetRoomsRequest(const GetRoomsRequest request) const
+inline GetRoomsResponce RoomsHandler::handleGetRoomsRequest(GetRoomsRequest* request) const
 {
 	GetRoomsResponce ret;
 	auto rooms = RequsetFactory::getInstence().getRoomsManager().getRooms();
@@ -102,12 +102,13 @@ inline GetRoomsResponce RoomsHandler::handleGetRoomsRequest(const GetRoomsReques
 	return ret;
 }
 
-inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(const CreateRoomRequest request) const
+inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(CreateRoomRequest* request) const
 {
 
 	CreateRoomResponce ret;
 	auto& factory=RequsetFactory::getInstence(); 
-	factory.getRoomsManager().createRoom(factory.getLoginManager().getUser(request.username),request.roomData);
+	auto& LoginManager = factory.getLoginManager();
+	factory.getRoomsManager().createRoom(LoginManager.getUser(request->username),request->roomData);
 	ret.next = new AdminRoomHandler();
 	ret.buffer = Buffer{
 		.status = OK,
@@ -117,10 +118,10 @@ inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(const CreateRoom
 	return ret;
 }
 
-inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(const RemoveRoomRequest request) const
+inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(RemoveRoomRequest* request) const
 {
 	RemoveRoomResponce ret;
-	RequsetFactory::getInstence().getRoomsManager().removeRoom(request.roomId);
+	RequsetFactory::getInstence().getRoomsManager().removeRoom(request->roomId);
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
@@ -131,10 +132,10 @@ inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(const RemoveRoom
 	return ret;
 }
 
-inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetRoomStatusRequest request) const
+inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(GetRoomStatusRequest* request) const
 {
 	GetRoomStatusResponce ret;
-	auto status=RequsetFactory::getInstence().getRoomsManager().getRoomStatus(request.roomId);
+	auto status=RequsetFactory::getInstence().getRoomsManager().getRoomStatus(request->roomId);
 	auto data = http::json::JsonObject();
 	data.insert({ "status",{status ? "true" : "false"} });
 	std::string dataAsString = data.ToString();
@@ -150,12 +151,12 @@ inline GetRoomStatusResponce RoomsHandler::handleGetRoomStatusRequest(const GetR
 	return ret;
 }
 
-inline JoinRoomResponce RoomsHandler::handleJoinRoomRequest(const JoinRoomRequest request) const
+inline JoinRoomResponce RoomsHandler::handleJoinRoomRequest(JoinRoomRequest* request) const
 {
 	JoinRoomResponce ret;
 	LoggedUser us;
-	us.username = request.username;
-	RequsetFactory::getInstence().getRoomsManager().joinRoom(request.roomId, us);
+	us.username = request->username;
+	RequsetFactory::getInstence().getRoomsManager().joinRoom(request->roomId, us);
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,

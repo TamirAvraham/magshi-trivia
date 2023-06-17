@@ -53,6 +53,10 @@ public:
 	std::vector<Statistic> getUserGameStatistic(std::string username);
 	std::vector <Game_Statistic> getTopFive();
 private:
+	//stats helpers
+	void createUserStats(const std::string& username);
+
+
 	SqliteDataBase();
 	bool sendSQL(const char* sqlCommand, int (*callback)(void*, int, char**, char**), void* data);
 	sqlite3* _database;

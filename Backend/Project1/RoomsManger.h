@@ -31,7 +31,7 @@ class Room {
 private:
 	RoomData data;
 	std::vector<LoggedUser> users;
-	const LoggedUser& admin;
+	const LoggedUser admin;
 	/*static RoomData DatafromJson(const http::json::JsonObject& json);*/
 public:
 	RoomData getData()const;
@@ -56,4 +56,5 @@ public:
 	void joinRoom(int id, const LoggedUser& user);
 	bool isAdmin(int id, const std::string& username)const;
 	void removeUser(int roomId, const LoggedUser& user);
+	RoomManger();
 };

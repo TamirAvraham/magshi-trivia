@@ -20,7 +20,13 @@ Responce* AdminRoomHandler::HandlerRequest(Request* req)
 {
 	if (RoomMemberHandler::IsValid(req->id))
 	{
-		return RoomMemberHandler::HandlerRequest(req);
+		auto ret =  RoomMemberHandler::HandlerRequest(req);
+		if (ret)
+		{
+			delete ret->next;
+			ret->next =new  AdminRoomHandler();
+		}
+		return ret;
 	}
 	switch (req->id)
 	{

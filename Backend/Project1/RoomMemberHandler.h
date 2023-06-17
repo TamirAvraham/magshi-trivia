@@ -8,7 +8,7 @@ public:
 	virtual Responce* HandlerRequest(Request* req) override;
 	virtual Request* GetRequestFromBuffer(const Buffer& buffer) override;
 private:
-	inline LeaveRoomResponce handleLeaveRoomRequest(const LeaveRoomRequest request) const;
-	inline GetRoomStateResponce handleGetRoomStateRequest(const GetRoomStateRequest request) const;
+	inline LeaveRoomResponce handleLeaveRoomRequest(LeaveRoomRequest* request) const;
+	inline GetRoomStateResponce handleGetRoomStateRequest(GetRoomStateRequest* request) const;
 };
 

@@ -152,15 +152,26 @@ int SqliteDataBase::getNumOfPlayerGames(std::string username)
 std::vector<Statistic> SqliteDataBase::getUserGameStatistic(std::string username)
 {
 	std::vector<Statistic> gameStats;
-	sendSQL(("SELECT * FROM game_records WHERE name_of_user = '" + username + "';").c_str(), callbackStatistic, &gameStats);
+	sendSQL(("SELECT * FROM statistics WHERE user = '" + username + "';").c_str(), callbackStatistic, &gameStats);
+	if (gameStats.empty())
+	{
+		createUserStats(username);
+		sendSQL(("SELECT * FROM statistics WHERE user = '" + username + "';").c_str(), callbackStatistic, &gameStats);
+	}
 	return gameStats;
 }
 
 std::vector<Game_Statistic> SqliteDataBase::getTopFive()
 {
 	std::vector<Game_Statistic> gameStats;
-	sendSQL("SELECT * FROM game_records ORDER BY points DESC LIMIT 5;", callbackStatistic, &gameStats);
+	sendSQL("SELECT * FROM game_records ORDER BY points DESC LIMIT 5;", callbackGameStatistic, &gameStats);
 	return gameStats;
+}
+
+void SqliteDataBase::createUserStats(const std::string& username)
+{
+	sendSQL(("INSERT INTO statistics (user, total_answers, correct_answers, total_seconds_to_answer, total_games_played) VALUES (\'"+username+"\', 0, 0, 0, 0); ").c_str(), nullptr, nullptr);
+	sendSQL(("INSERT INTO game_records (name_of_user, points)VALUES (\'" + username + "\', 0 );").c_str(), nullptr, nullptr);
 }
 
 bool SqliteDataBase::sendSQL(const char* sqlCommand, int (*callback)(void*, int, char**, char**), void* data)

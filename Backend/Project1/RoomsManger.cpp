@@ -107,10 +107,24 @@ void RoomManger::removeUser(int roomId, const LoggedUser& user)
 	rooms.at(roomId).removeUser(user);
 }
 
+RoomManger::RoomManger()
+{
+	auto data= RoomData{
+		.id = 900,
+		.name = "test",
+		.maxPlayers = 30,
+		.numOfQustions = 10,
+		.TimePerQuestion = 5,
+		.isActive = false
+	};
+	createRoom({ "beni" }, data);
+}
+
 
 Room::Room(const RoomData& data, const LoggedUser& user): data(data),admin(user)
 {
 	users.push_back(user);
+	
 }
 
 inline bool Room::isAdmin(const LoggedUser& user) const

@@ -101,12 +101,12 @@ std::pair<std::string, int> http::json::JsonParser::GetLineValue(std::string jso
             return { returnString,returnNumber };
         }
         
-        returnString = jsonObject.substr(startOfvalue, endOfValue-2);
+        returnString = jsonObject.substr(startOfvalue, endOfValue-startOfvalue);
         break;
     default:
 
         endOfValue = jsonObject.find(',', startOfvalue);
-        
+        startOfvalue--;
         if (endOfValue == std::string::npos)
         {
             //checking if there is a nother value fo value name in the object (if not this is the last of the value in the object)
@@ -118,12 +118,13 @@ std::pair<std::string, int> http::json::JsonParser::GetLineValue(std::string jso
                 {
                     return { returnString,returnNumber };
                 }
-                endOfValue--;
+                
             }
             else
                 return { returnString,returnNumber };
         }
-        returnString = jsonObject.substr(startOfvalue - 1 , endOfValue);
+        returnString = jsonObject.substr(startOfvalue , endOfValue-startOfvalue);
+        startOfvalue += 1;
         break;
     }
     auto next_value = jsonObject.find('\"', endOfValue + 1);

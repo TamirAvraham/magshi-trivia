@@ -2,7 +2,8 @@
 
 Statistic StatisticManager::getUserGameStatistic(std::string username, SqliteDataBase& db)
 {
-    return db.getUserGameStatistic(username)[0];
+    auto test= db.getUserGameStatistic(username);
+    return test[0];
 }
 
 std::vector<Game_Statistic> StatisticManager::getTopFive(SqliteDataBase& db)

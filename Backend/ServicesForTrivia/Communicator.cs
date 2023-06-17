@@ -2,7 +2,7 @@
 
 namespace ServicesForTrivia
 {
-    class Communicator
+    public class Communicator
     {
         const string ip = "127.0.0.1";
         const int port = 12;
@@ -19,7 +19,10 @@ namespace ServicesForTrivia
                 return instance;
             } 
         }
-
+        public static Communicator New()
+        {
+            return new Communicator();
+        }
         private Communicator()
         {
             tcpClient = new TcpClient();

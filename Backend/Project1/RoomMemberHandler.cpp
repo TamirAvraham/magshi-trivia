@@ -19,9 +19,9 @@ Responce* RoomMemberHandler::HandlerRequest(Request* req)
 	switch (req->id)
 	{
 	case getRoomStateCode:
-		return new GetRoomStateResponce(handleGetRoomStateRequest((GetRoomStateRequest)(*req)));
+		return new GetRoomStateResponce(handleGetRoomStateRequest((GetRoomStateRequest*)(req)));
 	case LeaveRoomCode:
-		return new LeaveRoomResponce(handleLeaveRoomRequest((LeaveRoomRequest)(*req)));
+		return new LeaveRoomResponce(handleLeaveRoomRequest((LeaveRoomRequest*)(req)));
 
 	default:
 		return nullptr;
@@ -40,11 +40,11 @@ Request* RoomMemberHandler::GetRequestFromBuffer(const Buffer& buffer)
 		return nullptr;
 	}
 }
-inline LeaveRoomResponce RoomMemberHandler::handleLeaveRoomRequest(const LeaveRoomRequest request) const
+inline LeaveRoomResponce RoomMemberHandler::handleLeaveRoomRequest(LeaveRoomRequest* request) const
 {
 	LeaveRoomResponce ret;
-	auto user = LoggedUser{ .username = request.username };
-	RequsetFactory::getInstence().getRoomsManager().removeUser(request.roomId, user);
+	auto user = LoggedUser{ .username = request->username };
+	RequsetFactory::getInstence().getRoomsManager().removeUser(request->roomId, user);
 	auto buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
@@ -55,10 +55,10 @@ inline LeaveRoomResponce RoomMemberHandler::handleLeaveRoomRequest(const LeaveRo
 	return ret;
 }
 
-inline GetRoomStateResponce RoomMemberHandler::handleGetRoomStateRequest(const GetRoomStateRequest request) const
+inline GetRoomStateResponce RoomMemberHandler::handleGetRoomStateRequest(GetRoomStateRequest* request) const
 {
 	GetRoomStateResponce ret;
-	auto& roomData = RequsetFactory::getInstence().getRoomsManager().getRoom(request.roomId);
+	auto& roomData = RequsetFactory::getInstence().getRoomsManager().getRoom(request->roomId);
 	auto data = roomData.toString();
 	ret.buffer = Buffer{
 		.status = OK,

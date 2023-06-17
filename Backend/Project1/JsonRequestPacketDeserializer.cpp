@@ -132,7 +132,7 @@ GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateReques
    GetRoomStateRequest ret;
    auto json = http::json::JsonObject(buffer.data);
    ret.id = buffer.status;
-   ret.roomId = json["roomId"].integer_value();
+   ret.roomId = json["roomid"].integer_value();
    return ret;
 }
 
@@ -142,8 +142,8 @@ RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonO
     return RoomData{
         .id = getIntFromJson(id),
         .name = json["name"].string_value(),
-        .maxPlayers = getIntFromJson(maxPlayers),
-        .numOfQustions = getIntFromJson(numOfQustions),
+        .maxPlayers = getIntFromJson(maxNumOfPlayers),
+        .numOfQustions = getIntFromJson(numOfQuestions),
         .TimePerQuestion = getIntFromJson(TimePerQuestion),
         .isActive = false
     };
