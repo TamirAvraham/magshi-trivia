@@ -141,9 +141,9 @@ RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonO
 {
     return RoomData{
         .id = getIntFromJson(id),
-        .name = json["name"].string_value(),
-        .maxPlayers = getIntFromJson(maxNumOfPlayers),
-        .numOfQustions = getIntFromJson(numOfQuestions),
+        .name = json["Name"].string_value(),
+        .maxPlayers = getIntFromJson(MaxPlayers),
+        .numOfQustions = getIntFromJson(NumOfQuestions),
         .TimePerQuestion = getIntFromJson(TimePerQuestion),
         .isActive = false
     };
