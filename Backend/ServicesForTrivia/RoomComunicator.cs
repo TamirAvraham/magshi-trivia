@@ -98,7 +98,7 @@ namespace ServicesForTrivia
             var buffer = new Buffer(store, ((ushort)store.Length), createRoom);
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
-            return buffer.Status== ((byte)ResponceStatus.Ok);
+            return buffer.Status == ((byte)ResponceStatus.Ok);
         }
         private static RoomData GetRoomFromBuffer(ref Buffer roomBuffer)
         {

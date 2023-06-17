@@ -13,7 +13,7 @@ IRequestHandler* RequsetFactory::getFirstRequsetHandler(const Buffer& buffer) co
         return new LoginRequestHandler();
     case SIGNUP:
         return new SignupRequestHandler();
-    case getRoomCode:
+    case getRoomsCode:
         return new RoomsHandler();
     case getRoomStateCode:
         return new RoomMemberHandler();

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace GUI_for_trivia
 {
@@ -15,7 +16,8 @@ namespace GUI_for_trivia
     {
         List<RoomData> rooms;
         User user;
-        Timer timer;
+        DispatcherTimer timer;
+        Communicator communicator;
         private void Click_handler(object sender, RoutedEventArgs e)
         {
             var room = (RoomData)((Button)sender).Tag;
@@ -26,6 +28,7 @@ namespace GUI_for_trivia
         }
         private void initRoomsList()
         {
+            rooms_list.Items.Clear();
             foreach (var room in rooms)
             {
                 var roomButton = new Button();
@@ -45,10 +48,11 @@ namespace GUI_for_trivia
             rooms = RoomComunicator.GetRooms(Communicator.Instance);
 
             initRoomsList();    // Added this line because someone forgot to
-            //timer = new Timer(state =>
-            //{
-            //    this.Refresh();
-            //}, null, TimeSpan.Zero, TimeSpan.FromSeconds(3));
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Tick += (object sender, EventArgs e) => Refresh();
+            timer.Start();
+            communicator = Communicator.New();
         }
 
         private void create_room_Click(object sender, RoutedEventArgs e)
@@ -59,7 +63,7 @@ namespace GUI_for_trivia
         }
         void Refresh()
         {
-            rooms = RoomComunicator.GetRooms(Communicator.Instance);
+            rooms = RoomComunicator.GetRooms(communicator);
             initRoomsList();
         }
 

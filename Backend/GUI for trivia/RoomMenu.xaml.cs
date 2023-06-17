@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace GUI_for_trivia
 {
@@ -16,7 +18,7 @@ namespace GUI_for_trivia
         readonly User user;
         RoomData roomData;
         List<User> users = new List<User>();
-        Timer timer;
+        DispatcherTimer timer;
         public RoomView(User user, RoomData roomData)
         {
             InitializeComponent();
@@ -37,10 +39,11 @@ namespace GUI_for_trivia
                 players_list.Items.Add(GeneratePlayerComponent(newUser));
             }
 
-            //timer = new Timer(state =>
-            //{
-            //    this.Refresh();
-            //}, null, TimeSpan.Zero, TimeSpan.FromSeconds(3));
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Tick += (object sender, EventArgs e) => Refresh();
+            timer.Start();
+
         }
 
         /*

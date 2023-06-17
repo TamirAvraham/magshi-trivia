@@ -50,6 +50,7 @@ Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
 		return new GetRoomPlayersRequest(JsonRequestPacketDeserializer::deserializeGetRoomRequest(buffer));
 	case deleteRoomCode:
 		return new RemoveRoomRequest(JsonRequestPacketDeserializer::deserializeRemoveRoomRequest(buffer));
+	
 	case getRoomsCode:
 		return new GetRoomsRequest(JsonRequestPacketDeserializer::deserializeRoomsRequest(buffer));
 	case createRoomCode:

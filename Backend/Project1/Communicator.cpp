@@ -101,6 +101,7 @@ void Communicator::Handler()
                        throw std::invalid_argument("can processes request");
                    }
                     delete handler;
+                    delete request;
                     handler = responce->next;
                     
                     //free memory
@@ -109,6 +110,7 @@ void Communicator::Handler()
                     responceBuffer = responce->buffer;
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
                     send(newSocket, byteArray.first, byteArray.second, 0);
+                    
                 }
                 catch (const std::exception& e)
                 {
