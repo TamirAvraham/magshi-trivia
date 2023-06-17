@@ -48,11 +48,13 @@ inline GetTopPlayersResponce StatisticsHandler::handleGetTopPlayersRequest(const
 {
 	GetTopPlayersResponce ret;
 	auto topPlayers = RequsetFactory::getInstence().getStatManager().getTopFive(SqliteDataBase::GetInstance());
-	auto bufferData = JsonSirealizer::getVectorAsString(topPlayers);
+	auto data = http::json::JsonObject();
+	data.insert({ "top_players", { JsonSirealizer::getVectorAsString(topPlayers) } });
+	std::string dataAsString = data.ToString();
 	auto buffer = Buffer{ 
 		.status = OK,
-		.sizeOfData = (unsigned int)bufferData.size(),
-		.data = const_cast<char*>(bufferData.c_str())
+		.sizeOfData = static_cast<unsigned int>(dataAsString.size()),
+		.data = new char[dataAsString.size() + 1]
 	};
 	ret.buffer = buffer;
 	ret.next = new MenuHandler();

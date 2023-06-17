@@ -7,26 +7,26 @@
         mc:Ignorable="d"
         Title="RecordsTableWindow" Height="450" Width="800">
     <Grid>
-        <Label x:Name="number_one_place" Content="1" HorizontalAlignment="Left" Margin="130,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Gold"/>
-        <Label x:Name="number_one_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Gold"/>
-        <Label x:Name="number_one_score" Content="Score" HorizontalAlignment="Left" Margin="600,25,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Gold"/>
+        <Label x:Name="number_one_place" Content="1" HorizontalAlignment="Left" Margin="130,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Gold" Visibility="Hidden"/>
+        <Label x:Name="number_one_username" Content="Username:" HorizontalAlignment="Left" Margin="330,25,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Gold" Visibility="Hidden"/>
+        <Label x:Name="number_one_score" Content="Score" HorizontalAlignment="Left" Margin="600,25,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Gold" Visibility="Hidden"/>
 
-        <Label x:Name="number_two_place" Content="2" HorizontalAlignment="Left" Margin="130,75,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Silver"/>
-        <Label x:Name="number_two_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,75,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Silver"/>
-        <Label x:Name="number_two_score" Content="Score" HorizontalAlignment="Left" Margin="600,75,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Silver"/>
+        <Label x:Name="number_two_place" Content="2" HorizontalAlignment="Left" Margin="130,75,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Silver" Visibility="Hidden"/>
+        <Label x:Name="number_two_username" Content="Username:" HorizontalAlignment="Left" Margin="330,75,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Silver" Visibility="Hidden"/>
+        <Label x:Name="number_two_score" Content="Score" HorizontalAlignment="Left" Margin="600,75,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Silver" Visibility="Hidden"/>
 
-        <Label x:Name="number_three_place" Content="3" HorizontalAlignment="Left" Margin="130,125,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Brown"/>
-        <Label x:Name="number_three_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,125,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Brown"/>
-        <Label x:Name="number_three_score" Content="Score" HorizontalAlignment="Left" Margin="600,125,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Brown"/>
+        <Label x:Name="number_three_place" Content="3" HorizontalAlignment="Left" Margin="130,125,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Brown" Visibility="Hidden"/>
+        <Label x:Name="number_three_username" Content="Username:" HorizontalAlignment="Left" Margin="330,125,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Foreground="Brown" Visibility="Hidden"/>
+        <Label x:Name="number_three_score" Content="Score" HorizontalAlignment="Left" Margin="600,125,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Foreground="Brown" Visibility="Hidden"/>
 
-        <Label x:Name="number_four_place" Content="4" HorizontalAlignment="Left" Margin="130,175,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
-        <Label x:Name="number_four_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,175,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
-        <Label x:Name="number_four_score" Content="Score" HorizontalAlignment="Left" Margin="600,175,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+        <Label x:Name="number_four_place" Content="4" HorizontalAlignment="Left" Margin="130,175,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Visibility="Hidden"/>
+        <Label x:Name="number_four_username" Content="Username:" HorizontalAlignment="Left" Margin="330,175,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Visibility="Hidden"/>
+        <Label x:Name="number_four_score" Content="Score" HorizontalAlignment="Left" Margin="600,175,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Visibility="Hidden"/>
 
-        <Label x:Name="number_five_place" Content="5" HorizontalAlignment="Left" Margin="130,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
-        <Label x:Name="number_five_usernamel" Content="Username:" HorizontalAlignment="Left" Margin="330,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16"/>
-        <Label x:Name="number_five_score" Content="Score" HorizontalAlignment="Left" Margin="600,225,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16"/>
+        <Label x:Name="number_five_place" Content="5" HorizontalAlignment="Left" Margin="130,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Visibility="Hidden"/>
+        <Label x:Name="number_five_username" Content="Username:" HorizontalAlignment="Left" Margin="330,225,0,0" VerticalAlignment="Top" Width="100" Height="34" FontSize="16" Visibility="Hidden"/>
+        <Label x:Name="number_five_score" Content="Score" HorizontalAlignment="Left" Margin="600,225,0,0" VerticalAlignment="Top" Width="150" Height="34" FontSize="16" Visibility="Hidden"/>
 
-        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="172,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B"/>
+        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="188,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B" Click="return_back_button_Click"/>
     </Grid>
 </Window>

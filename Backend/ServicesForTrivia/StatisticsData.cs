@@ -26,4 +26,19 @@ namespace ServicesForTrivia
         public int Total_games { get => total_games; set => total_games = value; }
         public int Correct_answers { get => correct_answers; set => correct_answers = value; }
     }
+
+    public struct GameData
+    {
+        private string username;
+        private int points;
+
+        public GameData(string username, int points)
+        {
+            this.username = username;
+            this.points = points;
+        }
+
+        public string Username { get => username; set => username = value; }
+        public int Points { get => points; set => points = value; }
+    }
 }

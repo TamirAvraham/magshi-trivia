@@ -24,6 +24,6 @@
         <Label x:Name="total_games_value_label" Content="Insert Total Games Here" HorizontalAlignment="Left" Margin="250,225,0,0" VerticalAlignment="Top" Width="200" Height="34" FontSize="16"/>
 
 
-        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="172,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B"/>
+        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="172,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B" Click="Return_Back_Click"/>
     </Grid>
 </Window>

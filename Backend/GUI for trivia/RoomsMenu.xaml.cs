@@ -59,5 +59,19 @@ namespace GUI_for_trivia
             rooms = RoomComunicator.GetRooms();
             initRoomsList();
         }
+
+        private void personal_statistic_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new PersonalStatisticsWindow(user);
+            win.Show();
+            this.Close();
+        }
+
+        private void records_table_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new RecordsTableWindow(user);
+            win.Show();
+            this.Close();
+        }
     }
 }

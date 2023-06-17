@@ -11,6 +11,8 @@
         </ListBox>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Rooms:" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.487,-0.124" Height="30" Width="86" TextAlignment="Center" FontWeight="Bold"/>
         <Button x:Name="create_room" Content="Create Room" HorizontalAlignment="Center" Margin="0,358,0,0" VerticalAlignment="Top" Height="66" Width="184" Background="#FF76E40C" FontSize="18" FontWeight="Bold" Click="create_room_Click"/>
-
+        <Button x:Name="personal_statistic_button" Content="Personal Statistic" HorizontalAlignment="Center" Margin="-500,358,0,0" VerticalAlignment="Top" Height="66" Width="184" Background="Coral" FontSize="18" FontWeight="Bold" Click="personal_statistic_Click"/>
+        <Button x:Name="records_table_button" Content="Records Table" HorizontalAlignment="Center" Margin="+500,358,0,0" VerticalAlignment="Top" Height="66" Width="184" Background="Aqua" FontSize="18" FontWeight="Bold" Click="records_table_Click"/>
+        
     </Grid>
 </Window>
