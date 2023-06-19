@@ -5,7 +5,7 @@
 #include "RequsetFactory.h"
 #include <future>
 
-
+#define invalid_status(first_char) first_char != ROOM_CHAR and first_char != STATISTICS_CHAR and first_char != ADMIN_CHAR and first_char != MEMBER_CHAR and first_char != 7 and first_char != 8
 Communicator::Communicator(int port, std::string ip) :_ipAddress(ip), _port(port), _socketAddress_len(sizeof(_socketAddress)), _socketAddress()
 {
     if (startServer() != 1)
@@ -110,6 +110,10 @@ void Communicator::Handler()
                     responceBuffer = responce->buffer;
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
                     send(newSocket, byteArray.first, byteArray.second, 0);
+                    if (responce->buffer.data != nullptr && *(responce->buffer.data) != '\0')
+                    {
+                        delete[] responce->buffer.data;
+                    }
                     
                 }
                 catch (const std::exception& e)
@@ -150,7 +154,14 @@ std::pair<char*, int>& Communicator::getByteArrayFromBuffer(const Buffer& buffer
     std::memcpy(formattedData + sizeOfStatusInHeader, &buffer.sizeOfData, sizeOfDataLengthInHeader);
 
     
-    std::memcpy(formattedData + sizeOfStatusInHeader + sizeOfDataLengthInHeader, buffer.data, buffer.sizeOfData);
+    if (buffer.data != nullptr && *(buffer.data) != '\0')
+    {
+        std::memcpy(formattedData + sizeOfStatusInHeader + sizeOfDataLengthInHeader, buffer.data, buffer.sizeOfData);
+    }
+    else
+    {
+        formattedData[size - 1] = '\0';
+    }
 
     
     std::pair<char*, int> result(formattedData, size);
@@ -172,14 +183,29 @@ Buffer Communicator::getBuffer(SOCKET socket) const
     {
         // Handle error
         // ...
-    }
+        return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
 
+    }
+    try
+    {
+        char first_char = std::to_string(buffer.status)[0];
+        if (first_char != ROOM_CHAR && first_char != STATISTICS_CHAR && first_char != ADMIN_CHAR && first_char != MEMBER_CHAR && first_char != '7' && first_char != '8')
+        {
+            return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
+        }
+    }
+    catch (...)
+    {
+        throw;
+    }
     // Read size of data (4 bytes) from socket
     bytesReceived = recv(socket, (char*)&buffer.sizeOfData, sizeof(buffer.sizeOfData), 0);
     if (bytesReceived != sizeof(buffer.sizeOfData))
     {
         // Handle error
         // ...
+        return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
+
     }
 
     // Allocate memory for data buffer
@@ -193,6 +219,8 @@ Buffer Communicator::getBuffer(SOCKET socket) const
         {
             // Handle error
             // ...
+            return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
+
         }
         buffer.data[buffer.sizeOfData] = '\0';
         // Set time stamp for buffer

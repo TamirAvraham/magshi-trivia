@@ -114,7 +114,7 @@ inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(CreateRoomReques
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
-		.data = const_cast<char*>("")
+		.data = nullptr
 	};
 	return ret;
 }
@@ -126,7 +126,7 @@ inline RemoveRoomResponce RoomsHandler::handleRemoveRoomRequest(RemoveRoomReques
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
-		.data = const_cast<char*>("")
+		.data = nullptr
 	};
 	ret.next = new MenuHandler();
 
@@ -161,7 +161,7 @@ inline JoinRoomResponce RoomsHandler::handleJoinRoomRequest(JoinRoomRequest* req
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
-		.data = const_cast<char*>("")
+		.data = nullptr
 	};
 	ret.next = new RoomMemberHandler();
 	return ret;

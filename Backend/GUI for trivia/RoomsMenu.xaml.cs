@@ -51,8 +51,8 @@ namespace GUI_for_trivia
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(3);
             timer.Tick += (object sender, EventArgs e) => Refresh();
-            timer.Start();
-            communicator = Communicator.New();
+            //timer.Start();
+            //communicator = Communicator.New();
         }
 
         private void create_room_Click(object sender, RoutedEventArgs e)
