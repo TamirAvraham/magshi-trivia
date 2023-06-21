@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="AdminRoomHandler.cpp" />
     <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonObject.cpp" />
     <ClCompile Include="JsonParser.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="AdminRoomHandler.h" />
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="JsonObject.h" />

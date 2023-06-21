@@ -62,6 +62,13 @@ std::string SqliteDataBase::getQuestion()
 	return questions[rand() % questions.size()].question;
 }
 
+std::vector<Question> SqliteDataBase::getQuestions()
+{
+	std::vector<Question> questions;
+	sendSQL("SELECT * FROM questions;", callbackQuestion, &questions);
+	return questions;
+}
+
 std::string SqliteDataBase::getCorrectAnswer(std::string question)
 {
 	std::vector<Question> questions;

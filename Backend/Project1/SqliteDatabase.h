@@ -13,7 +13,7 @@ constexpr auto CREATE_STATISTICS_TABLE = "CREATE TABLE IF NOT EXISTS statistics 
 constexpr auto CREATE_GAME_RECORDS_TABLE = "CREATE TABLE IF NOT EXISTS game_records (name_of_user TEXT PRIMARY KEY, points INTEGER, FOREIGN KEY (name_of_user) REFERENCES users(username));";
 
 constexpr auto ADD_QUESTION_1 = "INSERT OR IGNORE INTO questions VALUES('Cube root of -1 is...','-1','i','I','-i');";
-constexpr auto ADD_QUESTION_2 = "INSERT OR IGNORE  INTO questions VALUES('Who is the best teacher?','Eitan','Not Eitan','Someone other than Eitan','Bob');";
+constexpr auto ADD_QUESTION_2 = "INSERT OR IGNORE  INTO questions VALUES('What is a watermellon?','Berry','Vegetable','Chocolate','Tree');";
 constexpr auto ADD_QUESTION_3 = "INSERT OR IGNORE  INTO questions VALUES('What is the correct answer?','Correct Answer','I am','Correct','Answer');";
 constexpr auto ADD_QUESTION_4 = "INSERT OR IGNORE  INTO questions VALUES('Will you answer this question correct?','I just did','Probably no','Maybe','Not(Not(Not(Not(Not(Not(No)))))');";
 constexpr auto ADD_QUESTION_5 = "INSERT OR IGNORE  INTO questions VALUES('Am I dead or alive','Neither, you''re a machine','Dead','Alive','If god made you then yes');";
@@ -25,6 +25,12 @@ constexpr auto ADD_QUESTION_10 = "INSERT OR IGNORE  INTO questions VALUES('What 
 
 struct Game_Statistic;
 struct Statistic;
+struct Question
+{
+	std::string question;
+	std::string correct_answer;
+	std::string wrong_answers[3];
+};
 class SqliteDataBase : public IDatabase
 {
 public:
@@ -40,6 +46,7 @@ public:
 
 	// Question related functions
 	std::string getQuestion();
+	std::vector<Question> getQuestions();
 	std::string getCorrectAnswer(std::string question);
 	std::vector<std::string> getAllAnswers(std::string question);
 
@@ -69,12 +76,7 @@ struct User
 	std::string email;
 };
 
-struct Question
-{
-	std::string question;
-	std::string correct_answer;
-	std::string wrong_answers[3];
-};
+
 
 struct Statistic
 {

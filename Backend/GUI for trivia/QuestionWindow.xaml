@@ -1,0 +1,21 @@
+﻿<Window x:Class="GUI_for_trivia.QuestionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI_for_trivia"
+        mc:Ignorable="d"
+        Title="QuestionWindow" Height="450" Width="800">
+    <Grid>
+        <Label x:Name="quesiton_label" Content="Question Here" HorizontalAlignment="Left" Margin="40,25,0,0" VerticalAlignment="Top" Width="720" Height="150" FontSize="22"/>
+
+        <Button x:Name="answer_1_label" Content="Answer 1" HorizontalAlignment="Left" Margin="40,180,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="Gold" Click="return_back_button_Click"/>
+        <Button x:Name="answer_2_label" Content="Answer 2" HorizontalAlignment="Left" Margin="420,180,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="Gold" Click="return_back_button_Click"/>
+        <Button x:Name="answer_3_label" Content="Answer 3" HorizontalAlignment="Left" Margin="420,280,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="gold" Click="return_back_button_Click"/>
+        <Button x:Name="answer_4_label" Content="Answer 4" HorizontalAlignment="Left" Margin="40,280,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="gold" Click="return_back_button_Click"/>
+
+        <Label x:Name="time_left_label" Content="seconds: X" HorizontalAlignment="Left" Margin="50,375,0,0" VerticalAlignment="Top" Width="170" Height="50" FontSize="22" Foreground="LightSeaGreen"/>
+        <Label x:Name="correct_answers_label" Content="correct answers: Y" HorizontalAlignment="Left" Margin="250,375,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="22" Foreground="Green"/>
+        <Label x:Name="question_left_label" Content="questions left: Z" HorizontalAlignment="Left" Margin="500,375,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="22" Foreground="BlueViolet"/>
+    </Grid>
+</Window>
