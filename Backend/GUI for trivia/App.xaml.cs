@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows;
 
 namespace GUI_for_trivia
 {
@@ -7,5 +9,6 @@ namespace GUI_for_trivia
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }

@@ -15,14 +15,14 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 	ret->next = new MenuHandler();
 	bool noError = true;
 	std::string retData;
-	try
-	{
+	/*try
+	{*/
 		LoginRequest* loginRequest = (LoginRequest*)req;
 		retBuffer.status = OK;
 		auto& instence = RequsetFactory::getInstence();
 		instence.getLoginManager().Login(loginRequest->_username, loginRequest->_password);
 		
-	}
+	/*}
 	catch (int errNum)
 	{
 		if (WRONG_PASSWORD_ERROR == errNum)
@@ -48,9 +48,10 @@ Responce* LoginRequestHandler::HandlerRequest(Request* req)
 	if (noError)
 	{
 		retData = retJsonMessage.ToString();
-	}
-	retBuffer.sizeOfData = retData.length();
-	retBuffer.data = const_cast<char*>(retData.c_str());
+	}*/
+	retBuffer.sizeOfData = 0;
+	retBuffer.data = new char[1];
+	retBuffer.data[0] = '\0';
 	ret->buffer = retBuffer;
 	
     return ret;

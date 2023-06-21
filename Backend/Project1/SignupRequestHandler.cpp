@@ -15,13 +15,13 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
 	ret.next = new MenuHandler();
 	bool noError = true;
 	std::string retData;
-	try
-	{
+	/*try
+	{*/
 		SignUpRequest* signupRequest = (SignUpRequest*)req;
 		retBuffer.status = OK;
-		auto instence = RequsetFactory::getInstence();
+		auto& instence = RequsetFactory::getInstence();
 		instence.getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
-	}
+	/*}
 	catch (int errNum)
 	{
 		if (USER_EXISTS_ERROR == errNum)
@@ -43,13 +43,14 @@ Responce* SignupRequestHandler::HandlerRequest(Request* req)
 	"error": "signup failed due to unexpected error")";
 		retBuffer.status = Error;
 		noError = false;
-	}
+	}*/
 	if (noError)
 	{
 		retData = retJsonMessage.ToString();
 	}
-	retBuffer.sizeOfData = retData.length();
-	retBuffer.data = const_cast<char*>(retData.c_str());
+	retBuffer.sizeOfData = 0;
+	retBuffer.data = new char[1];
+	retBuffer.data[0] = '\0';
 	ret.buffer = retBuffer;
 	return &ret;
 }

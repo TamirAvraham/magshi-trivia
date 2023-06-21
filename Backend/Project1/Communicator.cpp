@@ -6,6 +6,17 @@
 #include <future>
 
 #define invalid_status(first_char) first_char != ROOM_CHAR and first_char != STATISTICS_CHAR and first_char != ADMIN_CHAR and first_char != MEMBER_CHAR and first_char != 7 and first_char != 8
+
+void logBuffer(const Buffer& buffer) {
+    std::cout << "status: " << std::to_string(buffer.status) << " size of data: " << buffer.sizeOfData;
+    if (buffer.sizeOfData>0)
+    {
+        std::cout << " data: "<<std::string{buffer.data};
+    }
+    std::cout << std::endl;
+}
+
+
 Communicator::Communicator(int port, std::string ip) :_ipAddress(ip), _port(port), _socketAddress_len(sizeof(_socketAddress)), _socketAddress()
 {
     if (startServer() != 1)
@@ -83,14 +94,17 @@ void Communicator::Handler()
             IRequestHandler* handler = RequsetFactory::getInstence().getFirstRequsetHandler(buffer);
             _clients.emplace(newSocket, handler);
             Buffer responceBuffer;
+            Responce* responce;
             while (handler!=nullptr)
             {
                 
                 //procees request
-                Responce* responce;
+                
                 try
                 {
                    auto request = handler->GetRequestFromBuffer(buffer);
+                   std::cout << "request: ";
+                   logBuffer(buffer);
                    if (request==nullptr)
                    {
                        throw std::invalid_argument("invalid request");
@@ -110,9 +124,12 @@ void Communicator::Handler()
                     responceBuffer = responce->buffer;
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
                     send(newSocket, byteArray.first, byteArray.second, 0);
+                    std::cout << "my response: ";
+                    logBuffer(responceBuffer);
                     if (responce->buffer.data != nullptr && *(responce->buffer.data) != '\0')
                     {
                         delete[] responce->buffer.data;
+                        
                     }
                     
                 }
@@ -120,11 +137,39 @@ void Communicator::Handler()
                 {
                     http::json::JsonObject errorjson;
                     errorjson.insert({ "error",{e.what()} });
+                    std::string jsonCache = errorjson.ToString();
+
                     responceBuffer.status = Error;
-                    responceBuffer.sizeOfData = errorjson.ToString().length();
-                    responceBuffer.data = const_cast<char*>(errorjson.ToString().c_str());
+                    responceBuffer.sizeOfData = jsonCache.length();
+                    responceBuffer.data = new char[jsonCache.length() + 1];
+                    std::copy(jsonCache.begin(), jsonCache.end(), responceBuffer.data);
+                    responceBuffer.data[jsonCache.size()] = '\0';
+
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+
                     send(newSocket, byteArray.first, byteArray.second, 0);
+
+                    std::cout << "my response: ";
+                    logBuffer(responceBuffer);
+                }
+                catch (...)
+                {
+                    http::json::JsonObject errorjson;
+                    errorjson.insert({ "error",{"had an internal error soz UwU"}});
+                    std::string jsonCache = errorjson.ToString();
+
+                    responceBuffer.status = Error;
+                    responceBuffer.sizeOfData = jsonCache.length();
+                    responceBuffer.data = new char[jsonCache.length()+1];
+                    std::copy(jsonCache.begin(), jsonCache.end(), responceBuffer.data);
+                    responceBuffer.data[jsonCache.size()] = '\0';
+
+                    std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+
+                    send(newSocket, byteArray.first, byteArray.second, 0);
+
+                    std::cout << "my response: ";
+                    logBuffer(responceBuffer);
                 }
 
                 if (handler!=nullptr)
