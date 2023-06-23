@@ -22,12 +22,10 @@ namespace GUI_for_trivia
     {
         List<GameData> results;
         User user;
-        public GameResultsWindow(User user)
+        public GameResultsWindow(List<string> users, User currentUser)
         {
             InitializeComponent();
-            this.user = user;
-
-
+            this.user = currentUser;
         }
     }
 }

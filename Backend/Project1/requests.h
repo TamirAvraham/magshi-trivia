@@ -30,9 +30,13 @@ constexpr unsigned char getRoomStateCode = 51;
 constexpr unsigned char LeaveRoomCode = 52;
 
 constexpr char QUESTION_CHAR = '6';
-constexpr unsigned char getRoomStateCode = 61;
-constexpr unsigned char LeaveRoomCode = 62;
+constexpr unsigned char getQuestion = 61;
+constexpr unsigned char getAnswers = 62;
 constexpr unsigned char getCorrectAnswer = 63;
+constexpr unsigned char getUserPoints = 64;
+
+
+
 
 struct Buffer
 {

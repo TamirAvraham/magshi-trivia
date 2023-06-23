@@ -30,12 +30,19 @@ std::string Game::getQuestionForUser(const LoggedUser& user)
     return "";
 }
 
-std::vector<std::string> Game::getAnswers(std::string question)
+std::vector<std::string> Game::getAnswers(const std::string question)
 {
 	return SqliteDataBase::GetInstance().getAllAnswers(question);
 }
 
-std::string Game::getCorrectAnswer(std::string question)
+std::string Game::getCorrectAnswer(const std::string question)
 {
 	return SqliteDataBase::GetInstance().getCorrectAnswer(question);
+}
+
+int Game::getPlayerPoints(const LoggedUser& user)
+{
+    if (std::find(usersAndTheirData.begin(), usersAndTheirData.end(), user) != usersAndTheirData.end())
+        return (POINTS_PER_CORRECT_ASNWER * 100 - POINTS_PER_CORRECT_ASNWER * usersAndTheirData[user].average_time_per_question) * (1 + usersAndTheirData[user].correct_answer_count / 10.0);
+    return NULL;
 }

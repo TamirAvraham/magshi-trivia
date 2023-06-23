@@ -4,6 +4,8 @@
 #include "loggedUser.h"
 #include "JsonSirealizer.h"
 
+#define POINTS_PER_CORRECT_ASNWER 1000
+
 //struct QuestionAndAnswers
 //{
 //	std::string question;
@@ -36,8 +38,9 @@ class Game
 {
 	Game();
 	std::string getQuestionForUser(const LoggedUser& user);
-	std::vector<std::string> getAnswers(std::string question);
-	std::string getCorrectAnswer(std::string question);
+	std::vector<std::string> getAnswers(const std::string question);
+	std::string getCorrectAnswer(const std::string question);
+	int getPlayerPoints(const LoggedUser& user);
 private:
 	std::vector<Question> questions;
 	std::map<LoggedUser, QuestionsData> usersAndTheirData;

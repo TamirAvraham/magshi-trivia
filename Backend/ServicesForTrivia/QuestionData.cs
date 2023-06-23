@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ServicesForTrivia
 {
+    
     public struct QuestionData
     {
-
         [JsonPropertyName("question")]
         public string Question { get; set; }
 

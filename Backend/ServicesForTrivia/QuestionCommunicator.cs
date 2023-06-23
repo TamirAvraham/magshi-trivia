@@ -27,7 +27,7 @@ namespace ServicesForTrivia
         {
             var req = new { question = question};
             var questionAsBytes = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(req));
-            var buffer = new Buffer(questionAsBytes, ((ushort)questionAsBytes.Length), getQuestion);
+            var buffer = new Buffer(questionAsBytes, ((ushort)questionAsBytes.Length), getAnswers);
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
             var data = Encoding.ASCII.GetString(buffer.Data);
