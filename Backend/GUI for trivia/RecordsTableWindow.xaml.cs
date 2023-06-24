@@ -1,6 +1,7 @@
 ﻿using ServicesForTrivia;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +49,11 @@ namespace GUI_for_trivia
             records = StatisticsCommunicator.getTopFive();
             updateRecords();
         }
-
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            timer.Stop();
+            base.OnClosing(e);  
+        }
         private void updateRecords()
         {
             // First Clearing the table
@@ -98,5 +103,6 @@ namespace GUI_for_trivia
                     break;
             }
         }
+
     }
 }

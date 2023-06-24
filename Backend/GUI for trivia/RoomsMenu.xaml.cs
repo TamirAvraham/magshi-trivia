@@ -1,6 +1,7 @@
 ﻿using ServicesForTrivia;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,7 +27,7 @@ namespace GUI_for_trivia
             window.Show();
             this.Close();
         }
-        private void initRoomsList()
+        private void InitRoomsList()
         {
             rooms_list.Items.Clear();
             foreach (var room in rooms)
@@ -47,12 +48,12 @@ namespace GUI_for_trivia
             this.user = user;
             rooms = RoomComunicator.GetRooms(Communicator.Instance);
 
-            initRoomsList();    // Added this line because someone forgot to
+            InitRoomsList();    // Added this line because someone forgot to
+            //communicator = Communicator.New();
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(3);
             timer.Tick += (object sender, EventArgs e) => Refresh();
             timer.Start();
-            communicator = Communicator.New();
         }
 
         private void create_room_Click(object sender, RoutedEventArgs e)
@@ -63,8 +64,8 @@ namespace GUI_for_trivia
         }
         void Refresh()
         {
-            rooms = RoomComunicator.GetRooms(communicator);
-            initRoomsList();
+            rooms = RoomComunicator.GetRooms(Communicator.Instance);
+            InitRoomsList();
         }
 
         private void my_stats_button_Copy_Click(object sender, RoutedEventArgs e)
@@ -82,6 +83,12 @@ namespace GUI_for_trivia
             var win = new RecordsTableWindow(topFIveList, user);
             win.Show();
             this.Close();
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            timer.Stop();
+            base.OnClosing(e);
+
         }
     }
 }

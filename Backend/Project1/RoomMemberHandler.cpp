@@ -48,7 +48,7 @@ inline LeaveRoomResponce RoomMemberHandler::handleLeaveRoomRequest(LeaveRoomRequ
 	auto buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
-		.data = const_cast<char*>(""),
+		.data = nullptr,
 	};
 	ret.buffer = buffer;
 	ret.next = new RoomMemberHandler();

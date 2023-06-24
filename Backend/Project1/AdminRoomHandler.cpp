@@ -69,7 +69,7 @@ inline StartRoomResponce AdminRoomHandler::handleStartRoomRequest(const Request*
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
-		.data = const_cast<char*>("")
+		.data = nullptr
 	};
 	ret.next = new MenuHandler();
 	return ret;
@@ -88,7 +88,7 @@ inline CloseRoomResponce AdminRoomHandler::handleCloseRoomRequest(const Request*
 	ret.buffer = Buffer{
 		.status = OK,
 		.sizeOfData = 0,
-		.data = const_cast<char*>("")
+		.data = nullptr
 	};
 	ret.next = new MenuHandler();
 	return ret;
