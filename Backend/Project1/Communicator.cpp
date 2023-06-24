@@ -148,7 +148,7 @@ void Communicator::Handler()
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
 
                     send(newSocket, byteArray.first, byteArray.second, 0);
-
+                    handler = nullptr;
                     std::cout << "my response: ";
                     logBuffer(responceBuffer);
                 }
@@ -167,7 +167,7 @@ void Communicator::Handler()
                     std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
 
                     send(newSocket, byteArray.first, byteArray.second, 0);
-
+                    handler = nullptr;
                     std::cout << "my response: ";
                     logBuffer(responceBuffer);
                 }
@@ -223,11 +223,12 @@ Buffer Communicator::getBuffer(SOCKET socket) const
     Buffer buffer;
 
     // Read status byte from socket
+    readBuffer:
     int bytesReceived = recv(socket, (char*)&buffer.status, sizeof(buffer.status), 0);
     if (bytesReceived != sizeof(buffer.status))
     {
-        // Handle error
-        // ...
+        int error = WSAGetLastError();
+        std::cout << "error in getting status num " << error << std::endl;
         return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
 
     }
@@ -236,6 +237,11 @@ Buffer Communicator::getBuffer(SOCKET socket) const
         char first_char = std::to_string(buffer.status)[0];
         if (first_char != ROOM_CHAR && first_char != STATISTICS_CHAR && first_char != ADMIN_CHAR && first_char != MEMBER_CHAR && first_char != '7' && first_char != '8')
         {
+            if (first_char=='\0')
+            {
+                goto readBuffer;
+            }
+            int error = WSAGetLastError();
             return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
         }
     }
@@ -245,12 +251,16 @@ Buffer Communicator::getBuffer(SOCKET socket) const
     }
     // Read size of data (4 bytes) from socket
     bytesReceived = recv(socket, (char*)&buffer.sizeOfData, sizeof(buffer.sizeOfData), 0);
-    if (bytesReceived != sizeof(buffer.sizeOfData))
-    {
-        // Handle error
-        // ...
-        return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
+    while (bytesReceived < sizeof(buffer.sizeOfData)) {
+        int currentBytes = recv(socket, reinterpret_cast<char*>(&buffer.sizeOfData) + bytesReceived, sizeof(buffer.sizeOfData) - bytesReceived, 0);
 
+        if (currentBytes <= 0) {
+            int error = errno;
+            std::cout << "error in getting size of data num " << error << std::endl;
+            return Buffer{ .status = 1 };
+        }
+
+        bytesReceived += currentBytes;
     }
 
     // Allocate memory for data buffer
@@ -260,12 +270,23 @@ Buffer Communicator::getBuffer(SOCKET socket) const
     {
         buffer.data = new char[buffer.sizeOfData + 1];
         bytesReceived = recv(socket, buffer.data, buffer.sizeOfData, 0);
-        if (bytesReceived != buffer.sizeOfData)
+        if (bytesReceived < buffer.sizeOfData)
         {
-            // Handle error
-            // ...
-            return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
+            buffer.sizeOfData = bytesReceived;
+            char* temp = new char[buffer.sizeOfData + 1];
 
+            std::memcpy(temp, buffer.data, buffer.sizeOfData);
+            delete[] buffer.data;
+
+            buffer.data = new char[buffer.sizeOfData + 1];
+            std::memcpy(buffer.data, temp, buffer.sizeOfData);
+            delete[] temp;
+
+
+        }
+        else if (bytesReceived > buffer.sizeOfData)
+        {
+            return Buffer{ .status = 1 }; //we have no status named 1 witch means the next handler to take it will fail and throw an error
         }
         buffer.data[buffer.sizeOfData] = '\0';
         // Set time stamp for buffer
