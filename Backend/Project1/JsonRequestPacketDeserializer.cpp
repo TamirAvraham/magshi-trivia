@@ -136,6 +136,59 @@ GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateReques
    return ret;
 }
 
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(const Buffer& buffer)
+{
+    SubmitAnswerRequest ret;
+    auto json = http::json::JsonObject(buffer.data);
+    ret.id = buffer.status;
+    ret.answer = json["answer"].string_value();
+    ret.question = json["question"].string_value();
+    ret.username = json["username"].string_value();
+    ret.gameId = json["gameId"].integer_value();
+    ret.timeToAnswer = json["timeToAnswer"].integer_value();
+    return ret;
+}
+
+GetAnswersRequest JsonRequestPacketDeserializer::deserializeGetAnswersRequest(const Buffer& buffer)
+{
+    GetAnswersRequest ret;
+    auto json = http::json::JsonObject(buffer.data);
+    ret.id = buffer.status;
+    ret.gameId = json["gameId"].integer_value();
+    ret.question = json["question"].string_value();
+    return ret;
+}
+
+GetQuestionRequest JsonRequestPacketDeserializer::deserializeGetQuestionRequest(const Buffer& buffer)
+{
+    GetQuestionRequest ret;
+    auto json = http::json::JsonObject(buffer.data);
+    ret.id = buffer.status;
+    ret.gameId = json["gameId"].integer_value();
+    ret.username = json["username"].string_value();
+    return ret;
+}
+
+GetCorrectAnswerRequest JsonRequestPacketDeserializer::deserializeGetCorrectAnswerRequest(const Buffer& buffer)
+{
+    GetCorrectAnswerRequest ret;
+    auto json = http::json::JsonObject(buffer.data);
+    ret.id = buffer.status;
+    ret.gameId = json["gameId"].integer_value();
+    ret.question = json["question"].string_value();
+    return ret;
+}
+
+GetUserPointsRequest JsonRequestPacketDeserializer::deserializeGetUserPointsRequest(const Buffer& buffer)
+{
+     GetUserPointsRequest ret;
+     auto json = http::json::JsonObject(buffer.data);
+     ret.id = buffer.status;
+     ret.gameId = json["gameId"].integer_value();
+     ret.username = json["username"].string_value();
+     return ret;
+}
+
 
 RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonObject& json)
 {

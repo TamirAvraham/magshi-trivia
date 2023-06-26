@@ -21,6 +21,12 @@ public:
 	static LeaveRoomRequest deserializeLeaveRoomRequest(const Buffer& buffer);
 	static StartRoomRequest deserializeStartRoomRequest(const Buffer& buffer);
 	static GetRoomStateRequest deserializeGetRoomStateRequest(const Buffer& buffer);
+
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(const Buffer& buffer);
+	static GetAnswersRequest deserializeGetAnswersRequest(const Buffer& buffer);
+	static GetQuestionRequest deserializeGetQuestionRequest(const Buffer& buffer);
+	static GetCorrectAnswerRequest deserializeGetCorrectAnswerRequest(const Buffer& buffer);
+	static GetUserPointsRequest deserializeGetUserPointsRequest(const Buffer& buffer);
 private:
 	static RoomData RoomDatafromJson(const http::json::JsonObject& json);
 };

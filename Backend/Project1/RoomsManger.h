@@ -32,16 +32,21 @@ private:
 	RoomData data;
 	std::vector<LoggedUser> users;
 	const LoggedUser admin;
+	int id;
 	/*static RoomData DatafromJson(const http::json::JsonObject& json);*/
 public:
 	RoomData getData()const;
 	std::vector<std::string> getAllUsers()const;
+	const std::vector<LoggedUser>& getUsers()const;
 	void AddUser(const LoggedUser& user);
 	void removeUser(const LoggedUser& user);
 	Room(const RoomData& data, const LoggedUser& user);
 	inline bool isAdmin(const LoggedUser& user)const;
 	std::string toString()const;
-	void start();
+	int start();
+	int getId()const;
+	void setId(const int& id);
+	void setId(int&& id);
 };
 
 class RoomManger {

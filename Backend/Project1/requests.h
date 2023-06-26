@@ -34,6 +34,8 @@ constexpr unsigned char getQuestion = 61;
 constexpr unsigned char getAnswers = 62;
 constexpr unsigned char getCorrectAnswer = 63;
 constexpr unsigned char getUserPoints = 64;
+constexpr unsigned char submitAnswer = 65;
+
 
 
 
@@ -110,4 +112,28 @@ struct LeaveRoomRequest :Request {
 //get room state
 struct GetRoomStateRequest :Request {
 	int roomId;
+};
+struct SubmitAnswerRequest: Request
+{
+	int gameId;
+	int timeToAnswer;
+	std::string username;
+	std::string question;
+	std::string answer;
+};
+struct GetQuestionRequest :Request {
+	std::string username;
+	int gameId;
+};
+struct GetAnswersRequest :Request {
+	std::string question;
+	int gameId;
+};
+struct GetCorrectAnswerRequest :Request {
+	std::string question;
+	int gameId;
+};
+struct GetUserPointsRequest :Request {
+	int gameId;
+	std::string username;
 };

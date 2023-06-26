@@ -32,17 +32,65 @@ struct QuestionsData
 	int correct_answer_count;
 	int wrong_answer_count;
 	int average_time_per_question;
+
+	int total_time;
+	bool operator==(const QuestionsData& other) const
+	{
+		return answered_questions == other.answered_questions && correct_answer_count == other.correct_answer_count && wrong_answer_count == other.wrong_answer_count && average_time_per_question == other.average_time_per_question;
+	}
 };
 
 class Game
 {
-	Game();
-	std::string getQuestionForUser(const LoggedUser& user);
-	std::vector<std::string> getAnswers(const std::string question);
-	std::string getCorrectAnswer(const std::string question);
-	int getPlayerPoints(const LoggedUser& user);
+public:
+	Game(const Room& room);
+	std::string getQuestionForUser(const LoggedUser& user)const;
+	std::vector<std::string> getAnswers(const std::string& question)const;
+	std::string getCorrectAnswer(const std::string& question)const;
+	bool submitAnswer(const LoggedUser& user, const std::string& question, const std::string&  answer, const int& duration );
+	int getPlayerPoints(const LoggedUser& user)const;
+	int getRoomId()const;
+	
 private:
+	int roomId;
 	std::vector<Question> questions;
-	std::map<LoggedUser, QuestionsData> usersAndTheirData;
-};
+	mutable std::map<LoggedUser, QuestionsData> usersAndTheirData;
+	
+public:
 
+	bool operator==(const Game& other) const {
+		if (usersAndTheirData.size() != other.usersAndTheirData.size()) {
+			return false;
+		}
+
+		// Iterate over each key-value pair and check for equality
+		for (const auto& pair : usersAndTheirData) {
+			const auto& user = pair.first;
+			const auto& data = pair.second;
+
+			// Check if the user exists in the other Game object
+			if (other.usersAndTheirData.count(user) == 0) {
+				return false;
+			}
+
+			// Compare the QuestionsData objects
+			if (data.correct_answer_count != other.usersAndTheirData.at(user).correct_answer_count ||
+				data.wrong_answer_count != other.usersAndTheirData.at(user).wrong_answer_count ||
+				data.average_time_per_question != other.usersAndTheirData.at(user).average_time_per_question ||
+				data.answered_questions != other.usersAndTheirData.at(user).answered_questions) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+};
+class GameManger {
+private:
+	std::vector<Game> games;
+	
+public:
+	Game& getGame(const int& id);
+	int createNewGame(const Room& room);
+	void deleteGame(const int& id);
+};

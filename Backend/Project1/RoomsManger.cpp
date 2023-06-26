@@ -1,5 +1,6 @@
 #include "RoomsManger.h"
 #include "JsonSirealizer.h"
+#include "RequsetFactory.h"
 #define getIntFromJson(param_name) (unsigned int)json[#param_name].integer_value()
 //RoomData Room::DatafromJson(const http::json::JsonObject& json)
 //{
@@ -28,6 +29,11 @@ std::vector<std::string> Room::getAllUsers() const
 	return ret;
 }
 
+const std::vector<LoggedUser>& Room::getUsers() const
+{
+	return users;
+}
+
 void Room::AddUser(const LoggedUser& user)
 {
 	users.push_back(user);
@@ -51,7 +57,8 @@ bool RoomManger::getRoomStatus(int id) const
 void RoomManger::createRoom(LoggedUser user, const RoomData& roomData)
 {
 	
-	rooms.insert({ roomData.id,Room(roomData, user) });
+	auto room=rooms.insert({ roomData.id,Room(roomData, user) });
+	room.first->second.setId(room.first->first); //c++ moment
 }
 
 
@@ -142,8 +149,25 @@ std::string Room::toString() const
 	return json.ToString();
 }
 
-void Room::start()
+int Room::start()
 {
 	data.isActive = true;
-	//add rest of start logic here
+	auto& gameManger = RequsetFactory::getInstence().getGameManger();
+	auto gameId=gameManger.createNewGame((*this));
+	return gameId;
+}
+
+int Room::getId() const
+{
+	return id;
+}
+
+void Room::setId(const int& id)
+{
+	this->id = id;
+}
+
+void Room::setId(int&& id)
+{
+	this->id = id;
 }

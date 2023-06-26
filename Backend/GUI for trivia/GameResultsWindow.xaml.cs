@@ -27,5 +27,10 @@ namespace GUI_for_trivia
             InitializeComponent();
             this.user = currentUser;
         }
+
+        public void return_back_button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

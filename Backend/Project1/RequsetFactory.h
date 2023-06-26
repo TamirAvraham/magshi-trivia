@@ -1,4 +1,5 @@
 #pragma once
+#include "GameManager.h"
 #include "LoginManager.h"
 #include "RoomsManger.h"
 #include "StatisticManager.h"
@@ -20,11 +21,15 @@ public:
 	StatisticManager& getStatManager() {
 		return _statManager;
 	}
+	GameManger& getGameManger(){
+		return _gameManager;
+	}
 	IRequestHandler* getFirstRequsetHandler(const Buffer& buffer)const;
 private:
 	RequsetFactory();
 	LoginManager _manager;
 	RoomManger _roomsManager;
 	StatisticManager _statManager;
+	GameManger _gameManager;
 };
 

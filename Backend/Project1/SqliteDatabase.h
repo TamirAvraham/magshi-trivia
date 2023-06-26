@@ -30,6 +30,10 @@ struct Question
 	std::string question;
 	std::string correct_answer;
 	std::string wrong_answers[3];
+
+	bool operator==(const Question& other) const {
+		return question == other.question && correct_answer == other.correct_answer;
+	}
 };
 class SqliteDataBase : public IDatabase
 {

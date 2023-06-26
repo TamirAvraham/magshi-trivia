@@ -24,7 +24,9 @@ inline std::string JsonSirealizer::getVectorAsString(std::vector<T> vector) requ
 {
 	std::string ret = "[";
 	for (size_t i = 0; const auto & item : vector) {
+		ret += '\"';
 		ret += item;
+		ret += '\"';
 		ret += (++i == vector.size() ? ']' : ',');
 	}
 	return ret;
