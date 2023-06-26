@@ -22,14 +22,15 @@ namespace GUI_for_trivia
     {
         List<QuestionCommunicator.GameResult> results;
         User user;
-
+        int roomId;
         
 
-        public GameResultsWindow(List<QuestionCommunicator.GameResult> gameData, User currentUser)
+        public GameResultsWindow(List<QuestionCommunicator.GameResult> gameData, User currentUser,int roomId)
         {
             InitializeComponent();
             this.user = currentUser;
-            players_list.Items.Add($"Username : Points , AvgAnswerTime , CorrectAnswerCount");
+            this.roomId = roomId;
+
             foreach (var player in gameData)
             {
                 players_list.Items.Add(player.ToString());
@@ -38,7 +39,8 @@ namespace GUI_for_trivia
 
         public void return_back_button_Click(object sender, RoutedEventArgs e)
         {
-
+            RoomData? roomData = RoomComunicator.GetRoom(roomId)!;
+            var win = new RoomView(user, roomData);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace GUI_for_trivia
             if (questionsCount == amountOfQuestions)
             {
                 var results = QuestionCommunicator.GetGameResults(gameId);
-                var win = new GameResultsWindow(results, user);
+                var win = new GameResultsWindow(results, user,roomId);
                 win.Show();
                 this.Close();
             }
@@ -72,7 +72,7 @@ namespace GUI_for_trivia
             {
                 
                 var results = QuestionCommunicator.GetGameResults(gameId);
-                var win = new GameResultsWindow(results, user);
+                var win = new GameResultsWindow(results, user, roomId);
                 win.Show();
                 this.Close();
             }
