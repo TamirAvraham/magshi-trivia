@@ -77,6 +77,25 @@ int Game::getRoomId() const
     return roomId;
 }
 
+std::vector<GameResult> Game::getGameResults() const
+{
+    std::vector<GameResult> ret;
+    for (const auto& userData : usersAndTheirData) {
+        ret.push_back(getResultForUser(userData));
+    }
+    return ret;
+}
+
+GameResult Game::getResultForUser(const std::pair<LoggedUser, QuestionsData>& userData) const
+{
+    GameResult ret;
+    ret.avgAnswerTime = userData.second.total_time / (double)userData.second.answered_questions.size();
+    ret.correctAnswerCount = userData.second.correct_answer_count;
+    ret.points = getPlayerPoints(userData.first);
+    ret.username = userData.first.username;
+    return ret;
+}
+
 Game& GameManger::getGame(const int& id)
 {
     return games[id];
@@ -100,4 +119,14 @@ void GameManger::deleteGame(const int& id)
     {
         // if we went out of range well then the game doesnt exist so no need to delete
     }
+}
+
+std::string GameResult::toString() const
+{
+    http::json::JsonObject ret;
+    ret.insert({ {"averageAnswerTime "},{std::to_string(avgAnswerTime)} });
+    ret.insert({ {"correctAnswerCount"},{std::to_string(correctAnswerCount)} });
+    ret.insert({ {"points"},{std::to_string(points)} });
+    ret.insert({ {"username"},{username}});
+    return ret.ToString();
 }

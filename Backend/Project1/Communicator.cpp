@@ -235,7 +235,7 @@ Buffer Communicator::getBuffer(SOCKET socket) const
     try
     {
         char first_char = std::to_string(buffer.status)[0];
-        if (first_char != ROOM_CHAR && first_char != STATISTICS_CHAR && first_char != ADMIN_CHAR && first_char != MEMBER_CHAR && first_char != '7' && first_char != '8')
+        if (first_char != ROOM_CHAR && first_char != STATISTICS_CHAR && first_char != ADMIN_CHAR && first_char != MEMBER_CHAR && first_char != '7' && first_char != '8' && first_char!=QUESTION_CHAR)
         {
             if (first_char=='\0')
             {

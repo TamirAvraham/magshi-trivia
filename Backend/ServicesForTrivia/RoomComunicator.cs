@@ -80,7 +80,7 @@ namespace ServicesForTrivia
             return (buffer.Status == ((byte)ResponceStatus.Ok));
 
         }
-        public static bool CreateRoom(RoomData roomData,User user)
+        public static int CreateRoom(RoomData roomData, User user)
         {
             var combinedObject = new
             {
@@ -94,11 +94,20 @@ namespace ServicesForTrivia
             };
 
             string s = JsonSerializer.Serialize(combinedObject);
-            byte[] store= Encoding.ASCII.GetBytes(s);
+            byte[] store = Encoding.ASCII.GetBytes(s);
+
             var buffer = new Buffer(store, ((ushort)store.Length), createRoom);
+
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
-            return buffer.Status == ((byte)ResponceStatus.Ok);
+
+            if (buffer.Status == ((byte)ResponceStatus.Error))
+            {
+                return -1;
+            }
+
+            string data = Encoding.ASCII.GetString(buffer.Data);
+            return JsonDocument.Parse(data).RootElement.GetProperty("id").GetInt32();
         }
         private static RoomData GetRoomFromBuffer(ref Buffer roomBuffer)
         {

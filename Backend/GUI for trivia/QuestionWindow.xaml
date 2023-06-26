@@ -9,10 +9,10 @@
     <Grid>
         <Label x:Name="quesiton_label" Content="Question Here" HorizontalAlignment="Left" Margin="40,25,0,0" VerticalAlignment="Top" Width="720" Height="150" FontSize="22"/>
 
-        <Button x:Name="answer_1_label" Content="Answer 1" HorizontalAlignment="Left" Margin="40,180,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="Gold" Click="asnwer_1_click"/>
-        <Button x:Name="answer_2_label" Content="Answer 2" HorizontalAlignment="Left" Margin="420,180,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="Gold" Click="answer_2_click"/>
-        <Button x:Name="answer_3_label" Content="Answer 3" HorizontalAlignment="Left" Margin="420,280,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="gold" Click="answer_3_click"/>
-        <Button x:Name="answer_4_label" Content="Answer 4" HorizontalAlignment="Left" Margin="40,280,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="gold" Click="asnwer_4_click"/>
+        <Button x:Name="answer_1_label" Content="Answer 1" HorizontalAlignment="Left" Margin="40,180,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="Gold" Click="HandleAnswer"/>
+        <Button x:Name="answer_2_label" Content="Answer 2" HorizontalAlignment="Left" Margin="420,180,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="Gold" Click="HandleAnswer"/>
+        <Button x:Name="answer_3_label" Content="Answer 3" HorizontalAlignment="Left" Margin="420,280,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="gold" Click="HandleAnswer"/>
+        <Button x:Name="answer_4_label" Content="Answer 4" HorizontalAlignment="Left" Margin="40,280,0,0" VerticalAlignment="Top" Height="70" Width="340" FontSize="18" Background="gold" Click="HandleAnswer"/>
 
         <Label x:Name="time_left_label" Content="seconds: " HorizontalAlignment="Left" Margin="50,375,0,0" VerticalAlignment="Top" Width="170" Height="50" FontSize="22" Foreground="LightSeaGreen"/>
         <Label x:Name="correct_answers_label" Content="correct answers: Y" HorizontalAlignment="Left" Margin="250,375,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="22" Foreground="Green"/>

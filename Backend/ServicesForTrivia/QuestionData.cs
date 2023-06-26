@@ -13,10 +13,8 @@ namespace ServicesForTrivia
         [JsonPropertyName("question")]
         public string Question { get; set; }
 
-        [JsonPropertyName("all_answers")]
+        [JsonPropertyName("answers")]
         public List<string> AllAnswers { get; set; }
 
-        [JsonPropertyName("correct_answer")]
-        public string CorrectAnswer { get; set; }
     }
 }

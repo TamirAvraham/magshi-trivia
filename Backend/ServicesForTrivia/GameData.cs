@@ -20,5 +20,7 @@ namespace ServicesForTrivia
 
         [JsonPropertyName("total_seconds")]
         public int TotalSeconds { get; set; }
+
+        
     }
 }

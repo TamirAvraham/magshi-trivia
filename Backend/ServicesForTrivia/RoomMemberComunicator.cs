@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -75,5 +76,19 @@ namespace ServicesForTrivia
         const byte StartRoomCode = 42;
 
         //this will be added in v4.0.0
+
+        public static int StartRoom(User user,int roomId)
+        {
+            var req = new { username = user.username, roomId = roomId };
+            string reqAsString = JsonSerializer.Serialize(req);
+            var reqAsBytes = Encoding.ASCII.GetBytes(reqAsString);
+
+            var buffer = new Buffer(reqAsBytes, ((ushort)reqAsBytes.Length), StartRoomCode);
+            Communicator.Instance.SendBuffer(ref buffer);
+
+            buffer = Communicator.Instance.ReadBuffer();
+            string data = Encoding.ASCII.GetString(buffer.Data);
+            return JsonDocument.Parse(data).RootElement.GetProperty("id").GetInt32();
+        }
     }
 }

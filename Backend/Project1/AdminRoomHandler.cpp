@@ -74,7 +74,7 @@ inline StartRoomResponce AdminRoomHandler::handleStartRoomRequest(const Request*
 
 	ret.buffer = Buffer{
 		.status = OK,
-		.sizeOfData = 0,
+		.sizeOfData = static_cast<unsigned int>(data.length()),
 		.data = new char[data.length()+1]
 	};
 

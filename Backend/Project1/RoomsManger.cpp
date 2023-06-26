@@ -54,11 +54,12 @@ bool RoomManger::getRoomStatus(int id) const
 	return room->second.getData().isActive;
 }
 
-void RoomManger::createRoom(LoggedUser user, const RoomData& roomData)
+int RoomManger::createRoom(LoggedUser user, const RoomData& roomData)
 {
 	
 	auto room=rooms.insert({ roomData.id,Room(roomData, user) });
 	room.first->second.setId(room.first->first); //c++ moment
+	return room.first->first;
 }
 
 

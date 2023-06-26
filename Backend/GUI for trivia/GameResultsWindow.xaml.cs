@@ -20,12 +20,20 @@ namespace GUI_for_trivia
     /// </summary>
     public partial class GameResultsWindow : Window
     {
-        List<GameData> results;
+        List<QuestionCommunicator.GameResult> results;
         User user;
-        public GameResultsWindow(List<string> users, User currentUser)
+
+        
+
+        public GameResultsWindow(List<QuestionCommunicator.GameResult> gameData, User currentUser)
         {
             InitializeComponent();
             this.user = currentUser;
+            players_list.Items.Add($"Username : Points , AvgAnswerTime , CorrectAnswerCount");
+            foreach (var player in gameData)
+            {
+                players_list.Items.Add(player.ToString());
+            }
         }
 
         public void return_back_button_Click(object sender, RoutedEventArgs e)

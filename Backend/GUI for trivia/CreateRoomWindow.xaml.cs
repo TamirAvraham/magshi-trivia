@@ -42,9 +42,11 @@ namespace GUI_for_trivia
         private void create_room_button_Click(object sender, RoutedEventArgs e)
         {
             var data = proceesData();
-            if (RoomComunicator.CreateRoom(data,user))
+            int newId = RoomComunicator.CreateRoom(data, user);
+            if (newId>-1)
             {
-                var win = new RoomView(user, data);
+                data.id = newId;
+                var win = new AdminControlRoomWindow(user, data);
 
                 win.Show();
                 this.Close();

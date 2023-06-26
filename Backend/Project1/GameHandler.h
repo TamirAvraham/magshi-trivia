@@ -15,5 +15,6 @@ public:
 	inline Responce handleGetCorrectAnswerRequest(const GetCorrectAnswerRequest* request) const;
 	inline Responce handleGetQuestionRequest(const GetQuestionRequest* request) const;
 	inline Responce handleGetUserPointsRequest(const GetUserPointsRequest* request) const;
+	inline Responce handleGetGameResultsRequest(const GetGameResultsRequest* request) const;
 };
 

@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         Title="GameResultsWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="players_list" Margin="0,30,0,81">
+        <ListBox x:Name="players_list" Margin="0,76,0,81">
         </ListBox>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Results:" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.487,-0.124" Height="30" Width="86" TextAlignment="Center" FontWeight="Bold"/>
-        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Left" Margin="172,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B" FontSize="26" Click="return_back_button_Click"/>
+        <Button x:Name="return_back_button" Content="Return Back" HorizontalAlignment="Center" Margin="0,353,0,0" VerticalAlignment="Top" Height="71" Width="384" Background="#FF22FF1B" FontSize="26" Click="return_back_button_Click"/>
+        <TextBlock x:Name="players_list_table_header" HorizontalAlignment="Center" Margin="0,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="36" Width="800" TextAlignment="Center" FontWeight="Bold" FontSize="18" Text="Username : Points , AvgAnswerTime , CorrectAnswerCount"/>
     </Grid>
 </Window>

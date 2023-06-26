@@ -39,7 +39,14 @@ struct QuestionsData
 		return answered_questions == other.answered_questions && correct_answer_count == other.correct_answer_count && wrong_answer_count == other.wrong_answer_count && average_time_per_question == other.average_time_per_question;
 	}
 };
-
+struct GameResult
+{
+	std::string username;
+	int avgAnswerTime;
+	int correctAnswerCount;
+	int points;
+	std::string toString()const;
+};
 class Game
 {
 public:
@@ -50,12 +57,12 @@ public:
 	bool submitAnswer(const LoggedUser& user, const std::string& question, const std::string&  answer, const int& duration );
 	int getPlayerPoints(const LoggedUser& user)const;
 	int getRoomId()const;
-	
+	std::vector<GameResult> getGameResults()const;
 private:
 	int roomId;
 	std::vector<Question> questions;
 	mutable std::map<LoggedUser, QuestionsData> usersAndTheirData;
-	
+	GameResult getResultForUser(const std::pair<LoggedUser, QuestionsData>& userData)const;
 public:
 
 	bool operator==(const Game& other) const {

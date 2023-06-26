@@ -35,6 +35,7 @@ constexpr unsigned char getAnswers = 62;
 constexpr unsigned char getCorrectAnswer = 63;
 constexpr unsigned char getUserPoints = 64;
 constexpr unsigned char submitAnswer = 65;
+constexpr unsigned char getGameResults = 66;
 
 
 
@@ -136,4 +137,7 @@ struct GetCorrectAnswerRequest :Request {
 struct GetUserPointsRequest :Request {
 	int gameId;
 	std::string username;
+};
+struct GetGameResultsRequest :Request {
+	int gameId;
 };

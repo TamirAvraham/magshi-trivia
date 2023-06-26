@@ -85,44 +85,44 @@ std::string SqliteDataBase::getCorrectAnswer(std::string question)
 //Loops with const value are not input dependant so this function is O(1)
 std::vector<std::string> SqliteDataBase::getAllAnswers(std::string question)
 {
-	std::list<Question> questions;
+	std::vector<Question> questions;
 	sendSQL(("SELECT * FROM questions WHERE question = '" + question + "';").c_str(), callbackQuestion, &questions);
 
 	// If no questions or multiple questions with same text (Even though question has the 'UNIQUE' tag in database so second option is impossible the code can never be too safe)
-	if (question.size() != 1)
+	if (questions.size() != 1)
 	{
 		throw std::invalid_argument("invalid argument");
 	}
 	std::vector<std::string> ret;
-	bool doneCorrect = false;
-	int doneWrong = 0;
+	bool addedCorrect = false;
+	int addedWrong = 0;
 	
 	srand(time(0));
 	for (int i = 0; i < 4; i++)
 	{
-		if (!doneCorrect)
+		if (!addedCorrect)
 		{
-			if (doneWrong == 3)
+			if (addedWrong == 3)
 			{
 				ret.push_back(questions.front().correct_answer);
-				doneCorrect = true;	// technically this is a useless line but we'll keep it for easiness of understanding the code
+				addedCorrect = true;	// technically this is a useless line but we'll keep it for easiness of understanding the code
 			}
 			else
 			{
 				if (rand() % 2 == 0)
 				{
 					ret.push_back(questions.front().correct_answer);
-					doneCorrect = true;
+					addedCorrect = true;
 				}
 				else
 				{
-					ret.push_back(questions.front().wrong_answers[doneWrong++]);
+					ret.push_back(questions.front().wrong_answers[addedWrong++]);
 				}
 			}
 		}
 		else
 		{
-			ret.push_back(questions.front().wrong_answers[doneWrong++]);
+			ret.push_back(questions.front().wrong_answers[addedWrong++]);
 		}
 	}
 	return ret;
@@ -222,8 +222,9 @@ int callbackQuestion(void* data, int argc, char** argv, char** azColName)
 	newQuestion.wrong_answers[0] = wrong_answer_1;
 	newQuestion.wrong_answers[1] = wrong_answer_2;
 	newQuestion.wrong_answers[2] = wrong_answer_3;
-
-	((std::vector<Question>*)data)->push_back(newQuestion);	// Adding Question to the list
+	
+	std::vector<Question>* dataAsVec = (std::vector<Question>*)(data);
+	dataAsVec->push_back(newQuestion);	// Adding Question to the list
 	return 0;
 }
 

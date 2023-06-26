@@ -1,6 +1,7 @@
-﻿using ServicesForTrivia;
+﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
+using ServicesForTrivia;
 namespace GUI_for_trivia
 {
     /// <summary>
@@ -25,7 +26,7 @@ namespace GUI_for_trivia
         const byte secondsPerQuestion = 10;
 
         int roomId;
-
+        int gameId;
         int questionsCount;
         QuestionData currentQuestion;
         int correctAnswerCount;
@@ -35,7 +36,7 @@ namespace GUI_for_trivia
         DispatcherTimer timer;        
 
         User user;
-        public QuestionWindow(User user, int roomId)
+        public QuestionWindow(User user, int roomId,int gameId)
         {
             InitializeComponent();
             this.user = user;
@@ -45,12 +46,14 @@ namespace GUI_for_trivia
 
             correct_answers_label.Content = 0;
             question_left_label.Content = amountOfQuestions;
+
             showNewQuestion();
+
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += (object sender, EventArgs e) => Refresh();
             timer.Start();
-            
+
         }
 
 
@@ -58,14 +61,23 @@ namespace GUI_for_trivia
         {
             if (questionsCount == amountOfQuestions)
             {
-                var roomState = RoomMemberComunicator.GetRoomState(roomId);
-                var win = new GameResultsWindow(roomState.Players, user);
+                var results = QuestionCommunicator.GetGameResults(gameId);
+                var win = new GameResultsWindow(results, user);
                 win.Show();
                 this.Close();
             }
-            currentQuestion = QuestionCommunicator.GetQuestion(user.username);
-            questionsCount++;
+            
+            currentQuestion = QuestionCommunicator.GetQuestion(user.username, gameId);
+            if (currentQuestion.Question=="")
+            {
                 
+                var results = QuestionCommunicator.GetGameResults(gameId);
+                var win = new GameResultsWindow(results, user);
+                win.Show();
+                this.Close();
+            }
+            questionsCount++;
+            
             quesiton_label.Content = currentQuestion.Question;
             answer_1_label.Content = currentQuestion.AllAnswers[0];
             answer_2_label.Content = currentQuestion.AllAnswers[1];
@@ -82,38 +94,43 @@ namespace GUI_for_trivia
             questionSecondsCount++;
             totalSecondsCount++;
             time_left_label.Content = "Seconds: " + (secondsPerQuestion - questionSecondsCount);
-            if (int.Parse(time_left_label.Content.ToString()) <= 0)
+            if (int.Parse(time_left_label.Content.ToString()!.Replace("Seconds: ","")) <= 0)
             {
                 questionsCount = 0;
                 time_left_label.Content = secondsPerQuestion;
                 showNewQuestion();
             }
         }
-        private void asnwer_1_click(object sender, RoutedEventArgs e)
+
+        protected override void OnClosing(CancelEventArgs e)
         {
-            if(answer_1_label.Content == currentQuestion.CorrectAnswer)
-                correctAnswerCount++;
-            showNewQuestion();
-        }
-        private void answer_2_click(object sender, RoutedEventArgs e)
-        {
-            if (answer_2_label.Content == currentQuestion.CorrectAnswer)
-                correctAnswerCount++;
-            showNewQuestion();
-        }
-        private void answer_3_click(object sender, RoutedEventArgs e)
-        {
-            if (answer_3_label.Content == currentQuestion.CorrectAnswer)
-                correctAnswerCount++;
-            showNewQuestion();
-        }
-        private void asnwer_4_click(object sender, RoutedEventArgs e)
-        {
-            if (answer_4_label.Content == currentQuestion.CorrectAnswer)
-                correctAnswerCount++;
-            showNewQuestion();
+            base.OnClosing(e);
+            timer.Stop();
         }
 
+        private void HandleAnswer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button button = (Button)sender;
+                var correctAnswer = QuestionCommunicator.SubmitAnswer(currentQuestion.Question,
+                                                                      gameId,
+                                                                      user.username,
+                                                                      questionSecondsCount,
+                                                                      button.Content.ToString()!);
+                if (correctAnswer)
+                {
+                    correctAnswerCount++;
+                }
 
+
+                showNewQuestion();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

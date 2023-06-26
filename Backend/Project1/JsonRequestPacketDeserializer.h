@@ -27,6 +27,8 @@ public:
 	static GetQuestionRequest deserializeGetQuestionRequest(const Buffer& buffer);
 	static GetCorrectAnswerRequest deserializeGetCorrectAnswerRequest(const Buffer& buffer);
 	static GetUserPointsRequest deserializeGetUserPointsRequest(const Buffer& buffer);
+	static GetGameResultsRequest deserializeGetGameResultsRequest(const Buffer& buffer);
+
 private:
 	static RoomData RoomDatafromJson(const http::json::JsonObject& json);
 };

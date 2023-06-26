@@ -109,13 +109,25 @@ inline CreateRoomResponce RoomsHandler::handleCreateRoomRequest(CreateRoomReques
 	CreateRoomResponce ret;
 	auto& factory=RequsetFactory::getInstence(); 
 	auto& LoginManager = factory.getLoginManager();
-	factory.getRoomsManager().createRoom(LoginManager.getUser(request->username),request->roomData);
-	ret.next = new AdminRoomHandler();
-	ret.buffer = Buffer{
+
+	int roomId=factory.getRoomsManager().createRoom(LoginManager.getUser(request->username),request->roomData);
+
+	auto data = http::json::JsonObject();
+	data.insert({ "id", { std::to_string(roomId)}});
+	std::string dataAsString = data.ToString();
+
+	auto buffer = Buffer{
 		.status = OK,
-		.sizeOfData = 0,
-		.data = nullptr
+		.sizeOfData = static_cast<unsigned int>(dataAsString.size()),
+		.data = new char[dataAsString.size() + 1]
 	};
+
+	std::copy(dataAsString.begin(), dataAsString.end(), buffer.data);
+	buffer.data[dataAsString.size()] = '\0';
+
+	ret.buffer = buffer;
+	ret.next = new AdminRoomHandler();
+
 	return ret;
 }
 

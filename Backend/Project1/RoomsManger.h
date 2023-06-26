@@ -54,7 +54,7 @@ private:
 	std::map<int, Room> rooms;
 public:
 	bool getRoomStatus(int id)const;
-	void createRoom(LoggedUser user, const RoomData& roomData);
+	int createRoom(LoggedUser user, const RoomData& roomData);
 	void removeRoom(int id);
 	Room& getRoom(int id);
 	std::vector<RoomData> getRooms();

@@ -3,7 +3,7 @@
 #include "RequsetFactory.h"
 #include "JsonSirealizer.h"
 #include "AdminRoomHandler.h"
-
+#define returnHandle(name) return new Responce(handle##name##Request((name##Request*)(req)));
 using Json = http::json::JsonObject;
 bool GameHandler::IsValid(unsigned char status)
 {
@@ -22,7 +22,18 @@ Responce* GameHandler::HandlerRequest(Request* req)
 {
 	switch (req->id)
 	{
-		
+	case getAnswers:
+		return new Responce(handleGetAnswersRequest((GetAnswersRequest*)(req)));
+	case getCorrectAnswer:
+		return new Responce(handleGetCorrectAnswerRequest((GetCorrectAnswerRequest*)(req)));
+	case submitAnswer:
+		return new Responce(handleSubmitAnswerRequest((SubmitAnswerRequest*)(req)));
+	case getUserPoints:
+		return new Responce(handleGetUserPointsRequest((GetUserPointsRequest*)(req)));
+	case getQuestion:
+		return new Responce(handleGetQuestionRequest((GetQuestionRequest*)(req)));
+	case getGameResults:
+		return new Responce(handleGetGameResultsRequest((GetGameResultsRequest*)(req)));
 	default:
 		return nullptr;
 	}
@@ -42,6 +53,8 @@ Request* GameHandler::GetRequestFromBuffer(const Buffer& buffer)
 		return new GetUserPointsRequest(JsonRequestPacketDeserializer::deserializeGetUserPointsRequest(buffer));
 	case getQuestion:
 		return new GetQuestionRequest(JsonRequestPacketDeserializer::deserializeGetQuestionRequest(buffer));
+	case getGameResults:
+		return new GetGameResultsRequest(JsonRequestPacketDeserializer::deserializeGetGameResultsRequest(buffer));
 	default:
 		return nullptr;
 	}
@@ -196,4 +209,32 @@ inline Responce GameHandler::handleGetUserPointsRequest(const GetUserPointsReque
 	ret.next = roomManger.getRoom(game.getRoomId()).isAdmin(user) ? new AdminRoomHandler() : new RoomMemberHandler();
 	
 	return ret;
+}
+
+inline Responce GameHandler::handleGetGameResultsRequest(const GetGameResultsRequest* request) const
+{
+	Responce ret;
+	auto& gameManger = RequsetFactory::getInstence().getGameManger();
+
+	auto results = gameManger.getGame(request->gameId).getGameResults();
+	auto resultsAsJsonVectorString = JsonSirealizer::getVectorAsString(results);
+
+	Json dataAsJson;
+	dataAsJson.insert({ {"results"} ,{resultsAsJsonVectorString} });
+	auto dataAsString = dataAsJson.ToString();
+
+	auto buffer = Buffer{
+		.status = OK,
+		.sizeOfData = static_cast<unsigned int>(dataAsString.size()),
+		.data = new char[dataAsString.size() + 1]
+	};
+
+	std::copy(dataAsString.begin(), dataAsString.end(), buffer.data);
+	buffer.data[dataAsString.size()] = '\0';
+
+	ret.buffer = buffer;
+	ret.next = new GameHandler();
+
+	return ret;
+
 }

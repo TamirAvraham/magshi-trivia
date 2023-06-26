@@ -189,6 +189,15 @@ GetUserPointsRequest JsonRequestPacketDeserializer::deserializeGetUserPointsRequ
      return ret;
 }
 
+GetGameResultsRequest JsonRequestPacketDeserializer::deserializeGetGameResultsRequest(const Buffer& buffer)
+{
+    GetGameResultsRequest ret;
+    auto json = http::json::JsonObject(buffer.data);
+    ret.id = buffer.status;
+    ret.gameId = json["gameId"].integer_value();
+    return ret;
+}
+
 
 RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonObject& json)
 {
