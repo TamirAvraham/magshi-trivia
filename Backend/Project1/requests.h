@@ -140,4 +140,5 @@ struct GetUserPointsRequest :Request {
 };
 struct GetGameResultsRequest :Request {
 	int gameId;
+	std::string username;
 };

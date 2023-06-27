@@ -22,30 +22,34 @@ namespace GUI_for_trivia
     /// </summary>
     public partial class QuestionWindow : Window
     {
-        const byte amountOfQuestions = 10;
-        const byte secondsPerQuestion = 10;
+        
+        
 
         int roomId;
         int gameId;
         int questionsCount;
         QuestionData currentQuestion;
         int correctAnswerCount;
-
+        RoomData roomData;
         int totalSecondsCount = 0;
         int questionSecondsCount = 0;
+        bool send = true;
         DispatcherTimer timer;        
 
         User user;
-        public QuestionWindow(User user, int roomId,int gameId)
+        public QuestionWindow(User user, int roomId,int gameId,RoomData roomData)
         {
             InitializeComponent();
-            this.user = user;
             questionsCount = 0;
             correctAnswerCount = 0;
+
+            this.user = user;
             this.roomId = roomId;
+            this.gameId = gameId;
+            this.roomData = roomData;
 
             correct_answers_label.Content = 0;
-            question_left_label.Content = amountOfQuestions;
+            question_left_label.Content = roomData.NumOfQuestions;
 
             showNewQuestion();
 
@@ -59,22 +63,24 @@ namespace GUI_for_trivia
 
         private void showNewQuestion()
         {
-            if (questionsCount == amountOfQuestions)
+            if (questionsCount == roomData.NumOfQuestions)
             {
-                var results = QuestionCommunicator.GetGameResults(gameId);
-                var win = new GameResultsWindow(results, user,roomId);
+                var results = QuestionCommunicator.GetGameResults(gameId,user.username);
+                var win = new GameResultsWindow(results, user,roomData);
                 win.Show();
                 this.Close();
+                return;
             }
-            
+
             currentQuestion = QuestionCommunicator.GetQuestion(user.username, gameId);
-            if (currentQuestion.Question=="")
+            if (currentQuestion.Question=="" || currentQuestion.Question == null)
             {
                 
-                var results = QuestionCommunicator.GetGameResults(gameId);
-                var win = new GameResultsWindow(results, user, roomId);
+                var results = QuestionCommunicator.GetGameResults(gameId, user.username);
+                var win = new GameResultsWindow(results, user, roomData);
                 win.Show();
                 this.Close();
+                return;
             }
             questionsCount++;
             
@@ -85,7 +91,7 @@ namespace GUI_for_trivia
             answer_4_label.Content = currentQuestion.AllAnswers[3];
 
             correct_answers_label.Content = "Correct Answers: " + correctAnswerCount;
-            question_left_label.Content = "Questions Left: " + (amountOfQuestions - questionsCount);
+            question_left_label.Content = "Questions Left: " + (roomData.NumOfQuestions - questionsCount);
             
             questionSecondsCount = 0;
         }
@@ -93,19 +99,20 @@ namespace GUI_for_trivia
         {
             questionSecondsCount++;
             totalSecondsCount++;
-            time_left_label.Content = "Seconds: " + (secondsPerQuestion - questionSecondsCount);
+            time_left_label.Content = "Seconds: " + (roomData.TimePerQuestion - questionSecondsCount);
             if (int.Parse(time_left_label.Content.ToString()!.Replace("Seconds: ","")) <= 0)
             {
                 questionsCount = 0;
-                time_left_label.Content = secondsPerQuestion;
+                time_left_label.Content = roomData.TimePerQuestion;
                 showNewQuestion();
             }
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            base.OnClosing(e);
             timer.Stop();
+            base.OnClosing(e);
+            
         }
 
         private void HandleAnswer(object sender, RoutedEventArgs e)
@@ -126,9 +133,9 @@ namespace GUI_for_trivia
 
                 showNewQuestion();
             }
-            catch (Exception)
+            catch (Exception error)
             {
-
+                
                 throw;
             }
         }

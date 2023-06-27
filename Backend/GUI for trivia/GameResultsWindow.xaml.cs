@@ -22,25 +22,26 @@ namespace GUI_for_trivia
     {
         List<QuestionCommunicator.GameResult> results;
         User user;
-        int roomId;
-        
+        RoomData roomData;
 
-        public GameResultsWindow(List<QuestionCommunicator.GameResult> gameData, User currentUser,int roomId)
+        public GameResultsWindow(List<QuestionCommunicator.GameResult> gameData, User currentUser,RoomData roomData)
         {
             InitializeComponent();
             this.user = currentUser;
-            this.roomId = roomId;
-
+            
+            this.roomData = roomData;
             foreach (var player in gameData)
             {
                 players_list.Items.Add(player.ToString());
             }
+            results = gameData;
         }
 
         public void return_back_button_Click(object sender, RoutedEventArgs e)
         {
-            RoomData? roomData = RoomComunicator.GetRoom(roomId)!;
-            var win = new RoomView(user, roomData);
+            Window win = user.isAdmin ? new AdminControlRoomWindow(user, roomData) : new RoomView(user, roomData);
+            win.Show();
+            this.Close();
         }
     }
 }

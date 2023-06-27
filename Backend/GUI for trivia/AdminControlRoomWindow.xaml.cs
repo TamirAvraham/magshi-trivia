@@ -28,6 +28,7 @@ namespace GUI_for_trivia
         DispatcherTimer timer;
         public AdminControlRoomWindow(User user, RoomData roomData)
         {
+            user.isAdmin = true;
             InitializeComponent();
             this.user = user;
             this.roomData = roomData;
@@ -150,7 +151,7 @@ namespace GUI_for_trivia
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int gameId = AdminRoomComunicator.StartRoom(user, roomData.id);
-            var win = new QuestionWindow(user, roomData.Id, gameId);
+            var win = new QuestionWindow(user, roomData.Id, gameId,roomData);
             win.Show();
             this.Close();
         }

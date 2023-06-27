@@ -214,9 +214,13 @@ inline Responce GameHandler::handleGetUserPointsRequest(const GetUserPointsReque
 inline Responce GameHandler::handleGetGameResultsRequest(const GetGameResultsRequest* request) const
 {
 	Responce ret;
-	auto& gameManger = RequsetFactory::getInstence().getGameManger();
+	auto& factory = RequsetFactory::getInstence();
+	auto& gameManger = factory.getGameManger();
+	auto& game = gameManger.getGame(request->gameId);
+	auto& roomManger = factory.getRoomsManager();
+	auto& user = factory.getLoginManager().getUser(request->username);
 
-	auto results = gameManger.getGame(request->gameId).getGameResults();
+	auto results = game.getGameResults();
 	auto resultsAsJsonVectorString = JsonSirealizer::getVectorAsString(results);
 
 	Json dataAsJson;
@@ -233,7 +237,7 @@ inline Responce GameHandler::handleGetGameResultsRequest(const GetGameResultsReq
 	buffer.data[dataAsString.size()] = '\0';
 
 	ret.buffer = buffer;
-	ret.next = new GameHandler();
+	ret.next = roomManger.getRoom(game.getRoomId()).isAdmin(user) ? new AdminRoomHandler() : new RoomMemberHandler();
 
 	return ret;
 

@@ -3,6 +3,7 @@
 Game::Game(const Room& room):roomId(room.getId())
 {
 	questions = SqliteDataBase::GetInstance().getQuestions();
+    questions.resize(room.getData().numOfQustions);
 	auto rng = std::default_random_engine{ std::random_device{}()};
 	std::shuffle(std::begin(questions), std::end(questions), rng);
 

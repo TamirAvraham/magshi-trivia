@@ -195,6 +195,7 @@ GetGameResultsRequest JsonRequestPacketDeserializer::deserializeGetGameResultsRe
     auto json = http::json::JsonObject(buffer.data);
     ret.id = buffer.status;
     ret.gameId = json["gameId"].integer_value();
+    ret.username = json["username"].string_value();
     return ret;
 }
 

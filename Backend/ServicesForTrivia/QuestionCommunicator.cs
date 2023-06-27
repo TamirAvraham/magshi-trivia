@@ -27,6 +27,7 @@ namespace ServicesForTrivia
             var data = Encoding.ASCII.GetString(buffer.Data);
             var ret = JsonSerializer.Deserialize<QuestionData>(data);
             return ret;
+            
         }
         public static List<String> GetAnswers(string question)
         {
@@ -66,9 +67,9 @@ namespace ServicesForTrivia
             string data = Encoding.ASCII.GetString(buffer.Data);
             return JsonDocument.Parse(data).RootElement.GetProperty("correctAnswer").GetBoolean();
         }
-        public static List<GameResult> GetGameResults(int gameId)
+        public static List<GameResult> GetGameResults(int gameId,string username)
         {
-            var req = new { gameId = gameId };
+            var req = new { gameId = gameId, username };
             string reqAsString = JsonSerializer.Serialize(req);
             var reqAsBytes = Encoding.ASCII.GetBytes(reqAsString);
 
