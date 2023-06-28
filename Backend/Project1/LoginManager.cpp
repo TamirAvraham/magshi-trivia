@@ -29,9 +29,11 @@ void LoginManager::Login(const std::string& username, const std::string& passwor
 
 void LoginManager::Logout(const std::string& username)
 {
-	std::remove_if(_loggedUsers.begin(), _loggedUsers.end(), [username](const LoggedUser& user) ->bool {
-		return (user.username == username);
-		});
+	auto userIter = std::find_if(_loggedUsers.begin(), _loggedUsers.end(), [&username](const LoggedUser& user) { return user.username == username; });
+	if (userIter != _loggedUsers.end())
+	{
+		_loggedUsers.erase(userIter);
+	}
 }
 
 LoggedUser& LoginManager::getUser(const std::string& username)

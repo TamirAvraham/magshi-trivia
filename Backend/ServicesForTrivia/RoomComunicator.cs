@@ -36,7 +36,7 @@ namespace ServicesForTrivia
             Communicator.Instance.SendBuffer(ref buffer);
             buffer = Communicator.Instance.ReadBuffer();
             JsonDocument document = JsonDocument.Parse(Encoding.ASCII.GetString(buffer.Data));
-            data.IsActive = document.RootElement.GetProperty("status").GetBoolean();
+            data.IsActive = document.RootElement.GetProperty("status").GetUInt32();
 
         }
         
@@ -61,9 +61,9 @@ namespace ServicesForTrivia
                 var maxPlayers = roomElement.GetProperty("maxPlayers").GetInt32();
                 var numOfQuestions = roomElement.GetProperty("numOfQustions").GetInt32();
                 var timePerQuestion = roomElement.GetProperty("TimePerQuestion").GetInt32();
-                var isActive = roomElement.GetProperty("isActive").GetBoolean();
+                var isActive = roomElement.GetProperty("isActive").GetUInt32();
 
-                var roomData = new RoomData(isActive, name, id, timePerQuestion, numOfQuestions, maxPlayers);
+                var roomData = new RoomData(isActive, name!, id, timePerQuestion, numOfQuestions, maxPlayers);
                 rooms.Add(roomData);
             }
 

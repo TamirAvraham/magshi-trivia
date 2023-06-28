@@ -41,10 +41,14 @@ void Room::AddUser(const LoggedUser& user)
 
 void Room::removeUser(const LoggedUser& user)
 {
-	std::remove_if(users.begin(), users.end(), [user](const LoggedUser& u)->bool { return user.username == u.username; });
+	auto userIter = std::find(users.begin(),users.end(), user);
+	if (userIter!=users.end())
+	{
+		users.erase(userIter);
+	}
 }
 
-bool RoomManger::getRoomStatus(int id) const
+bool RoomManger::getRoomStatus(int id)
 {
 	auto room = rooms.find(id);
 	if (rooms.end()==room)
@@ -82,7 +86,7 @@ Room& RoomManger::getRoom(int id)
 std::vector<RoomData> RoomManger::getRooms()
 {
 	std::vector<RoomData> ret;
-	for (const auto& room : rooms)
+	for (auto& room : rooms)
 		ret.push_back(room.second.getData());
 	return ret;
 }
@@ -143,7 +147,7 @@ inline bool Room::isAdmin(const LoggedUser& user) const
 std::string Room::toString() const
 {
 	http::json::JsonObject json;
-	json.insert({ "status",{data.isActive ? "true" : "false"} });
+	json.insert({ "status",{std::to_string(data.isActive)} });
 	json.insert({ {"players"}, { JsonSirealizer::getVectorAsString(users)} });
 	json.insert({ "answerCount",{"0"} });//change this when i figure out wtf this is
 	json.insert({ {"answerTimeOut"},{"idfk"} });
@@ -152,9 +156,10 @@ std::string Room::toString() const
 
 int Room::start()
 {
-	data.isActive = true;
+	
 	auto& gameManger = RequsetFactory::getInstence().getGameManger();
 	auto gameId=gameManger.createNewGame((*this));
+	data.isActive = gameId;
 	return gameId;
 }
 

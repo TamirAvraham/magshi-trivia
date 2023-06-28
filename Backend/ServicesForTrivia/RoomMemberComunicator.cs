@@ -12,7 +12,7 @@ namespace ServicesForTrivia
     public struct RoomState
     {
         [JsonPropertyName("status")]
-        public bool Status { get; set; }
+        public int Status { get; set; }
 
         [JsonPropertyName("players")]
         public List<string> Players { get; set; }
@@ -39,7 +39,20 @@ namespace ServicesForTrivia
         const byte getRoomState = 51;
         const byte LeaveRoomCode = 52;
 
-        //TODO:impl leave room
+        public static bool LeaveRoom(int roomId, string username)
+        {
+            var req = new { roomId, username };
+
+            string reqAsString = JsonSerializer.Serialize(req);
+            byte[] bytes = Encoding.UTF8.GetBytes(reqAsString);
+
+            Buffer buffer = new(bytes, ((ushort)bytes.Length), LeaveRoomCode);
+
+            Communicator.Instance.SendBuffer(ref buffer);
+            buffer = Communicator.Instance.ReadBuffer();
+
+            return buffer.Status == ((byte)ResponceStatus.Ok);
+        }
 
 
         public static RoomState GetRoomState(int roomid)
@@ -77,7 +90,7 @@ namespace ServicesForTrivia
 
         //this will be added in v4.0.0
 
-        public static int StartRoom(User user,int roomId)
+        public static int StartRoom(User user, int roomId)
         {
             var req = new { username = user.username, roomId = roomId };
             string reqAsString = JsonSerializer.Serialize(req);
@@ -89,6 +102,20 @@ namespace ServicesForTrivia
             buffer = Communicator.Instance.ReadBuffer();
             string data = Encoding.ASCII.GetString(buffer.Data);
             return JsonDocument.Parse(data).RootElement.GetProperty("id").GetInt32();
+        }
+        public static bool CloseRoom(string username,int roomId)
+        {
+            var req = new { roomId, username };
+
+            string reqAsString = JsonSerializer.Serialize(req);
+            byte[] bytes = Encoding.UTF8.GetBytes(reqAsString);
+
+            Buffer buffer = new(bytes, ((ushort)bytes.Length), CloseRoomCode);
+
+            Communicator.Instance.SendBuffer(ref buffer);
+            buffer = Communicator.Instance.ReadBuffer();
+
+            return buffer.Status == ((byte)ResponceStatus.Ok);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ServicesForTrivia
 		return object;
 	}
          */
-        private bool isActive;
+        private uint isActive;
         private  string name;
         public  int id;
         private  int numOfQuestions;
@@ -30,7 +30,7 @@ namespace ServicesForTrivia
         public int Id => this.id;
 
         [JsonPropertyName("isActive")]
-        public bool IsActive { get => isActive; set => isActive=value; }
+        public uint IsActive { get => isActive; set => isActive=value; }
 
         [JsonPropertyName("maxPlayers")]
         public int MaxPlayers => this.maxNumOfPlayers;
@@ -41,7 +41,7 @@ namespace ServicesForTrivia
         [JsonPropertyName("numOfQustions")]
         public int NumOfQuestions => this.numOfQuestions;
         
-        public RoomData( bool isActive, string name, int id, int timeForQuestion, int numOfQuestions ,int maxNumOfPlayers) : this()
+        public RoomData( uint isActive, string name, int id, int timeForQuestion, int numOfQuestions ,int maxNumOfPlayers) : this()
         {
             
             this.isActive = isActive;

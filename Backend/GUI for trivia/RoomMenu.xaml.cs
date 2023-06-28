@@ -125,19 +125,55 @@ namespace GUI_for_trivia
 
         private void Refresh()
         {
-            var roomState = RoomMemberComunicator.GetRoomState(roomData.id);
-            users.Clear();
-            Dispatcher.Invoke(() =>
+            RoomState roomState=new();
+            try
             {
-                players_list.Items.Clear();
-                foreach (var playerName in roomState.Players)
+                roomState = RoomMemberComunicator.GetRoomState(roomData.id);
+                if (roomState.Status > 0)
                 {
-                    User newUser = new User(playerName);
-                    users.Add(newUser);
-                    players_list.Items.Add(GeneratePlayerComponent(newUser));
+                    var win = new QuestionWindow(user, roomData.id, roomState.Status, roomData);
+                    win.Show();
+                    this.Close();
                 }
-            });
+            }
+            catch (Exception e)
+            {
+                var win = new RoomsMenu(user);
+                win.Show();
+                this.Close();
 
+            }
+            finally {
+                users.Clear();
+                Dispatcher.Invoke(() =>
+                {
+                    players_list.Items.Clear();
+                    foreach (var playerName in roomState.Players)
+                    {
+                        User newUser = new User(playerName);
+                        users.Add(newUser);
+                        players_list.Items.Add(GeneratePlayerComponent(newUser));
+                    }
+                });
+            }
+
+            
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var ret = RoomMemberComunicator.LeaveRoom(roomData.id, user.username);
+            if (ret)
+            {
+                var win = new RoomsMenu(user);
+                win.Show();
+                this.Close();
+            }
+            else
+            {
+                var hold = 2 + 2;
+            }
         }
     }
 }

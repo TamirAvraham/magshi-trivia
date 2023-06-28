@@ -11,7 +11,7 @@ struct RoomData
 	unsigned int maxPlayers;
 	unsigned int numOfQustions;
 	unsigned int TimePerQuestion;
-	bool isActive;
+	unsigned int isActive;
 
 	http::json::JsonObject toJson()const {
 		http::json::JsonObject object;
@@ -20,7 +20,7 @@ struct RoomData
 		object.insert({ "maxPlayers",{std::to_string(maxPlayers)} });
 		object.insert({ "numOfQustions",{ std::to_string(numOfQustions) } });
 		object.insert({ "TimePerQuestion",{ std::to_string(TimePerQuestion) } });
-		object.insert({ "isActive",{isActive ? "true" : "false"} });
+		object.insert({ "isActive",{ std::to_string(isActive)} });
 		return object;
 	}
 	std::string toString()const {
@@ -53,7 +53,7 @@ class RoomManger {
 private:
 	std::map<int, Room> rooms;
 public:
-	bool getRoomStatus(int id)const;
+	bool getRoomStatus(int id);
 	int createRoom(LoggedUser user, const RoomData& roomData);
 	void removeRoom(int id);
 	Room& getRoom(int id);

@@ -1,7 +1,7 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonObject.h"
 #define getIntFromJson(param_name) (unsigned int)json[#param_name].integer_value()
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffer)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
     auto username = reqAsJson["username"];
@@ -10,20 +10,21 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
         ._username = username.string_value(),
         ._password = password
     };
-    delete[] buffer.data; //clean the buffer data since it is in the heap
+    delete[] buffer.data;
+    ret.id = buffer.status;
     return ret;
 }
 
-SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(Buffer buffer)
+SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const Buffer& buffer)
 {
     http::json::JsonObject reqAsJson(buffer.data);
-        auto ret = SignUpRequest{
+    auto ret = SignUpRequest{
         ._username = reqAsJson["username"].string_value(),
         ._password = reqAsJson["password"].string_value(),
         ._email = reqAsJson["email"].string_value()
-        };
-
-    delete[] buffer.data; //clean the buffer data since it is in the heap
+    };
+    delete[] buffer.data;
+    ret.id = buffer.status;
     return ret;
 }
 
@@ -78,6 +79,14 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
     std::string username = reqAsJson["username"].string_value();
     auto ret = JoinRoomRequest{ .roomId = roomId, .username = username };
     ret.id = joinRoomCode;
+    return ret;
+}
+
+LogoutRequest JsonRequestPacketDeserializer::deserializeLogoutRequest(const Buffer& buffer)
+{
+    http::json::JsonObject reqAsJson(buffer.data);
+    auto ret = LogoutRequest{ .username = reqAsJson["username"].string_value() };
+    ret.id = buffer.status;
     return ret;
 }
 

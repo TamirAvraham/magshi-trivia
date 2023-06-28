@@ -35,7 +35,7 @@ namespace GUI_for_trivia
             var users = new List<User>();
             users.Add(user);
             var name = room_name_text_box.Text;
-            return new RoomData(false, name, id++, q_t, q_c, p_c);
+            return new RoomData(0, name, id++, q_t, q_c, p_c);
 
         }
 

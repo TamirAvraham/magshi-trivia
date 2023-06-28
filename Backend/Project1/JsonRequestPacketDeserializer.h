@@ -5,14 +5,15 @@ class JsonRequestPacketDeserializer
 {
 	
 public:
-	static LoginRequest deserializeLoginRequest(Buffer buffer);
-	static SignUpRequest deserializeSignUpRequest(Buffer buffer);
+	static LoginRequest deserializeLoginRequest(const Buffer& buffer);
+	static SignUpRequest deserializeSignUpRequest(const Buffer& buffer);
 	static GetRoomPlayersRequest deserializeGetRoomRequest(const Buffer& buffer);
 	static RemoveRoomRequest deserializeRemoveRoomRequest(const Buffer& buffer);
 	static GetRoomsRequest deserializeRoomsRequest(const Buffer& buffer);
 	static CreateRoomRequest deserializeCreateRoomsRequset(const Buffer& buffer);
 	static GetRoomStatusRequest deserializeGetRoomStatusRequest(const Buffer& buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(const Buffer& buffer);
+	static LogoutRequest deserializeLogoutRequest(const Buffer& buffer);
 
 	static GetTopPlayersRequest deserializeGetTopPlayersRequest(const Buffer& buffer);
 	static GetPlayerStatisticsRequest deserializeGetPlayerStatisticsRequest(const Buffer& buffer);

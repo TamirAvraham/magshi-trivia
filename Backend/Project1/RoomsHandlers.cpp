@@ -4,6 +4,7 @@
 #include "RequsetFactory.h"
 #include "RoomMemberHandler.h"
 #include "AdminRoomHandler.h"
+#include "LoginRequestHandler.h"
 #define getIntFromJson(param_name) (unsigned int)json[#param_name].integer_value()
 #define retrunHandler(name) return new name##Responce(handle##name##Request((name##Request)(*req)));
 
@@ -36,6 +37,8 @@ Responce* RoomsHandler::HandlerRequest(Request* req)
 		return new GetRoomStatusResponce(handleGetRoomStatusRequest((GetRoomStatusRequest*)(req)));
 	case joinRoomCode:
 		return new JoinRoomResponce(handleJoinRoomRequest((JoinRoomRequest*)(req)));
+	case logoutCode:
+		return new LogoutResponce(handleLogoutRequest((LogoutRequest*)(req)));
 	default:
 		return nullptr;
 	}
@@ -59,10 +62,24 @@ Request* RoomsHandler::GetRequestFromBuffer(const Buffer& buffer)
 		return new GetRoomStatusRequest(JsonRequestPacketDeserializer::deserializeGetRoomStatusRequest(buffer));
 	case joinRoomCode:
 		return new JoinRoomRequest(JsonRequestPacketDeserializer::deserializeJoinRoomRequest(buffer));
-	
+	case logoutCode:
+		return new LogoutRequest(JsonRequestPacketDeserializer::deserializeLogoutRequest(buffer));
 	default:
 		return nullptr;
 	}
+}
+
+inline LogoutResponce RoomsHandler::handleLogoutRequest(const LogoutRequest* request) const
+{
+	RequsetFactory::getInstence().getLoginManager().Logout(request->username);
+	LogoutResponce ret;
+	ret.buffer = Buffer{
+		.status = OK,
+		.sizeOfData = 0,
+		.data = nullptr
+	};
+	ret.next = new LoginRequestHandler();
+	return ret;
 }
 
 inline GetRoomPlayersResponce RoomsHandler::handleGetRoomPlayersRequest(GetRoomPlayersRequest* requset) const

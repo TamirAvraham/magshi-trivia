@@ -9,46 +9,15 @@ bool LoginRequestHandler::IsValid(unsigned char status)
 
 Responce* LoginRequestHandler::HandlerRequest(Request* req)
 {
-    auto ret= new LoginResponce();
+    auto ret = new LoginResponce();
     Buffer retBuffer;
-	http::json::JsonObject retJsonMessage;
 	ret->next = new MenuHandler();
-	bool noError = true;
-	std::string retData;
-	/*try
-	{*/
-		LoginRequest* loginRequest = (LoginRequest*)req;
-		retBuffer.status = OK;
-		auto& instence = RequsetFactory::getInstence();
-		instence.getLoginManager().Login(loginRequest->_username, loginRequest->_password);
-		
-	/*}
-	catch (int errNum)
-	{
-		if (WRONG_PASSWORD_ERROR == errNum)
-		{
-			std::cout << "Wrong password inside\n";
-			retData = R"""(
-{
-	"error": "login failed, incorrect password")""";
-			retBuffer.status = Error;
-			noError = false;
-		}
-		else
-			throw std::exception();
-	}
-	catch (...)
-	{
-		retData = R"(
-{
-	"error": "login failed due to an unexpected error")";
-		retBuffer.status = Error;
-		noError = false;
-	}
-	if (noError)
-	{
-		retData = retJsonMessage.ToString();
-	}*/
+	
+	LoginRequest* loginRequest = (LoginRequest*)req;
+	retBuffer.status = OK;
+	auto& instence = RequsetFactory::getInstence();
+	instence.getLoginManager().Login(loginRequest->_username, loginRequest->_password);
+
 	retBuffer.sizeOfData = 0;
 	retBuffer.data = new char[1];
 	retBuffer.data[0] = '\0';

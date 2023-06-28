@@ -1,5 +1,6 @@
 #include "RoomMemberHandler.h"
 #include "RequsetFactory.h"
+#include "RoomsHandlers.h"
 #include "JsonRequestPacketDeserializer.h"
 bool RoomMemberHandler::IsValid(unsigned char status)
 {
@@ -51,7 +52,7 @@ inline LeaveRoomResponce RoomMemberHandler::handleLeaveRoomRequest(LeaveRoomRequ
 		.data = nullptr,
 	};
 	ret.buffer = buffer;
-	ret.next = new RoomMemberHandler();
+	ret.next = new RoomsHandler();
 	return ret;
 }
 

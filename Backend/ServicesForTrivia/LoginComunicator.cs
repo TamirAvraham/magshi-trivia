@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace ServicesForTrivia
 {
     public static class LoginComunicator
     {
+        const byte logoutCode = 27;
+
         public static User SignUp(string username, string password, string email)
         {
             var requestDataAsJson=new JsonObject();
@@ -19,7 +22,7 @@ namespace ServicesForTrivia
 
             var responseDataAsString=requestDataAsJson.ToString();
             var buffer=new Buffer(
-                data: Encoding.UTF8.GetBytes(responseDataAsString),
+                data: Encoding.ASCII.GetBytes(responseDataAsString),
                 sizeOfData: (ushort)responseDataAsString.Length,
                 status: (byte)RequsetsStatues.SignUp
             );
@@ -45,7 +48,7 @@ namespace ServicesForTrivia
             var requestDataAsString = requestDataAsJson.ToString();
 
             var buffer = new Buffer(
-                data: Encoding.UTF8.GetBytes(requestDataAsString),
+                data: Encoding.ASCII.GetBytes(requestDataAsString),
                 sizeOfData: (ushort)requestDataAsString.Length,
                 status: (byte)RequsetsStatues.Login
             );
@@ -61,6 +64,19 @@ namespace ServicesForTrivia
 
             return new User(username);
         }
-        
+        public static bool Logout(string username)
+        {
+            var req = new { username };
+            string reqAsString = JsonSerializer.Serialize(req);
+            byte[] bytes = Encoding.ASCII.GetBytes(reqAsString);
+
+            var buffer = new Buffer(bytes, ((ushort)bytes.Length), logoutCode);
+            Communicator.Instance.SendBuffer(ref buffer);
+
+            buffer = Communicator.Instance.ReadBuffer();
+
+            return buffer.Status == ((byte)ResponceStatus.Ok);
+
+        }
     }
 }

@@ -15,5 +15,6 @@
         </ListBox>
         <Label x:Name="questions_count" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Width="216" Height="35" FontSize="18" Content="Question Count:"/>
         <Button Content="Start Room" HorizontalAlignment="Left" Margin="10,376,0,0" VerticalAlignment="Top" Height="48" Width="161" Background="#FF1ECCB8" FontSize="18" FontWeight="Bold" Click="Button_Click"/>
+        <Button x:Name="close_room_button" Content="Close Room" HorizontalAlignment="Left" Margin="239,376,0,0" VerticalAlignment="Top" Height="48" Width="161" Background="#FF1ECCB8" FontSize="18" FontWeight="Bold" Click="close_room_button_Click"/>
     </Grid>
 </Window>

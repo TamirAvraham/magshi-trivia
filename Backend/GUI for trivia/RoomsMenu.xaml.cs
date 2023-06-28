@@ -37,7 +37,7 @@ namespace GUI_for_trivia
                 roomButton.Click += Click_handler;
                 roomButton.Content = room.Name;
                 roomButton.Tag = room;
-                roomButton.Background = room.IsActive ? Brushes.Red : Brushes.Green;
+                roomButton.Background = room.IsActive>0 ? Brushes.Red : Brushes.Green;
                 roomButton.Tag=room;
                 rooms_list.Items.Add(roomButton);
             }
@@ -89,6 +89,16 @@ namespace GUI_for_trivia
             timer.Stop();
             base.OnClosing(e);
 
+        }
+
+        private void create_room_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (LoginComunicator.Logout(user.username))
+            {
+                var win = new MainWindow();
+                win.Show();
+                this.Close();
+            }
         }
     }
 }

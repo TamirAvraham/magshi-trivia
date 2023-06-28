@@ -156,6 +156,16 @@ namespace GUI_for_trivia
             this.Close();
         }
 
+        private void close_room_button_Click(object sender, RoutedEventArgs e)
+        {
+            var ret = AdminRoomComunicator.CloseRoom(user.username, roomData.Id);
+            if (ret)
+            {
+                var win = new RoomsMenu(user);
+                win.Show();
+                this.Close();
+            }
+        }
     }
 
 
