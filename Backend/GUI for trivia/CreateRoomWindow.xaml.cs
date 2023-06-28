@@ -53,5 +53,20 @@ namespace GUI_for_trivia
             }
             
         }
+
+        private void q_count_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            q_count_label.Content = $"Questions Number: {q_count.Value}";
+        }
+
+        private void part_count_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            part_count_label.Content =$"Max Participants: { (int)part_count.Value}";
+        }
+
+        private void q_time_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            q_time_label.Content=$"Time To Answer Questions: {(int)q_time.Value}";
+        }
     }
 }
