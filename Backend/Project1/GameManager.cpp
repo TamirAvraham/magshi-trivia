@@ -1,5 +1,5 @@
 #include "GameManager.h"
-
+#include "SqliteDatabase.h"
 Game::Game(const Room& room):roomId(room.getId())
 {
 	questions = SqliteDataBase::GetInstance().getQuestions();
@@ -94,6 +94,7 @@ GameResult Game::getResultForUser(const std::pair<LoggedUser, QuestionsData>& us
     ret.correctAnswerCount = userData.second.correct_answer_count;
     ret.points = getPlayerPoints(userData.first);
     ret.username = userData.first.username;
+    SqliteDataBase::GetInstance().updateUserStats(ret, userData.second.answered_questions.size());
     return ret;
 }
 

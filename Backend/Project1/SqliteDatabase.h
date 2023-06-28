@@ -2,6 +2,7 @@
 #include "IDatabase.h"
 #include "sqlite3.h"
 #include "JsonObject.h"
+#include "GameManager.h"
 #include <list>
 #include <vector>
 #include <string>
@@ -63,6 +64,9 @@ public:
 	// Game_Statistic related functions
 	std::vector<Statistic> getUserGameStatistic(std::string username);
 	std::vector <Game_Statistic> getTopFive();
+
+
+	void updateUserStats(const GameResult& result,const int& questionCount);
 private:
 	//stats helpers
 	void createUserStats(const std::string& username);

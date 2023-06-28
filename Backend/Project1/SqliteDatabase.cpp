@@ -175,6 +175,64 @@ std::vector<Game_Statistic> SqliteDataBase::getTopFive()
 	return gameStats;
 }
 
+void SqliteDataBase::updateUserStats(const GameResult& result, const int& questionCount)
+{
+	getUserGameStatistic(result.username);
+	sqlite3_stmt* stmt;
+	std::string sql = "UPDATE statistics SET total_answers = total_answers + ?, "
+		"correct_answers = correct_answers + ?, "
+		"total_seconds_to_answer = total_seconds_to_answer + ?, "
+		"total_games_played = total_games_played + 1 "
+		"WHERE user = ?;";
+	int rc = sqlite3_prepare_v2(_database, sql.c_str(), -1, &stmt, nullptr);
+	if (rc != SQLITE_OK)
+	{
+		std::cout << std::string(sqlite3_errmsg(_database)) << std::endl;
+		return;
+	}
+
+	
+	sqlite3_bind_int(stmt, 1, questionCount);
+	sqlite3_bind_int(stmt, 2, result.correctAnswerCount);
+	sqlite3_bind_int(stmt, 3, result.avgAnswerTime);
+	sqlite3_bind_text(stmt, 4, result.username.c_str(), -1, SQLITE_STATIC);
+
+	// Execute the SQL statement
+	rc = sqlite3_step(stmt);
+	if (rc != SQLITE_DONE)
+	{
+		std::cout << std::string(sqlite3_errmsg(_database)) << std::endl;
+
+	}
+
+	// Finalize the statement
+	sqlite3_finalize(stmt);
+
+	// Update the game_records table
+	sql = "INSERT OR REPLACE INTO game_records (name_of_user, points) "
+		"VALUES (?, ?);";
+	rc = sqlite3_prepare_v2(_database, sql.c_str(), -1, &stmt, nullptr);
+	if (rc != SQLITE_OK)
+	{
+		std::cout << std::string(sqlite3_errmsg(_database)) << std::endl;
+		return;
+	}
+
+	
+	sqlite3_bind_text(stmt, 1, result.username.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_int(stmt, 2, result.points);
+
+	rc = sqlite3_step(stmt);
+	if (rc != SQLITE_DONE)
+	{
+		
+	}
+
+	// Finalize the statement
+	sqlite3_finalize(stmt);
+}
+
+
 void SqliteDataBase::createUserStats(const std::string& username)
 {
 	sendSQL(("INSERT INTO statistics (user, total_answers, correct_answers, total_seconds_to_answer, total_games_played) VALUES (\'"+username+"\', 0, 0, 0, 0); ").c_str(), nullptr, nullptr);

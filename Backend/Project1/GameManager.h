@@ -1,5 +1,4 @@
 #pragma once
-#include "SqliteDatabase.h"
 #include <random>
 #include "loggedUser.h"
 #include "JsonSirealizer.h"
@@ -24,7 +23,7 @@
 //		return toJson().ToString();
 //	}
 //};
-
+struct Question;
 struct QuestionsData
 {
 	std::vector<std::string> answered_questions;

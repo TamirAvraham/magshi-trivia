@@ -51,5 +51,9 @@ namespace ServicesForTrivia
         {
             tcpClient.Close();
         }
+        public static void Reconnect()
+        {
+            instance = new Communicator();
+        }
     }
 }

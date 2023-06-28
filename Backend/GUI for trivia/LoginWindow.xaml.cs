@@ -47,8 +47,9 @@ namespace GUI_for_trivia
             catch (Exception error)
             {
                 HandlerError($"error: {error.Message}");
+                Communicator.Reconnect();
             }
-            
+
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
