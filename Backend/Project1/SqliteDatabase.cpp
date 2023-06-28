@@ -220,7 +220,7 @@ void SqliteDataBase::updateUserStats(const GameResult& result, const int& questi
 
 	
 	sqlite3_bind_text(stmt, 1, result.username.c_str(), -1, SQLITE_STATIC);
-	sqlite3_bind_int(stmt, 2, result.points);
+	sqlite3_bind_int(stmt, 2, result.points+getUserPoints(result.username));
 
 	rc = sqlite3_step(stmt);
 	if (rc != SQLITE_DONE)
@@ -237,6 +237,13 @@ void SqliteDataBase::createUserStats(const std::string& username)
 {
 	sendSQL(("INSERT INTO statistics (user, total_answers, correct_answers, total_seconds_to_answer, total_games_played) VALUES (\'"+username+"\', 0, 0, 0, 0); ").c_str(), nullptr, nullptr);
 	sendSQL(("INSERT INTO game_records (name_of_user, points)VALUES (\'" + username + "\', 0 );").c_str(), nullptr, nullptr);
+}
+
+int SqliteDataBase::getUserPoints(const std::string& username)
+{
+	std::vector<Game_Statistic> ret;
+	sendSQL(("select * from game_records where name_of_user=\'" + username + "\';").c_str(), callbackGameStatistic, &ret);
+	return ret.front().points;
 }
 
 bool SqliteDataBase::sendSQL(const char* sqlCommand, int (*callback)(void*, int, char**, char**), void* data)

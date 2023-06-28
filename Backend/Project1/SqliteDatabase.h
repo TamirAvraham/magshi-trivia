@@ -70,7 +70,7 @@ public:
 private:
 	//stats helpers
 	void createUserStats(const std::string& username);
-
+	int getUserPoints(const std::string& username);
 
 	SqliteDataBase();
 	bool sendSQL(const char* sqlCommand, int (*callback)(void*, int, char**, char**), void* data);
