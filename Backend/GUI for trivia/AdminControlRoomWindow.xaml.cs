@@ -1,6 +1,7 @@
 ﻿using ServicesForTrivia;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace GUI_for_trivia
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(3);
             timer.Tick += (object sender, EventArgs e) => Refresh();
-            //timer.Start();
+            timer.Start();
 
         }
 
@@ -165,6 +166,15 @@ namespace GUI_for_trivia
                 win.Show();
                 this.Close();
             }
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            timer.Stop();
+            base.OnClosing(e);
+        }
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Refresh();
         }
     }
 

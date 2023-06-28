@@ -100,7 +100,7 @@ GameResult Game::getResultForUser(const std::pair<LoggedUser, QuestionsData>& us
 
 Game& GameManger::getGame(const int& id)
 {
-    return games[id];
+    return games[id-1];
 }
 
 int GameManger::createNewGame(const Room& room)
@@ -108,14 +108,14 @@ int GameManger::createNewGame(const Room& room)
     Game game(room);
     
     games.push_back(game);
-    return games.size() - 1;
+    return games.size();
 }
 
 void GameManger::deleteGame(const int& id)
 {
     try
     {
-        games.erase(games.begin() + id);
+        games.erase(games.begin() + id-1);
     }
     catch (const std::exception&)
     {

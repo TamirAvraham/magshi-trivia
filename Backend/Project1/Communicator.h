@@ -44,5 +44,6 @@ private:
 	void Handler();
 	Buffer getBuffer(SOCKET)const;
 	std::pair<char*,int>& getByteArrayFromBuffer(const Buffer& buffer)const;
+	void mehtod(SOCKET);
 };
 

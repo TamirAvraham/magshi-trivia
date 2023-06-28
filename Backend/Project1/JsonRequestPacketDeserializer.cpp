@@ -217,6 +217,6 @@ RoomData JsonRequestPacketDeserializer::RoomDatafromJson(const http::json::JsonO
         .maxPlayers = getIntFromJson(MaxPlayers),
         .numOfQustions = getIntFromJson(NumOfQuestions),
         .TimePerQuestion = getIntFromJson(TimePerQuestion),
-        .isActive = false
+        .isActive = 0
     };
 }

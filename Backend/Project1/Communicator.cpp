@@ -77,110 +77,8 @@ void Communicator::Handler()
     while (true)
     {
         SOCKET newSocket = accept(_ListenSocket, (sockaddr*)&_socketAddress, &_socketAddress_len);
-        std::function<void()> handleConnectionFunction = [this, &newSocket]() {
-            if (newSocket < 0)
-            {
-
-                PWSTR str = nullptr;
-                InetNtop(_socketAddress.sin_family, &_socketAddress.sin_addr.s_addr, str, 50);
-                exit(888);
-            }
-            /*TODO:
-            * switch this with request factory
-            */
-
-
-            Buffer buffer = getBuffer(newSocket);
-            IRequestHandler* handler = RequsetFactory::getInstence().getFirstRequsetHandler(buffer);
-            _clients.emplace(newSocket, handler);
-            Buffer responceBuffer;
-            Responce* responce;
-            while (handler!=nullptr)
-            {
-                
-                //procees request
-                
-                try
-                {
-                   auto request = handler->GetRequestFromBuffer(buffer);
-                   std::cout << "request: ";
-                   logBuffer(buffer);
-                   if (request==nullptr)
-                   {
-                       throw std::invalid_argument("invalid request");
-                   }
-                   responce = handler->HandlerRequest(request);
-                   if (responce==nullptr)
-                   {
-                       throw std::invalid_argument("can processes request");
-                   }
-                    delete handler;
-                    delete request;
-                    handler = responce->next;
-                    
-                    //free memory
-                    //delete request;
-
-                    responceBuffer = responce->buffer;
-                    std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
-                    send(newSocket, byteArray.first, byteArray.second, 0);
-                    std::cout << "my response: ";
-                    logBuffer(responceBuffer);
-                    if (responce->buffer.data != nullptr && *(responce->buffer.data) != '\0')
-                    {
-                        delete[] responce->buffer.data;
-                        
-                    }
-                    
-                }
-                catch (const std::exception& e)
-                {
-                    http::json::JsonObject errorjson;
-                    errorjson.insert({ "error",{e.what()} });
-                    std::string jsonCache = errorjson.ToString();
-
-                    responceBuffer.status = Error;
-                    responceBuffer.sizeOfData = jsonCache.length();
-                    responceBuffer.data = new char[jsonCache.length() + 1];
-                    std::copy(jsonCache.begin(), jsonCache.end(), responceBuffer.data);
-                    responceBuffer.data[jsonCache.size()] = '\0';
-
-                    std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
-
-                    send(newSocket, byteArray.first, byteArray.second, 0);
-                    handler = nullptr;
-                    std::cout << "my response: ";
-                    logBuffer(responceBuffer);
-                }
-                catch (...)
-                {
-                    http::json::JsonObject errorjson;
-                    errorjson.insert({ "error",{"had an internal error soz UwU"}});
-                    std::string jsonCache = errorjson.ToString();
-
-                    responceBuffer.status = Error;
-                    responceBuffer.sizeOfData = jsonCache.length();
-                    responceBuffer.data = new char[jsonCache.length()+1];
-                    std::copy(jsonCache.begin(), jsonCache.end(), responceBuffer.data);
-                    responceBuffer.data[jsonCache.size()] = '\0';
-
-                    std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
-
-                    send(newSocket, byteArray.first, byteArray.second, 0);
-                    handler = nullptr;
-                    std::cout << "my response: ";
-                    logBuffer(responceBuffer);
-                }
-
-                if (handler!=nullptr)
-                {
-                    buffer = getBuffer(newSocket);
-                }
-            }
-            _clients.erase(newSocket);
-            closesocket(newSocket);
-        };
-        std::thread thread(handleConnectionFunction);
+        
+        std::thread thread(&Communicator::mehtod,this, newSocket);
         thread.detach();
     }
 }
@@ -213,6 +111,111 @@ std::pair<char*, int>& Communicator::getByteArrayFromBuffer(const Buffer& buffer
 
     
     return result;
+}
+
+void Communicator::mehtod(SOCKET newSocket)
+{
+    if (newSocket < 0)
+    {
+
+        PWSTR str = nullptr;
+        InetNtop(_socketAddress.sin_family, &_socketAddress.sin_addr.s_addr, str, 50);
+        exit(888);
+    }
+    /*TODO:
+    * switch this with request factory
+    */
+
+
+    Buffer buffer = getBuffer(newSocket);
+    IRequestHandler* handler = RequsetFactory::getInstence().getFirstRequsetHandler(buffer);
+    _clients.emplace(newSocket, handler);
+    Buffer responceBuffer;
+    Responce* responce;
+    while (handler != nullptr)
+    {
+
+        //procees request
+
+        try
+        {
+            auto request = handler->GetRequestFromBuffer(buffer);
+            std::cout << "request: ";
+            logBuffer(buffer);
+            if (request == nullptr)
+            {
+                throw std::invalid_argument("invalid request");
+            }
+            responce = handler->HandlerRequest(request);
+            if (responce == nullptr)
+            {
+                throw std::invalid_argument("can processes request");
+            }
+            delete handler;
+            delete request;
+            handler = responce->next;
+
+            //free memory
+            //delete request;
+
+            responceBuffer = responce->buffer;
+            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+            send(newSocket, byteArray.first, byteArray.second, 0);
+            std::cout << "my response: ";
+            logBuffer(responceBuffer);
+            if (responce->buffer.data != nullptr && *(responce->buffer.data) != '\0')
+            {
+                delete[] responce->buffer.data;
+
+            }
+
+        }
+        catch (const std::exception& e)
+        {
+            http::json::JsonObject errorjson;
+            errorjson.insert({ "error",{e.what()} });
+            std::string jsonCache = errorjson.ToString();
+
+            responceBuffer.status = Error;
+            responceBuffer.sizeOfData = jsonCache.length();
+            responceBuffer.data = new char[jsonCache.length() + 1];
+            std::copy(jsonCache.begin(), jsonCache.end(), responceBuffer.data);
+            responceBuffer.data[jsonCache.size()] = '\0';
+
+            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+
+            send(newSocket, byteArray.first, byteArray.second, 0);
+            handler = nullptr;
+            std::cout << "my response: ";
+            logBuffer(responceBuffer);
+        }
+        catch (...)
+        {
+            http::json::JsonObject errorjson;
+            errorjson.insert({ "error",{"had an internal error soz UwU"} });
+            std::string jsonCache = errorjson.ToString();
+
+            responceBuffer.status = Error;
+            responceBuffer.sizeOfData = jsonCache.length();
+            responceBuffer.data = new char[jsonCache.length() + 1];
+            std::copy(jsonCache.begin(), jsonCache.end(), responceBuffer.data);
+            responceBuffer.data[jsonCache.size()] = '\0';
+
+            std::pair<char*, int>& byteArray = getByteArrayFromBuffer(responceBuffer);
+
+            send(newSocket, byteArray.first, byteArray.second, 0);
+            handler = nullptr;
+            std::cout << "my response: ";
+            logBuffer(responceBuffer);
+        }
+
+        if (handler != nullptr)
+        {
+            buffer = getBuffer(newSocket);
+        }
+    }
+    _clients.erase(newSocket);
+    closesocket(newSocket);
 }
 
      

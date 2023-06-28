@@ -1,6 +1,7 @@
 #include "RoomMemberHandler.h"
 #include "RequsetFactory.h"
 #include "RoomsHandlers.h"
+#include "GameHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 bool RoomMemberHandler::IsValid(unsigned char status)
 {
@@ -69,6 +70,12 @@ inline GetRoomStateResponce RoomMemberHandler::handleGetRoomStateRequest(GetRoom
 	};
 	std::copy(data.begin(), data.end(), ret.buffer.data);
 	ret.buffer.data[data.size()] = '\0';
-	ret.next = new RoomMemberHandler();
+	if (roomData.getData().isActive)
+	{
+		ret.next = new GameHandler();
+	}
+	else {
+		ret.next = new RoomMemberHandler();
+	}
 	return ret;
 }

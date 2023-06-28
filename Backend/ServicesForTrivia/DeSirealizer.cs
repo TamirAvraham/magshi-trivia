@@ -13,6 +13,7 @@ namespace ServicesForTrivia
         public static Buffer GetBufferFromSocket(NetworkStream networkStream)
         {
             var header = new byte[sizeOfHeader];
+            bool canIRead=networkStream.CanRead;
             networkStream.Read(header, 0, sizeOfHeader);
 
             var status = header[0];
