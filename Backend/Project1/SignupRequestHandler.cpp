@@ -9,50 +9,20 @@ bool SignupRequestHandler::IsValid(unsigned char status)
 
 Responce* SignupRequestHandler::HandlerRequest(Request* req)
 {
-    auto ret = SignUpResponce();
+    auto ret = new SignUpResponce();
     Buffer retBuffer;
 	http::json::JsonObject retJsonMessage;
-	ret.next = new MenuHandler();
-	bool noError = true;
-	std::string retData;
-	/*try
-	{*/
-		SignUpRequest* signupRequest = (SignUpRequest*)req;
-		retBuffer.status = OK;
-		auto& instence = RequsetFactory::getInstence();
-		instence.getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
-	/*}
-	catch (int errNum)
-	{
-		if (USER_EXISTS_ERROR == errNum)
-		{
-			std::cout << "User exists inside\n";
-			retData = R"(
-{
-	"error": "signup failed, user already exists")";
-			retBuffer.status = Error;
-			noError = false;
-		}
-		else
-			throw std::exception();
-	}
-	catch (...)
-	{
-		retData = R"(
-{
-	"error": "signup failed due to unexpected error")";
-		retBuffer.status = Error;
-		noError = false;
-	}*/
-	if (noError)
-	{
-		retData = retJsonMessage.ToString();
-	}
+	ret->next = new MenuHandler();
+	
+	SignUpRequest* signupRequest = (SignUpRequest*)req;
+	retBuffer.status = OK;
+	auto& instence = RequsetFactory::getInstence();
+	instence.getLoginManager().Signup(signupRequest->_username, signupRequest->_password, signupRequest->_email);
+	
 	retBuffer.sizeOfData = 0;
-	retBuffer.data = new char[1];
-	retBuffer.data[0] = '\0';
-	ret.buffer = retBuffer;
-	return &ret;
+	retBuffer.data = nullptr;
+	ret->buffer = retBuffer;
+	return ret;
 }
 
 Request* SignupRequestHandler::GetRequestFromBuffer(const Buffer& buffer)

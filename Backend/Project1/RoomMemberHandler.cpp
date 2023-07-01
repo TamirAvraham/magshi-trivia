@@ -59,23 +59,37 @@ inline LeaveRoomResponce RoomMemberHandler::handleLeaveRoomRequest(LeaveRoomRequ
 
 inline GetRoomStateResponce RoomMemberHandler::handleGetRoomStateRequest(GetRoomStateRequest* request) const
 {
-	GetRoomStateResponce ret;
-	auto& roomData = RequsetFactory::getInstence().getRoomsManager().getRoom(request->roomId);
-	auto data = roomData.toString();
-	ret.buffer = Buffer{
-		.status = OK,
-		.sizeOfData = static_cast<unsigned int>(data.size()),
-		.data = new char[data.size() + 1]
-
-	};
-	std::copy(data.begin(), data.end(), ret.buffer.data);
-	ret.buffer.data[data.size()] = '\0';
-	if (roomData.getData().isActive)
+	try
 	{
-		ret.next = new GameHandler();
+		GetRoomStateResponce ret;
+		auto& roomData = RequsetFactory::getInstence().getRoomsManager().getRoom(request->roomId);
+		auto data = roomData.toString();
+		ret.buffer = Buffer{
+			.status = OK,
+			.sizeOfData = static_cast<unsigned int>(data.size()),
+			.data = new char[data.size() + 1]
+
+		};
+		std::copy(data.begin(), data.end(), ret.buffer.data);
+		ret.buffer.data[data.size()] = '\0';
+		if (roomData.getData().isActive)
+		{
+			ret.next = new GameHandler();
+		}
+		else {
+			ret.next = new RoomMemberHandler();
+		}
+		return ret;
 	}
-	else {
-		ret.next = new RoomMemberHandler();
+	catch (...)
+	{
+		GetRoomStateResponce ret;
+		ret.buffer = Buffer{
+			.status = Error,
+			.sizeOfData = 0,
+			.data = nullptr
+		};
+		ret.next = new RoomsHandler();
+		return ret;
 	}
-	return ret;
 }

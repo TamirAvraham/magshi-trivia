@@ -41,7 +41,7 @@ namespace GUI_for_trivia
             }
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += (object sender, EventArgs e) => Refresh();
             timer.Start();
 
@@ -135,6 +135,7 @@ namespace GUI_for_trivia
                     var win = new QuestionWindow(user, roomData.id, roomState.Status, roomData);
                     win.Show();
                     this.Close();
+                    return;
                 }
             }
             catch (Exception e)
@@ -142,21 +143,21 @@ namespace GUI_for_trivia
                 var win = new RoomsMenu(user);
                 win.Show();
                 this.Close();
-
+                return;
             }
-            finally {
-                users.Clear();
-                Dispatcher.Invoke(() =>
-                {
-                    players_list.Items.Clear();
-                    foreach (var playerName in roomState.Players)
-                    {
+            
+            users.Clear();
+            Dispatcher.Invoke(() =>
+            {
+               players_list.Items.Clear();
+               foreach (var playerName in roomState.Players)
+               {
                         User newUser = new User(playerName);
                         users.Add(newUser);
                         players_list.Items.Add(GeneratePlayerComponent(newUser));
-                    }
-                });
-            }
+               }
+            });
+            
 
             
 

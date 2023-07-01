@@ -163,7 +163,7 @@ void Communicator::mehtod(SOCKET newSocket)
             send(newSocket, byteArray.first, byteArray.second, 0);
             std::cout << "my response: ";
             logBuffer(responceBuffer);
-            if (responce->buffer.data != nullptr && *(responce->buffer.data) != '\0')
+            if (responce->buffer.sizeOfData>0)
             {
                 delete[] responce->buffer.data;
 

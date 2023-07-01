@@ -49,7 +49,7 @@ namespace GUI_for_trivia
             }
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += (object sender, EventArgs e) => Refresh();
             timer.Start();
 

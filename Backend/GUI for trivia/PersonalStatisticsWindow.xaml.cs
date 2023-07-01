@@ -26,7 +26,7 @@ namespace GUI_for_trivia
         {
             InitializeComponent();
             this.data = data;
-
+            this.user = user;
             username_value_label.Content = data.Username;
             total_answers_value_label.Content = data.TotalAnswers;
             correct_asnwers_value_label.Content = data.CorrectAnswers;
